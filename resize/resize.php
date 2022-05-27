@@ -10,7 +10,7 @@ require_once('../api/Turbo.php');
 
 $turbo = new Turbo();
 
-$resized_filename =  $turbo->image->resize($filename, $is_category, $is_post, $is_article, $is_banners);
+@$resized_filename =  $turbo->image->resize($filename, $is_category, $is_post, $is_article, $is_banners);
 
 if(is_readable($resized_filename))
 {
@@ -26,11 +26,9 @@ if(is_readable($resized_filename))
 			if ($info['mime'] == 'image/jpeg') {
 				$imagetoconvert = imagecreatefromjpeg($resized_filename);  
 				imagewebp($imagetoconvert, $webp_filename, 80);
-				imagedestroy($resized_filename);
 			} elseif ($info['mime'] == 'image/png') {
 				$imagetoconvert = imagecreatefrompng($resized_filename);  
 				imagewebp($imagetoconvert, $webp_filename, 80);
-				imagedestroy($resized_filename);
 			}
 		}
 	}

@@ -291,7 +291,7 @@ class Image extends Turbo
 			if ($src_colors > 0 && $src_colors <= 256)
 				$dst_img = imagecreate($dst_w, $dst_h);
 			else
-				$dst_img = imagecreatetruecolor($dst_w, $dst_h);
+				@$dst_img = imagecreatetruecolor($dst_w, $dst_h);
 
 			if (empty($dst_img))
 				return false;
@@ -320,7 +320,7 @@ class Image extends Turbo
 			}
 
 			// resample the image with new sizes
-			if (!imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h))
+			if (!@imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h))
 				return false;
 		}
 

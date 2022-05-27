@@ -518,7 +518,7 @@
 		<footer id="footer" class="app-footer">
 			<div class="col-md-12 font_12 text_dark">
 				<div class="float-md-right">
-					<a href="https://turbo-cms.com">TurboCMS </a> &copy; TurboSite {$smarty.now|date_format:"%Y"} v.{$config->version} | {$manager->login|escape}
+					<a href="https://turbo-cms.com">TurboCMS </a> &copy; TurboSite {$smarty.now|date_format:"Y"} v.{$config->version} | {$manager->login|escape}
 				</div>
 			</div>
 		</footer>

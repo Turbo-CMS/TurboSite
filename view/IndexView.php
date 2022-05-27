@@ -93,7 +93,7 @@ class IndexView extends View
         // Custom scripts from the admin
         $counters = array();
         foreach ((array)$this->settings->counters as $c) {
-            $counters[$c->position][] = $c;
+            @$counters[$c->position][] = $c;
         }
         $this->design->assign('counters', $counters);
 
