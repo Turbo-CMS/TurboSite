@@ -6200,7 +6200,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .tab_navigation_link.selected {
-    color: #495057;
+    color: #3f80ea;
     text-decoration: none;
 }
 
@@ -6209,17 +6209,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .tab_navigation_link:hover {
-    color: #495057;
-}
-
-.tab_navigation_link.selected:before {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    display: block;
-    width: 100%;
-    content: '';
-    border-bottom: 3px solid #3f80ea;
+    color: #3f80ea;
 }
 
 .show_more_images {
@@ -7804,4 +7794,13 @@ div.colorPicker-swatch {
     max-height: 14px;
     max-width: 18px;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    line-height: 12px;
+}
+
+.tox-tinymce.tox-fullscreen {
+    border-radius: 0px !important;
+}
+
+.bootstrap-select .btn span{
+    vertical-align: baseline !important;
 }
