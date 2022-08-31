@@ -39,17 +39,23 @@
 
 {if $svgId == "messanger"}
 	<svg id="ch" style="enable-background:new -496 507.7 54 54;" version="1.1" viewBox="-496 507.7 54 54" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
-		<circle cx="-469" cy="534.7" fill="#28a745" r="27"></circle>
+		<circle class="online-chat" cx="-469" cy="534.7" fill="#198754" r="27"></circle>
 		<path fill="#FFFFFF" d="M-459.9,523.7h-20.3c-1.9,0-3.4,1.5-3.4,3.4v15.3c0,1.9,1.5,3.4,3.4,3.4h11.4l5.9,4.9c0.2,0.2,0.3,0.2,0.5,0.2 h0.3c0.3-0.2,0.5-0.5,0.5-0.8v-4.2h1.7c1.9,0,3.4-1.5,3.4-3.4v-15.3C-456.5,525.2-458,523.7-459.9,523.7z"></path>
-		<path fill="#808080" d="M-477.7,530.5h11.9c0.5,0,0.8,0.4,0.8,0.8l0,0c0,0.5-0.4,0.8-0.8,0.8h-11.9c-0.5,0-0.8-0.4-0.8-0.8l0,0C-478.6,530.8-478.2,530.5-477.7,530.5z"></path>
-		<path fill="#808080" d="M-477.7,533.5h7.9c0.5,0,0.8,0.4,0.8,0.8l0,0c0,0.5-0.4,0.8-0.8,0.8h-7.9c-0.5,0-0.8-0.4-0.8-0.8l0,0C-478.6,533.9-478.2,533.5-477.7,533.5z"></path>
+		<path class="online-chat" fill="#198754" d="M-477.7,530.5h11.9c0.5,0,0.8,0.4,0.8,0.8l0,0c0,0.5-0.4,0.8-0.8,0.8h-11.9c-0.5,0-0.8-0.4-0.8-0.8l0,0C-478.6,530.8-478.2,530.5-477.7,530.5z"></path>
+		<path class="online-chat" fill="#198754" d="M-477.7,533.5h7.9c0.5,0,0.8,0.4,0.8,0.8l0,0c0,0.5-0.4,0.8-0.8,0.8h-7.9c-0.5,0-0.8-0.4-0.8-0.8l0,0C-478.6,533.9-478.2,533.5-477.7,533.5z"></path>
 	</svg>
 {/if}
 
 {if $svgId == "messanger_close"}
 	<svg viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
-		<ellipse cx="26" cy="26" fill="#28a745" rx="26" ry="26"></ellipse>
+		<ellipse class="online-chat" cx="26" cy="26" fill="#198754" rx="26" ry="26"></ellipse>
 		<rect fill="white" height="3.89857" rx="1.94928" transform="translate(18.35 15.6599) scale(0.998038 1.00196) rotate(45)" width="27.1433"></rect>
 		<rect fill="white" height="3.89857" rx="1.94928" transform="translate(37.5056 18.422) scale(0.998038 1.00196) rotate(135)" width="27.1433"></rect>
+	</svg>
+{/if}
+
+{if $svgId == "chevron_down"}
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+		<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path>
 	</svg>
 {/if}

@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author 		Turbo CMS
- * @link 		https://turbo-cms.com
- *
- */
-
 require_once('api/Turbo.php');
 
 class ArticlesAdmin extends Turbo
@@ -78,6 +70,7 @@ class ArticlesAdmin extends Turbo
 		}
 
 		$posts_count = $this->articles->count_articles($filter);
+		
 		// Show all pages at once
 		if ($this->request->get('page') == 'all')
 			$filter['limit'] = $posts_count;

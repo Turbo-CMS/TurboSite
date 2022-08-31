@@ -71,6 +71,16 @@ class IndexAdmin extends Turbo
 		$this->design->set_templates_dir('turbo/design/html');
 		$this->design->set_compiled_dir('turbo/design/compiled');
 
+		// JS functions 
+		$this->design->smarty->registerPlugin('block', 'js', array($this, 'add_javascript_block'));
+		$this->design->smarty->registerPlugin('function', 'unset_js', array($this, 'unset_javascript_function'));
+		$this->design->smarty->registerPlugin('function', 'javascript', array($this, 'print_javascript'));
+
+		// CSS functions
+		$this->design->smarty->registerPlugin('block', 'css', array($this, 'add_stylesheet_block'));
+		$this->design->smarty->registerPlugin('function', 'unset_css', array($this, 'unset_stylesheet_function'));
+		$this->design->smarty->registerPlugin('function', 'stylesheet', array($this, 'print_stylesheet'));
+
 		$this->design->assign('seo', $this->seo);
 		$this->design->assign('settings', $this->settings);
 		$this->design->assign('config',	$this->config);
@@ -118,7 +128,7 @@ class IndexAdmin extends Turbo
 			}
 		}
 		if (empty($module))
-			$module = 'PagesAdmin';
+			$module = 'ProductsAdmin';
 
 		// We connect the file with the necessary module
 		require_once('turbo/' . $module . '.php');
@@ -167,7 +177,7 @@ class IndexAdmin extends Turbo
 		$this->design->assign('menu', $menu);
 		$this->design->assign('menus', $menus);
 
-		// Create the current site wrapper (usually index.tpl)
+		// Create the current site wrapper (usually index.tpl) 
 		$wrapper = $this->design->smarty->getTemplateVars('wrapper');
 		if (is_null($wrapper))
 			$wrapper = 'index.tpl';
@@ -176,5 +186,128 @@ class IndexAdmin extends Turbo
 			return $this->body = $this->design->fetch($wrapper);
 		else
 			return $this->body = $content;
+	}
+
+	/*
+    * Functions for working with javascript files
+    * Register js file(s) or code
+    */
+
+	public function add_javascript_block($params, $content, $smarty, &$repeat)
+	{
+		if (!isset($params['id']) || $repeat || (empty($content)) && empty($params['include']))
+			return false;
+
+		if (!isset($params['priority']))
+			$params['priority'] = 10;
+
+		if (!empty($params['include']))
+			$this->js->add_files($params['id'], $params['include'], $params['priority']);
+
+		if (!empty($content))
+			$this->js->add_code($params['id'], $content, $params['priority']);
+
+		if (!empty($params['render'])) {
+			if (!isset($params['minify']))
+				$params['minify'] = null;
+
+			if (!isset($params['combine']))
+				$params['combine'] = true;
+
+			return $this->js->render($params['id'], $params['minify'], $params['combine']);
+		}
+	}
+
+	/*
+    * Unregister js file(s) or code
+    */
+
+	public function unset_javascript_function($params, $smarty)
+	{
+		if (!isset($params['id']))
+			return false;
+
+		$this->js->unplug($params['id']);
+	}
+
+	/*
+    * Output of packed js file 
+    */
+
+	public function print_javascript($params)
+	{
+		if (!isset($params['id']))
+			$params['id'] = null;
+
+		if (!isset($params['combine']))
+			$params['combine'] = true;
+
+		if (!isset($params['minify']))
+			$params['minify'] = null;
+
+		return $this->js->render($params['id'], $params['minify'], $params['combine']);
+	}
+
+	/*
+    * Functions for working with style files
+    * Register css file(s) or code 
+    */
+
+	public function add_stylesheet_block($params, $content, $smarty, &$repeat)
+	{
+		if (!isset($params['id']) || $repeat || (empty($content)) && empty($params['include']))
+			return false;
+
+		if (!isset($params['priority']))
+			$params['priority'] = 10;
+
+		if (!isset($params['less']))
+			$params['less'] = false;
+
+		if (!empty($params['include']))
+			$this->css->add_files($params['id'], $params['include'], $params['priority'], $params['less']);
+
+		if (!empty($content))
+			$this->css->add_code($params['id'], $content, $params['priority'], $params['less']);
+
+		if (!empty($params['render'])) {
+			if (!isset($params['minify']))
+				$params['minify'] = null;
+
+			if (!isset($params['combine']))
+				$params['combine'] = true;
+
+			return $this->css->render($params['id'], $params['minify'], $params['combine']);
+		}
+	}
+
+	/*
+    * Unregister css file(s) or code
+    */
+
+	public function unset_stylesheet_function($params, $smarty)
+	{
+		if (!isset($params['id']))
+			return false;
+
+		$this->css->unplug($params['id']);
+	}
+
+	/*
+    * Output of packed css file 
+    */
+
+	public function print_stylesheet($params)
+	{
+		if (!isset($params['id']))
+			$params['id'] = null;
+
+		if (!isset($params['combine']))
+			$params['combine'] = true;
+
+		if (!isset($params['minify']))
+			$params['minify'] = null;
+
+		return $this->css->render($params['id'], $params['minify'], $params['combine']);
 	}
 }

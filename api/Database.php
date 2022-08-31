@@ -99,7 +99,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Placeholder for requests. Work example: $query = $db->placehold('SELECT name FROM products WHERE id=?', $id); 
+	 * Placeholder for requests
 	 */
 	public function placehold()
 	{

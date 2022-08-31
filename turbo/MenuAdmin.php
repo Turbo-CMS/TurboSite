@@ -2,10 +2,8 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class MenuAdmin extends Turbo
 {
-
 	public function fetch()
 	{
 		// Action processing

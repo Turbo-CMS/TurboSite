@@ -28,8 +28,8 @@ class Pages extends Turbo
 
 		$lang_sql = $this->languages->get_query(array('object' => 'page'));
 
-		$query = "SELECT p.id, p.url, p.header, p.name, p.meta_title, p.meta_description, p.meta_keywords, p.body, p.menu_id, p.parent_id, p.position, p.visible, p.last_modified, " . $lang_sql->fields . "
-		          FROM __pages p " . $lang_sql->join . " $where LIMIT 1";
+		$query = "SELECT p.id, p.url, p.header, p.name, p.meta_title, p.meta_description, p.meta_keywords, p.body, p.menu_id, p.parent_id, p.position, p.visible, p.last_modified, $lang_sql->fields
+		          FROM __pages p $lang_sql->join $where LIMIT 1";
 
 		$this->db->query($query);
 		return $this->db->result();
@@ -65,8 +65,8 @@ class Pages extends Turbo
 				$keyword_filter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 		}
 
-		$query = "SELECT p.id, p.url, p.header, p.name, p.meta_title, p.meta_description, p.meta_keywords, p.body, p.menu_id, p.position, p.visible, p.last_modified, " . $lang_sql->fields . "
-		          FROM __pages p " . $lang_sql->join . " WHERE 1 $menu_filter $keyword_filter $visible_filter ORDER BY position";
+		$query = "SELECT p.id, p.url, p.header, p.name, p.meta_title, p.meta_description, p.meta_keywords, p.body, p.menu_id, p.position, p.visible, p.last_modified, $lang_sql->fields
+		          FROM __pages p $lang_sql->join WHERE 1 $menu_filter $keyword_filter $visible_filter ORDER BY position";
 
 		$this->db->query($query);
 
@@ -290,7 +290,7 @@ class Pages extends Turbo
 		$lang_sql = $this->languages->get_query(array('object' => 'page'));
 
 		// Select all pages
-		$query = $this->db->placehold("SELECT *, " . $lang_sql->fields . " FROM __pages p " . $lang_sql->join . " WHERE 1 $menu_id $is_visible ORDER BY p.parent_id, p.position");
+		$query = $this->db->placehold("SELECT *, $lang_sql->fields FROM __pages p $lang_sql->join WHERE 1 $menu_id $is_visible ORDER BY p.parent_id, p.position");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {

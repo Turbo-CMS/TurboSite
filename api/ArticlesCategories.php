@@ -115,8 +115,6 @@ class ArticlesCategories extends Turbo
 				$this->delete_image($id);
 				$query = $this->db->placehold("DELETE FROM __articles_categories WHERE id=? LIMIT 1", $id);
 				$this->db->query($query);
-				$query = $this->db->placehold("DELETE FROM __articles_categories WHERE category_id=?", $id);
-				$this->db->query($query);
 				$this->init_articles_categories();
 				$this->db->query($query);
 				$this->db->query("DELETE FROM __lang_articles_categories WHERE article_category_id in(?@)", $category->children);
@@ -178,8 +176,8 @@ class ArticlesCategories extends Turbo
 		$lang_sql = $this->languages->get_query(array('object' => 'article_category', 'px' => 'c'));
 
 		// Select all categories
-		$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.visible, c.position, c.last_modified, " . $lang_sql->fields . " 
-										FROM __articles_categories c " . $lang_sql->join . " ORDER BY c.parent_id, c.position");
+		$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.visible, c.position, c.last_modified, $lang_sql->fields 
+										FROM __articles_categories c $lang_sql->join ORDER BY c.parent_id, c.position");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {

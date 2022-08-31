@@ -22,7 +22,7 @@ class Notify extends Turbo
 
 		@mail($to, $subject, $message, $headers);
 	}
-
+	
 	public function email_comment_admin($comment_id)
 	{
 		if (!($comment = $this->comments->get_comment(intval($comment_id))))
@@ -46,6 +46,7 @@ class Notify extends Turbo
 		}
 		require_once($file);
 		$this->design->assign('btr', $backend_translations);
+
 		// Sending a letter
 		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
 		$subject = $this->design->get_var('subject');
@@ -86,6 +87,7 @@ class Notify extends Turbo
 		}
 		require_once($file);
 		$this->design->assign('btr', $backend_translations);
+
 		// Sending a letter
 		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
 		$subject = $this->design->get_var('subject');
@@ -107,6 +109,7 @@ class Notify extends Turbo
 		}
 		require_once($file);
 		$this->design->assign('btr', $backend_translations);
+
 		// Sending a letter
 		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
 		$subject = $this->design->get_var('subject');
@@ -129,6 +132,7 @@ class Notify extends Turbo
 		}
 		require_once($file);
 		$this->design->assign('btr', $backend_translations);
+
 		// Sending a letter
 		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_subscribe_admin.tpl');
 		$subject = $this->design->get_var('subject');

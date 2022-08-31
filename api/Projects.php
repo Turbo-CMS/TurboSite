@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Projects extends Turbo
 {
-
 	/*
 	*
 	* The function returns the project by its id or url
@@ -74,7 +73,6 @@ class Projects extends Turbo
 
 		if (isset($filter['visible']))
 			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
-
 
 		if (!empty($filter['sort']))
 			switch ($filter['sort']) {
@@ -187,7 +185,7 @@ class Projects extends Turbo
 			$project['url'] = strtolower(preg_replace("/[^0-9a-zа-я\-]+/ui", '', $project['url']));
 		}
 
-		// If there is a product with this URL, add a number to it
+		// If there is a project with this URL, add a number to it
 		while ($this->get_project((string)$project['url'])) {
 			if (preg_match('/(.+)_([0-9]+)$/', $project['url'], $parts))
 				$project['url'] = $parts[1] . '_' . ($parts[2] + 1);
@@ -290,7 +288,6 @@ class Projects extends Turbo
 					$project_id_filter   
 					ORDER BY position       
 					");
-
 		$this->db->query($query);
 		return $this->db->results();
 	}
@@ -376,7 +373,6 @@ class Projects extends Turbo
 					@unlink($f);
 				}
 			}
-
 			@unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
 		}
 	}

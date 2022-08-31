@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 /**
  * Turbo CMS
@@ -29,7 +29,7 @@ class UserView extends View
 
 			$this->design->assign('name', $name);
 			$this->design->assign('email', $email);
-			$this->design->assign('phone', $user->phone);
+			$this->design->assign('phone', $phone);
 
 			$this->db->query('SELECT count(*) as count FROM __users WHERE email=? AND id!=?', $email, $this->user->id);
 			$user_exists = $this->db->result('count');

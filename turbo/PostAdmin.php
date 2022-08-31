@@ -37,7 +37,7 @@ class PostAdmin extends Turbo
 					$post = $this->blog->get_post($post->id);
 					$this->design->assign('message_success', 'updated');
 				}
-				// Deleting an image
+				// Delete  image
 				if ($this->request->post('delete_image')) {
 					$this->blog->delete_image($post->id);
 				}
@@ -61,7 +61,6 @@ class PostAdmin extends Turbo
 		}
 
 		$this->design->assign('post', $post);
-
 
 		return $this->design->fetch('post.tpl');
 	}

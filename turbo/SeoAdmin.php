@@ -1,12 +1,11 @@
 <?php
+	
 require_once('api/Turbo.php');
 
 class SeoAdmin extends Turbo
 {
-
     public function fetch()
     {
-
         if ($this->request->method('POST')) {
             $this->seo->update('am_url', $this->request->post('am_url'));
             $this->seo->update('am_name', $this->request->post('am_name'));

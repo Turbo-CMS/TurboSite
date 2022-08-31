@@ -3,7 +3,7 @@
 {$subject = $lang->new_password scope=global}
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{$lang->password_remind_title}</title>
     <meta name="x-apple-disable-message-reformatting">
@@ -26,14 +26,16 @@
 		/*]]>*/
 
 		/*  Template reset styles  */
-
+		body {
+			color: #495057;
+        }
 		#outlook a {padding:0;}
 		.es-wrapper-color{
 			width: 100%;
 			font-family: 'Trebuchet MS', helvetica, arial, sans-serif;
 			-webkit-text-size-adjust: 100%;
 			-ms-text-size-adjust: 100%;
-			color: #222;
+			color: #495057;
 			padding: 0;
 			margin: 0;
 		}
@@ -82,7 +84,7 @@
 			font-family: 'Trebuchet MS', helvetica, arial, sans-serif;
 			font-style: normal;
 			font-weight: normal;
-			color: #222;
+			color: #495057;
 		}
 		.es-wrapper-color h1 {font-size: 24px;font-weight: 400;}
 		.es-wrapper-color h2 {font-size: 22px;font-weight: 400;}
@@ -105,7 +107,7 @@
 		}
 		.es-wrapper-color a {
 			text-decoration: underline;
-			color: #007bff;
+			color: #3f80ea;
 			margin-bottom: 0;
 		}
 
@@ -157,7 +159,7 @@
 
 		/*  Template color styles  */
 
-		.es-wrapper-color {background-color: #f2f2f2;}
+		.es-wrapper-color {background-color: #f7f9fc;}
 		.es-content-body  {background-color: #ffffff;}
 		.es-header-body   {background-color: #ffffff;}
 		.es-footer-body   {background-color: #fff;}
@@ -176,7 +178,7 @@
 		}
 		.es-header-body,
 		.es-content-body{
-			border-bottom: 2px solid #f2f2f2;
+			border-bottom: 2px solid #f7f9fc;
 		}
 		.es-content,
 		.es-header,
@@ -199,10 +201,10 @@
 			padding: 10px;
 			text-align: left;
 			margin: 0;
-			border: 1px solid #dbdbdb;
+			border: 1px solid #dee6ed;
 		}
 		.es-table-infobox tbody tr:nth-child(2n) {
-			background-color:  #f2f2f2;
+			background-color:  #f7f9fc;
 		}
 		.es-table-infobox th {
 			background: #232f3e;
@@ -212,9 +214,9 @@
 		.es-wrapper-color .es-button {
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #007bff;
+			border: 2px solid #3f80ea;
 			display: inline-block;
-			background: #007bff;
+			background: #3f80ea;
 			border-radius: 4px;
 			font-size: 14px;
 			font-weight: 600;
@@ -229,14 +231,14 @@
 		.es-wrapper-color .es-download{
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #007bff;
+			border: 2px solid #3f80ea;
 			display: inline-block;
 			background: #fff;
 			border-radius: 4px;
 			font-size: 11px;
 			font-weight: 600;
 			font-style: normal;
-			color: #007bff;
+			color: #3f80ea;
 			width: auto;
 			text-align: center;
 			padding: 4px 10px;
@@ -245,8 +247,8 @@
 		}
 
 		.es-wrapper-color .es-button-border {
-			border: 2px solid #F36D17;
-			color: #F36D17;
+			border: 2px solid #d9534f;
+			color: #d9534f;
 			background: #fff;
 			display: inline-block;
 			border-radius: 4px;
@@ -259,11 +261,11 @@
 			text-align: center;
 		}
 		.es-wrapper-color .es-number-order {
-			color: #F36D17;
+			color: #d9534f;
 			padding: 0px 8px;
 			display: inline-block;
 			font-size: 18px;
-			border: 2px solid #F36D17;
+			border: 2px solid #d9534f;
 			border-radius: 4px;
 			line-height: 1.3;
 			margin: 0px 5px;
@@ -273,7 +275,7 @@
 		.es-wrapper-color .es-status-color{
 			font-weight: 600;
 			color: #fff;
-			background: #1dc116;
+			background: #4bbf73;
 			padding: 2px 8px;
 			border-radius: 5px;
 			font-size: 12px;
@@ -286,21 +288,21 @@
 			padding: 10px;
 			text-align: left;
 			margin: 0;
-			color:#222;
+			color:#495057;
 			font-size: 14px;
 			border-radius: 5px;
-			border: 1px solid #dbdbdb;
+			border: 1px solid #dee6ed;
 		}
 		.es-wrapper-color .es-comment-admin{
-			background-color: #f2f2f2;
+			background-color: #f7f9fc;
 			line-height: 150%;
 			padding: 10px;
 			text-align: right;
 			margin: 0;
-			color:#222;
+			color:#495057;
 			font-size: 14px;
 			border-radius: 5px;
-			border: 1px solid #dbdbdb;
+			border: 1px solid #dee6ed;
 		}
 		.es-comment-date{
 			font-size: 12px;
@@ -375,7 +377,7 @@
                                   <tr>
                                     <td align="center">
                                       <a target="_blank" href="{$config->root_url}">
-                                        <img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto" />
+                                        <img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto">
                                       </a>
                                     </td>
                                   </tr>
@@ -426,7 +428,7 @@
                                           </tr>
                                           <tr>
                                             <td class="es-p15t es-p10b" align="center">
-                                              <div style="font-size: 12px;color: #222;">
+                                              <div style="font-size: 12px;color: #495057;">
                                                 <em>* {$lang->email_password_text}</em>
                                               </div>
                                             </td>

@@ -30,8 +30,8 @@ class Blog extends Turbo
 		$lang_sql = $this->languages->get_query(array('object' => 'blog'));
 
 		$query = $this->db->placehold("SELECT b.id, b.url, b.name, b.annotation, b.text, b.rate, b.views, b.meta_title,
-		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.image, b.last_modified, " . $lang_sql->fields . "
-		                               FROM __blog b " . $lang_sql->join . " $where LIMIT 1");
+		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.image, b.last_modified, $lang_sql->fields
+		                               FROM __blog b $lang_sql->join $where LIMIT 1");
 		if ($this->db->query($query))
 			return $this->db->result();
 		else
@@ -92,8 +92,8 @@ class Blog extends Turbo
 
 		$query = $this->db->placehold("SELECT b.id, b.url, b.name, b.annotation, b.text, b.views, b.rate,
 		                                      b.meta_title, b.meta_keywords, b.meta_description, b.visible,
-		                                      b.date, b.image, b.last_modified, " . $lang_sql->fields . "
-		                                      FROM __blog b " . $lang_sql->join . " WHERE 1 $post_id_filter $visible_filter $keyword_filter
+		                                      b.date, b.image, b.last_modified, $lang_sql->fields
+		                                      FROM __blog b $lang_sql->join WHERE 1 $post_id_filter $visible_filter $keyword_filter
 		                                      ORDER BY $order $sql_limit");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {

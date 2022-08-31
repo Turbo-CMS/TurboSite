@@ -1,15 +1,11 @@
 <?php
-
+	
 require_once('api/Turbo.php');
 
-############################################
-# Class Properties displays a list of product parameters
-############################################
 class UsersAdmin extends Turbo
 {
 	function fetch()
 	{
-
 		if ($this->request->method('post')) {
 			// Actions with selected
 			$ids = $this->request->post('check');

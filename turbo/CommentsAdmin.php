@@ -2,13 +2,10 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class CommentsAdmin extends Turbo
 {
-
     function fetch()
     {
-
         $filter = array();
         $filter['page'] = max(1, $this->request->get('page', 'integer'));
 

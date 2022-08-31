@@ -207,7 +207,6 @@ class ProjectsView extends View
 	// Project list display
 	private function fetch_projects()
 	{
-
 		$filter = array();
 
 		// If the keyword is set

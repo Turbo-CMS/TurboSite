@@ -1,4 +1,5 @@
 <?php
+
 require_once('api/Turbo.php');
 
 class PageAdmin extends Turbo
@@ -19,7 +20,7 @@ class PageAdmin extends Turbo
 			$page->menu_id = $this->request->post('menu_id', 'integer');
 			$page->visible = $this->request->post('visible', 'boolean');
 
-			// Do not allow duplicate section URLs
+			## Do not allow duplicate section URLs
 			if (($p = $this->pages->get_page($page->url)) && $p->id != $page->id) {
 				$this->design->assign('message_error', 'url_exists');
 			} else {

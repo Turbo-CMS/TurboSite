@@ -95,7 +95,6 @@ class ProjectsCategories extends Turbo
 		$query = $this->db->placehold("UPDATE __projects_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, intval($id));
 		$this->db->query($query);
 
-
 		if (!empty($result->description)) {
 			$this->languages->action_description($id, $result->description, 'project_category', $this->languages->lang_id());
 		}

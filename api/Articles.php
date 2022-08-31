@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Articles extends Turbo
 {
-
 	/*
 	*
 	* The function returns an article by its id or url
@@ -30,8 +29,8 @@ class Articles extends Turbo
 		$lang_sql = $this->languages->get_query(array('object' => 'article', 'px' => 'b'));
 
 		$query = $this->db->placehold("SELECT b.id, b.category_id, b.url, b.name, b.author, b.annotation, b.text, b.rate, b.views, b.meta_title,
-		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.image, b.position, b.last_modified, " . $lang_sql->fields . "
-		                               FROM __articles b " . $lang_sql->join . " $where LIMIT 1");
+		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.image, b.position, b.last_modified, $lang_sql->fields
+		                               FROM __articles b $lang_sql->join $where LIMIT 1");
 		if ($this->db->query($query))
 			return $this->db->result();
 		else
@@ -103,8 +102,8 @@ class Articles extends Turbo
 
 		$query = $this->db->placehold("SELECT b.id, b.category_id, b.url, b.name, b.author, b.annotation, b.text, b.rate, b.views,
 		                                      b.meta_title, b.meta_keywords, b.meta_description, b.image, b.visible,
-		                                      b.date, b.position, b.last_modified, " . $lang_sql->fields . "
-		                                      FROM __articles b " . $lang_sql->join . " WHERE 1 $post_id_filter $category_id_filter $visible_filter $keyword_filter
+		                                      b.date, b.position, b.last_modified, $lang_sql->fields
+		                                      FROM __articles b $lang_sql->join WHERE 1 $post_id_filter $category_id_filter $visible_filter $keyword_filter
 		                                      ORDER BY $order $sql_limit");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {

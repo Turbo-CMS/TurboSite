@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Comments extends Turbo
 {
-
 	// Returns comment by id
 	public function get_comment($id)
 	{
@@ -165,7 +164,7 @@ class Comments extends Turbo
 		}
 
 		$query = $this->db->placehold("SELECT c.id, c.object_id, c.ip, c.name, c.text, c.type, c.date, c.text, c.approved, c.parent_id, c.admin, c.rate, c.rating
-										FROM __comments c WHERE 1 $object_id_filter $parent_id_filter $type_filter $keyword_filter $approved_filter ORDER BY  $order $sql_limit");
+										FROM __comments c WHERE 1 $object_id_filter $parent_id_filter $type_filter $keyword_filter $approved_filter ORDER BY $order $sql_limit");
 
 		$this->db->query($query);
 		$comments = $this->db->results();

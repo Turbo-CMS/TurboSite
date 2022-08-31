@@ -1,4 +1,5 @@
 <?php
+	
 require_once('api/Turbo.php');
 
 class SettingsAdmin extends Turbo
@@ -62,13 +63,9 @@ class SettingsAdmin extends Turbo
 				$this->settings->cache_type = $this->request->post('cache_type');
 				$this->settings->cache_time = $this->request->post('cache_time');
 
-				if ($this->request->post('category_count') == 1)
-					$this->settings->category_count = 1;
-				else
-					$this->settings->category_count = 0;
-
 				// Watermark
 				$clear_image_cache = false;
+				$this->settings->watermark_enable = $this->request->post('watermark_enable', 'boolean');
 				$watermark = $this->request->files('watermark_file', 'tmp_name');
 				if (!empty($watermark) && in_array(pathinfo($this->request->files('watermark_file', 'name'), PATHINFO_EXTENSION), $this->allowed_image_extentions)) {
 					if (@move_uploaded_file($watermark, $this->config->root_dir . $this->config->watermark_file))

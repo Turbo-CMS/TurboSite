@@ -6,14 +6,14 @@
 <!-- Breadcrumb /-->
 {$level = 1}
 <nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb bg-light">
+	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" href="{$lang_link}"><span itemprop="name">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-			<a itemprop="item" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
+			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
@@ -43,41 +43,37 @@
 			{/if}
 		</div>
 	{/if}
-	<form class="form-horizontal mt-4 mb-5" role="form" id="loginForm" method="post">
-		<div class="form-group">
+	<form class="form-horizontal mt-4" id="FormValidation" role="form" method="post">
+		<div class="mb-3">
 			<label for="feedback_name">{$lang->name}</label>
-			<input class="form-control" type="text" id="feedback_name" name="name" placeholder="{$lang->enter_your_name}" required="" value="{$name|escape}" data-format=".+" data-notice="{$lang->enter_your_name}" />
+			<input type="text" class="form-control" name="name" id="feedback_name" value="{$name|escape}" placeholder="{$lang->enter_your_name}" required>
 			<div class="invalid-feedback">{$lang->enter_your_name}</div>
 		</div>
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="feedback_email">Email</label>
-			<input type="email" class="form-control" id="feedback_email" placeholder="{$lang->enter_your_email}" value="{$email|escape}" name="email" maxlength="255" required="" data-format="email" data-notice="{$lang->enter_your_email}">
+			<input type="email" class="form-control" name="email" id="feedback_email" value="{$email|escape}" placeholder="{$lang->enter_your_email}" maxlength="255" required>
 			<div class="invalid-feedback">{$lang->enter_your_email}</div>
 		</div>
-		<div class="form-group">
-			<label for="feedback_phone">{$lang->phone}</label>
-			<input type="text" class="form-control" id="feedback_phone" placeholder="{$lang->enter_phone_number}" value="{$phone|escape}" id="feedback_phone" name="phone" maxlength="255">
-		</div>
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="feedback_message">{$lang->message}</label>
-			<textarea class="form-control" rows="4" id="feedback_message" name="message" placeholder="{$lang->enter_your_message}" required="" data-format=".+" data-notice="{$lang->enter_your_message}">{$message|escape}</textarea>
+			<textarea class="form-control" name="message" id="feedback_message" placeholder="{$lang->enter_your_message}" rows="4" required>{$message|escape}</textarea>
 			<div class="invalid-feedback">{$lang->enter_your_message}</div>
 		</div>
 		{if $settings->captcha_feedback}
-			<div class="form-row mt-4">
-				<div class="form-group col-md-2">
+			<div class="row mt-4">
+				<div class="col-md-2 pb-3">
 					{get_captcha var="captcha_feedback"}
-					<div class="secret_number">{$captcha_feedback[0]|escape} + ? = {$captcha_feedback[1]|escape}</div>
+					<div class="secret-number">{$captcha_feedback[0]|escape} + ? = {$captcha_feedback[1]|escape}</div>
 				</div>
-				<div class="form-group col-md-10">
-					<input class="form-control" type="text" name="captcha_code" placeholder="{$lang->enter_captcha}" required="" autocomplete="off" value="" data-format=".+" data-notice="{$lang->enter_captcha}" />
+				<div class="col-md-10">
+					<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
 					<div class="invalid-feedback">{$lang->enter_captcha}</div>
 				</div>
 			</div>
 		{/if}
-		<div class="form-group">
+		<div class="mt-3">
 			<div class="col-sm-offset-2">
-				<input class="btn btn-primary" type="submit" id="btnLogin" name="feedback" value="{$lang->send}" />
+				<input type="submit" class="btn btn-primary" name="feedback" id="btnValidation" value="{$lang->send}">
 			</div>
 		</div>
 	</form>

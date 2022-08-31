@@ -4,7 +4,6 @@ require_once('api/Turbo.php');
 
 class BannerAdmin extends Turbo
 {
-
     public function fetch()
     {
         $pages      = $this->pages->get_pages();

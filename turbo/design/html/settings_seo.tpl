@@ -125,7 +125,7 @@
                         <div class="col-lg-5 col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="heading_label">{$btr->general_categories|escape}</div>
+                                    <div class="heading_label">{$btr->categories_projects|escape}</div>
                                     <div class="mb-1">
                                         <input name="category_meta_title" class="form-control mb-h" type="text" value="{$seo->category_meta_title|escape}" />
                                     </div>
@@ -178,7 +178,7 @@
                                                 <div class="mb-h"><b>{$btr->seo_patterns_ajax_message4|escape}</b> </div>
                                                 <div>
                                                     <ul class="mb-0 pl-1">
-                                                        <li><b>{$btr->general_categories|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+                                                        <li><b>{$btr->categories_projects|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->seo_projects|escape}</b> - {ldelim}project{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->left_pages|escape}</b> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->left_blog_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
@@ -217,7 +217,7 @@
                         <div class="col-lg-5 col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="heading_label">{$btr->general_categories|escape}</div>
+                                    <div class="heading_label">{$btr->categories_projects|escape}</div>
                                     <div class="mb-1">
                                         <input name="category_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_meta_keywords|escape}" />
                                     </div>
@@ -270,7 +270,7 @@
                                                 <div class="mb-h"><b>{$btr->seo_patterns_ajax_message4|escape}</b> </div>
                                                 <div>
                                                     <ul class="mb-0 pl-1">
-                                                        <li><b>{$btr->general_categories|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+                                                        <li><b>{$btr->categories_projects|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->seo_projects|escape}</b> - {ldelim}project{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->left_pages|escape}</b> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->left_blog_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
@@ -309,7 +309,7 @@
                         <div class="col-lg-5 col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="heading_label">{$btr->general_categories|escape}</div>
+                                    <div class="heading_label">{$btr->categories_projects|escape}</div>
                                     <div class="mb-1">
                                         <textarea name="category_meta_description" class="form-control turbo_textarea">{$seo->category_meta_description|escape}</textarea>
                                     </div>
@@ -362,7 +362,7 @@
                                                 <div class="mb-h"><b>{$btr->seo_patterns_ajax_message4|escape}</b> </div>
                                                 <div>
                                                     <ul class="mb-0 pl-1">
-                                                        <li><b>{$btr->general_categories|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+                                                        <li><b>{$btr->categories_projects|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->seo_projects|escape}</b> - {ldelim}project{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->left_pages|escape}</b> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
                                                         <li><b>{$btr->left_blog_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>

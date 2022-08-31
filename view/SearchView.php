@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 /**
  * Turbo CMS
@@ -14,11 +14,9 @@ require_once('View.php');
 
 class SearchView extends View
 {
-
 	// Display
 	function fetch()
 	{
-
 		$filter = array();
 		$filter['visible'] = 1;
 

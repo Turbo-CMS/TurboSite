@@ -3,8 +3,8 @@
 /**
  * Turbo CMS
  *
- * @author		Turbo CMS
- * @link		https://turbo-cms.com
+ * @author	Turbo CMS
+ * @link	https://turbo-cms.com
  *
  */
 
@@ -47,7 +47,6 @@ class Users extends Turbo
 					break;
 			}
 
-
 		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
 		// Select users
 		$query = $this->db->placehold("SELECT u.id, u.email, u.password, u.name, u.phone, u.enabled, u.last_ip, u.created FROM __users u
@@ -81,7 +80,7 @@ class Users extends Turbo
 			$where = $this->db->placehold(' WHERE u.id=? ', intval($id));
 
 		// Select user
-		$query = $this->db->placehold("SELECT u.id, u.email, u.password, u.name,  u.phone, u.enabled, u.last_ip, u.created FROM __users u $where LIMIT 1", $id);
+		$query = $this->db->placehold("SELECT u.id, u.email, u.password, u.name, u.phone, u.enabled, u.last_ip, u.created FROM __users u $where LIMIT 1", $id);
 		$this->db->query($query);
 		$user = $this->db->result();
 		if (empty($user))

@@ -1,4 +1,4 @@
-{* Password reminder *}
+{* Password recovery email *}
 
 {$meta_title = $lang->password_reminder scope=global}
 
@@ -8,14 +8,14 @@
 <!-- Breadcrumb /-->
 {$level = 1}
 <nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb bg-light">
+	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" href="{$lang_link}"><span itemprop="name">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-			<a itemprop="item" href="{$lang_link}{$page->url}"><span itemprop="name">{$lang->password_reminder}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$lang->password_reminder}</span></a>
+			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
@@ -37,22 +37,22 @@
 			{/if}
 		</div>
 	{/if}
-	<div class="col-md-6 offset-md-3 mb-5">
+	<div class="col-md-6 offset-md-3">
 		<span class="anchor" id="formResetPassword"></span>
 		<div class="card card-outline-secondary">
 			<div class="card-header">
 				<h3 class="mb-0">{$lang->password_reminder}</h3>
 			</div>
 			<div class="card-body">
-				<form autocomplete="off" method="post" id="loginForm" class="form" role="form">
-					<div class="form-group">
+				<form class="form" id="FormValidation" method="post" role="form" autocomplete="off">
+					<div class="mb-3">
 						<label for="inputResetPasswordEmail">Email</label>
-						<input type="text" class="form-control" id="inputResetPasswordEmail" required="" name="email" data-format="email" data-notice="{$lang->enter_your_email}" value="{$email|escape}" maxlength="255" />
+						<input type="text" class="form-control" name="email" id="inputResetPasswordEmail" value="{$email|escape}" maxlength="255" required>
 						<div class="invalid-feedback">{$lang->enter_your_email}</div>
 						<span class="form-text small text-muted" id="helpResetPasswordEmail">{$lang->enter_email_registration}</span>
 					</div>
-					<div class="form-group">
-						<input class="btn btn-success btn-lg float-right" type="submit" id="btnLogin" class="button_submit" value="{$lang->send|escape}" />
+					<div class="mt-3">
+						<input type="submit" class="btn btn-success btn-lg float-end" id="btnValidation" value="{$lang->send|escape}">
 					</div>
 				</form>
 			</div>

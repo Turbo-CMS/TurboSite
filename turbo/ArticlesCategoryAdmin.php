@@ -2,10 +2,6 @@
 
 require_once('api/Turbo.php');
 
-
-############################################
-# Class Category - Edit the good gategory
-############################################
 class ArticlesCategoryAdmin extends Turbo
 {
 	private	$allowed_image_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
@@ -42,7 +38,7 @@ class ArticlesCategoryAdmin extends Turbo
 					$this->articles_categories->update_articles_category($category->id, $category);
 					$this->design->assign('message_success', 'updated');
 				}
-				// Deleting an image
+				// Delete  image
 				if ($this->request->post('delete_image')) {
 					$this->articles_categories->delete_image($category->id);
 				}
@@ -59,7 +55,6 @@ class ArticlesCategoryAdmin extends Turbo
 			$category->id = $this->request->get('id', 'integer');
 			$category = $this->articles_categories->get_articles_category($category->id);
 		}
-
 
 		$articles_categories = $this->articles_categories->get_articles_categories_tree();
 

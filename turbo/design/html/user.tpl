@@ -145,7 +145,7 @@
                     </div>
                     <div class="toggle_body_wrap on fn_card">
                         <div class="">
-                            <div class="turbo_list products_list turbo_list_order">
+                            <div class="turbo_list turbo_list_order">
                                 <div class="turbo_list_head">
                                     <div class="turbo_list_heading turbo_list_user_number">№ </div>
                                     <div class="turbo_list_heading turbo_list_user_name">{$btr->general_full_name|escape}</div>

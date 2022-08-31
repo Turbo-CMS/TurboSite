@@ -8,11 +8,11 @@ class Clear_Resize_Ajax extends Turbo
 	public function fetch()
 	{
 		// Cleanup directories
-		$this->clean_resize($_SERVER['DOCUMENT_ROOT'].'/files/articles/preview/');
-		$this->clean_resize($_SERVER['DOCUMENT_ROOT'].'/files/categories/preview/');
-		$this->clean_resize($_SERVER['DOCUMENT_ROOT'].'/files/posts/preview/');
-		$this->clean_resize($_SERVER['DOCUMENT_ROOT'].'/files/projects/');
-		$this->clean_resize($_SERVER['DOCUMENT_ROOT'].'/files/slides/preview/');
+		$this->clean_resize($_SERVER['DOCUMENT_ROOT'] . '/files/articles/preview/');
+		$this->clean_resize($_SERVER['DOCUMENT_ROOT'] . '/files/categories/preview/');
+		$this->clean_resize($_SERVER['DOCUMENT_ROOT'] . '/files/posts/preview/');
+		$this->clean_resize($_SERVER['DOCUMENT_ROOT'] . '/files/projects/');
+		$this->clean_resize($_SERVER['DOCUMENT_ROOT'] . '/files/slides/preview/');
 	}
 
 	// Cleaning function

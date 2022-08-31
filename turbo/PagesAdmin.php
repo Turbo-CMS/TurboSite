@@ -2,13 +2,10 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class PagesAdmin extends Turbo
 {
-
 	public function fetch()
 	{
-
 		// Menu
 		$menus = $this->pages->get_menus();
 		$this->design->assign('menus', $menus);

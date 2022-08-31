@@ -12,29 +12,26 @@ $turbo = new Turbo();
 
 @$resized_filename =  $turbo->image->resize($filename, $is_category, $is_post, $is_article, $is_banners);
 
-if(is_readable($resized_filename))
-{
+if (is_readable($resized_filename)) {
 	header('Content-type: image');
 	print file_get_contents($resized_filename);
-	
-	if($turbo->settings->webp_support)
-	{
-		$webp_filename = preg_replace('/\.[^.]+$/','',$resized_filename).".webp";
+
+	if ($turbo->settings->webp_support) {
+		$webp_filename = preg_replace('/\.[^.]+$/', '', $resized_filename) . ".webp";
 		$info = getimagesize($resized_filename);
 		if (file_exists($webp_filename)) {
 		} else {
 			if ($info['mime'] == 'image/jpeg') {
-				$imagetoconvert = imagecreatefromjpeg($resized_filename);  
+				$imagetoconvert = imagecreatefromjpeg($resized_filename);
 				imagewebp($imagetoconvert, $webp_filename, 80);
 			} elseif ($info['mime'] == 'image/png') {
-				$imagetoconvert = imagecreatefrompng($resized_filename);  
+				$imagetoconvert = imagecreatefrompng($resized_filename);
+				imagepalettetotruecolor($imagetoconvert);
 				imagewebp($imagetoconvert, $webp_filename, 80);
 			}
 		}
 	}
-	
-}else{
-	header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-    exit('404 Not Found');
+} else {
+	header($_SERVER["SERVER_PROTOCOL"] . "404 Not Found");
+	exit('404 Not Found');
 }
-

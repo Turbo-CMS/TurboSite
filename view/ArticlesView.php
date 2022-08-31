@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 /**
  * Turbo CMS
@@ -20,7 +20,7 @@ class ArticlesView extends View
 
 		// If the address of the article is specified, 
 		if (!empty($url)) {
-			// Displaying the article
+			// Выводим пост
 			return $this->fetch_article($url);
 		} else {
 			// Otherwise, display a list of articles 
@@ -58,7 +58,6 @@ class ArticlesView extends View
 		// Autocomplete name for comment form
 		if (!empty($this->user))
 			$this->design->assign('comment_name', $this->user->name);
-
 
 		// Accept comment
 		if ($this->request->method('post') && $this->request->post('comment')) {
@@ -186,7 +185,6 @@ class ArticlesView extends View
 	// Display list of articles 
 	private function fetch_articles()
 	{
-
 		$filter = array();
 
 		// If the keyword is set

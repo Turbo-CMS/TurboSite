@@ -26,8 +26,8 @@ class FAQ extends Turbo
 
 		$lang_sql = $this->languages->get_query(array('object' => 'faq'));
 
-		$query = $this->db->placehold("SELECT f.id, f.name, f.answer, f.visible, f.position, f.last_modified, " . $lang_sql->fields . "
-		                               FROM __faq f " . $lang_sql->join . " $where LIMIT 1");
+		$query = $this->db->placehold("SELECT f.id, f.name, f.answer, f.visible, f.position, f.last_modified, $lang_sql->fields
+		                               FROM __faq f $lang_sql->join $where LIMIT 1");
 		if ($this->db->query($query))
 			return $this->db->result();
 		else
@@ -83,8 +83,8 @@ class FAQ extends Turbo
 
 		$lang_sql = $this->languages->get_query(array('object' => 'faq'));
 
-		$query = $this->db->placehold("SELECT f.id, f.name, f.answer, f.visible, f.position, f.last_modified, " . $lang_sql->fields . "
-		                                      FROM __faq f " . $lang_sql->join . " WHERE 1 $faq_id_filter $visible_filter $keyword_filter
+		$query = $this->db->placehold("SELECT f.id, f.name, f.answer, f.visible, f.position, f.last_modified, $lang_sql->fields
+		                                      FROM __faq f $lang_sql->join WHERE 1 $faq_id_filter $visible_filter $keyword_filter
 		                                      ORDER BY $order $sql_limit");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {

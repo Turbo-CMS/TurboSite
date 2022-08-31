@@ -8,23 +8,31 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<title>{$meta_title|escape}</title>
 	<link rel="icon" href="design/images/favicon.svg" type="image/x-icon" />
-	<link href="design/css/turbo.css" rel="stylesheet" type="text/css" />
-	<link href="design/css/media.css" rel="stylesheet" type="text/css" />
-	<script src="design/js/jquery/jquery.js"></script>
-	<script src="design/js/jquery/jquery.form.min.js"></script>
-	<script src="design/js/jquery.scrollbar.min.js"></script>
-	<script src="design/js/bootstrap.min.js"></script>
-	<script src="design/js/bootstrap-select.js"></script>
-	<script src="design/js/toastr.min.js"></script>
-	<script src="design/js/Sortable.js"></script>
+	{* Styles *}
+	{css id="admin" include=[
+	"turbo/design/css/turbo.css",
+	"turbo/design/css/media.css"
+	]}{/css}
+	{stylesheet minify=true}
+	{* Javascripts *}
+	{js id="libs" priority=99 include=[
+	"turbo/design/js/jquery/jquery.js",
+	"turbo/design/js/jquery/jquery.form.min.js",
+	"turbo/design/js/jquery.scrollbar.min.js",
+	"turbo/design/js/bootstrap.min.js",
+	"turbo/design/js/bootstrap-select.js",
+	"turbo/design/js/toastr.min.js",
+	"turbo/design/js/sortable.min.js"
+	]}{/js}
+	{javascript minify=true}
 </head>
 
 <body class="navbar-fixed {if $smarty.cookies.view !== 'fixed' && $is_mobile === false && $is_tablet === false}menu-pin{/if}">
 	<nav id="admin_catalog" class="fn_left_menu">
-		<a href="index.php?module=PagesAdmin" id="fix_logo"></a>
+		<a href="index.php?module=DashboardAdmin" id="fix_logo"></a>
 		<div id="mob_menu"></div>
 		<div class="sidebar_header">
-			<a class="logo_box" href="index.php?module=PagesAdmin">
+			<a class="logo_box" href="index.php?module=DashboardAdmin">
 				<img src="design/images/logo_title.svg" alt="TurboCMS" />
 			</a>
 			<span class="fn_switch_menu hidden-xl-up menu_close">
@@ -35,6 +43,16 @@
 			<div class="scrollbar-inner menu_items">
 				<div>
 					<ul class="menu_items">
+						{if in_array('dashboard', $manager->permissions)}
+							<li class="{if in_array($smarty.get.module, array("DashboardAdmin"))}open active{/if}">
+								<a class="nav-link" href="index.php?module=DashboardAdmin">
+									<span class="icon-thumbnail">
+										{include file='svg_icon.tpl' svgId='home'}
+									</span>
+									<span class="left_blog title">{$btr->dashboard_global|escape}</span>
+								</a>
+							</li>
+						{/if}
 						{if in_array('pages', $manager->permissions) || in_array('menus', $manager->permissions)}
 							<li class="{if in_array($smarty.get.module, array("PagesAdmin","PageAdmin","MenuAdmin","indexAdmin"))}open active{/if} fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
@@ -211,7 +229,7 @@
 							</li>
 						{/if}
 						{if in_array('seo', $manager->permissions)}
-							<li class="{if in_array($smarty.get.module, array("SeoAdmin","SettingsCounterAdmin"))}open active{/if} fn_item_sub_switch nav-dropdown">
+							<li class="{if in_array($smarty.get.module, array("SeoAdmin","SettingsCounterAdmin"))}open active{/if}  fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
 									<span class="icon-thumbnail">
 										{include file='svg_icon.tpl' svgId='left_seo'}
@@ -272,7 +290,7 @@
 							</li>
 						{/if}
 						{if in_array('banners', $manager->permissions)}
-							<li class="{if in_array($smarty.get.module, array("BannersAdmin","BannerAdmin","BannersImagesAdmin","BannersImageAdmin"))}open active{/if} {if $banners_image->id}open active{/if} fn_item_sub_switch nav-dropdown">
+							<li class="{if in_array($smarty.get.module, array("BannersAdmin","BannerAdmin","BannersImagesAdmin","BannersImageAdmin"))}open active{/if} {if $banners_image->id}open active{/if}  fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
 									<span class="icon-thumbnail">
 										{include file='svg_icon.tpl' svgId='left_banners'}
@@ -633,13 +651,34 @@
 					return false;
 				});
 			}
+			/* Input_file */
+			if ($('.input_file').size() > 0) {
+				document.querySelector("html").classList.add('fn_input_file');
+
+				var fileInput = document.querySelector(".input_file"),
+					button = document.querySelector(".input_file_trigger"),
+					the_return = document.querySelector(".input_file_return");
+
+				button.addEventListener("keydown", function(event) {
+					if (event.keyCode == 13 || event.keyCode == 32) {
+						fileInput.focus();
+					}
+				});
+				button.addEventListener("click", function(event) {
+					fileInput.focus();
+					return false;
+				});
+				fileInput.addEventListener("change", function(event) {
+					the_return.innerHTML = this.value;
+				});
+			}
 			/* Initializing the scrollbar */
 			if ($('.scrollbar-inner').size() > 0) {
 				$('.scrollbar-inner').scrollbar();
 			}
 			if ($(window).width() < 1199) {
-				if ($('.scrollbar-variant').size() > 0) {
-					$('.scrollbar-variant').scrollbar();
+				if ($('.scrollbar-variants').size() > 0) {
+					$('.scrollbar-variants').scrollbar();
 				}
 			}
 			/* Initializing sorting */
@@ -665,7 +704,10 @@
 										$(".project_images_list").find("li:nth-child(2)").addClass("first_image");
 									}
 								}
-								$(".fn_form_list").ajaxSubmit();
+							{/literal}
+							{if !in_array($smarty.get.module, array("CurrencyAdmin"))}$(".fn_form_list").ajaxSubmit();
+							{/if}
+							{literal}
 							},
 						});
 					}
@@ -723,10 +765,10 @@
 			if ($(".fn_parent_image2").size() > 0) {
 				var image_wrapper = $(".fn_new_image2").clone(true);
 				$(".fn_new_image2").remove();
-				$(document).on("click", '.fn_delete_item', function() {
+				$(document).on("click", '.fn_delete_item2', function() {
 					$(".fn_upload_image2").removeClass("hidden");
-					$(".border_image_item").removeClass("border");
-					$(".fn_accept_delete").val(1);
+					$(".border_image_item2").removeClass("border");
+					$(".fn_accept_delete2").val(1);
 					$(this).closest(".fn_image_wrapper2").remove()
 				});
 				if (window.File && window.FileReader && window.FileList) {
@@ -753,7 +795,7 @@
 									clone_image.find("img").attr("onerror", '$(this).closest(\"div\").remove()');
 									clone_image.appendTo(parent);
 									$(".fn_upload_image2").addClass("hidden");
-									$(".border_image_item").addClass("border");
+									$(".border_image_item2").addClass("border");
 								};
 							})(f);
 							reader.readAsDataURL(f);
@@ -774,15 +816,12 @@
 			function success_action($this) {
 				$(document).on('click', '.fn_submit_delete', function() {
 					$('.fn_form_list input[type="checkbox"][name*="check"]').attr('checked', false);
-					$this.closest(".fn_form_list").find('select[name="action"] option[value=delete]').attr('selected', true);
-					$this.closest(".fn_row").find('input[type="checkbox"][name*="check"]').attr('checked', true);
-					if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent))) {
-						$this.closest(".fn_row").find('input[type="checkbox"][name*="check"]').trigger("click");
-					}
+					$this.closest(".fn_row").find('input[type="checkbox"][name*="check"]').prop('checked', true);
+					$this.closest(".fn_form_list").find('select[name="action"] option[value=delete]').prop('selected', true);
 					$this.closest(".fn_form_list").submit();
 				});
 				$(document).on('click', '.fn_dismiss_delete', function() {
-					$('.fn_form_list input[type="checkbox"][name*="check"]').attr('checked', false);
+					$('.fn_form_list input[type="checkbox"][name*="check"]').prop('checked', false);
 					$this.closest(".fn_form_list").find('select[name="action"] option[value=delete]').removeAttr('selected');
 					return false;
 				});
@@ -946,13 +985,13 @@
 			}
 
 			function translit(str) {
-				var ru = ("А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я").split("-")
-				var en = ("A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch-'-'-Y-y-'-'-E-e-YU-yu-YA-ya").split("-")
+				var cyr = ("А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я").split("-")
+				var lat = ("A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch-'-'-Y-y-'-'-E-e-YU-yu-YA-ya").split("-")
 				var res = '';
 				for (var i = 0, l = str.length; i < l; i++) {
 					var s = str.charAt(i),
-						n = ru.indexOf(s);
-					if (n >= 0) { res += en[n]; } else { res += s; }
+						n = cyr.indexOf(s);
+					if (n >= 0) { res += lat[n]; } else { res += s; }
 				}
 				return res;
 			}
