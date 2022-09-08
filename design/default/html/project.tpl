@@ -16,7 +16,7 @@
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects"><span itemprop="name">{$lang->global_projects}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
-		{foreach from=$projects_category->path item=cat}
+		{foreach from=$category->path item=cat}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}" title="{$cat->name|escape}"><span itemprop="name">{$cat->name|escape}</span></a>
 				<meta itemprop="position" content="{$level++}">
@@ -70,8 +70,8 @@
 		{/if}
 		<h3 class="my-3">{$lang->project_details}</h3>
 		<ul class="list-unstyled">
-			<li><strong>{$lang->date}:</strong> {$post->date|date}</li>
-			{if $projects_category}<li><strong>{$lang->category}:</strong> {$projects_category->name|escape}</li>{/if}
+			<li><strong>{$lang->date}:</strong> {$project->date|date}</li>
+			{if $category}<li><strong>{$lang->category}:</strong> {$category->name|escape}</li>{/if}
 			{if $project->site}<li><strong>{$lang->site}:</strong> {$project->site|escape}</li>{/if}
 			{if $project->client}<li><strong>{$lang->customer}:</strong> {$project->client|escape}</li>{/if}
 		</ul>
@@ -87,7 +87,7 @@
 	</li>
 </ul>
 <div class="tab-content mt-4" id="myTabContent">
-	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">{$project->text}</div>
+	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><div class="block-description">{$project->text}</div></div>
 	<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 		{* Comments *}
 		{if $settings->comments_tree_projects == "on"}

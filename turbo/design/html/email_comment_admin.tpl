@@ -456,7 +456,7 @@
 																			<tr>
 																				<td class="es-p15t es-p10b" align="center">
 																					{if $comment->type == 'project'}
-																						<a class="es-button" target="_blank" href="{$config->root_url}/projects/{$comment->project->url}#comment_{$comment->id}">
+																						<a class="es-button" target="_blank" href="{$config->root_url}/project/{$comment->project->url}#comment_{$comment->id}">
 																							{$btr->email_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'blog'}

@@ -106,7 +106,7 @@
 													<span class="text_spacing">{$btr->comments_left|escape}</span> <span class="tag tag-default">{$comment->date|date} | {$comment->date|time}</span>
 													{$btr->comments_to_the|escape}
 													{if $comment->type == 'project'}
-                                                        {$btr->comments_project|escape} <a target="_blank" href="{$config->root_url}/projects/{$comment->project->url}#comment_{$comment->id}">{$comment->project->name}</a>
+                                                        {$btr->comments_project|escape} <a target="_blank" href="{$config->root_url}/project/{$comment->project->url}#comment_{$comment->id}">{$comment->project->name}</a>
 													{elseif $comment->type == "blog"}
 														{$btr->comments_blog|escape} <a href="{$config->root_url}/blog/{$comment->post->url|escape}#comment_{$comment->id}" target="_blank">{$comment->post->name|escape}</a>
 													{elseif $comment->type == 'article'}

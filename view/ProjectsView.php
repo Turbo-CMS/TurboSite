@@ -165,7 +165,8 @@ class ProjectsView extends View
 		$this->design->assign('project',  $project);
 
 		// Category
-		$this->design->assign('projects_category', $this->projects_categories->get_projects_category(intval($project->category_id)));
+		$category = $this->projects_categories->get_projects_category(intval($project->category_id));
+		$this->design->assign('category', $category);
 
 		// Neighboring projects
 		$this->design->assign('next_project', $this->projects->get_next_project($project->id));
@@ -184,6 +185,7 @@ class ProjectsView extends View
 
 		$auto_meta_parts = array(
 			'{project}' => ($project ? $project->name : ''),
+			'{category}' => ($category ? $category->name : ''),
 			'{page}' => ($this->page ? $this->page->header : ''),
 			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
 			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
@@ -224,7 +226,7 @@ class ProjectsView extends View
 			$category = $this->projects_categories->get_projects_category((string)$category_url);
 			if (empty($category) || (!$category->visible && empty($_SESSION['admin'])))
 				return false;
-			$this->design->assign('projects_category', $category);
+			$this->design->assign('category', $category);
 			$filter['category_id'] = $category->children;
 		}
 

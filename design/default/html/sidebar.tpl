@@ -3,7 +3,7 @@
 		<button type="button" class="btn-close float-end" aria-label="Close"></button>
 		<h5>{$lang->catalog}</h5>
 	</div>
-	{if $module=='ArticlesView' || $module=='ArticleView'}
+	{if $module=='ArticlesView'}
 		<!-- Search -->
 		<form class="input-group my-4" action="{$lang_link}articles">
 			<input class="form-control" type="text" name="keyword" autocomplete="off" value="{$keyword|escape}" placeholder="{$lang->search_article}">
@@ -13,35 +13,35 @@
 		<div class="list-group my-4">
 			{foreach $articles_categories as $c}
 				{if $c->visible}
-					<span class="hidden-sm-down list-group-item {if $articles_category->id == $c->id}bg-primary{/if}">
+					<span class="hidden-sm-down list-group-item {if $category->id == $c->id}bg-primary{/if}">
 						<a data-articles-category="{$c->id}" class="text-decoration-none" href="{$lang_link}articles/{$c->url}">
 							{$c->name|escape}
 						</a>
 						{if $c->subcategories}
-							<a data-bs-toggle="collapse" data-parent="#sidebar" class="text-decoration-none" href="#menu{$c->id}" {if in_array($articles_category->id, $c->children)}aria-expanded="true"{/if}>
+							<a data-bs-toggle="collapse" data-parent="#sidebar" class="text-decoration-none" href="#menu{$c->id}" {if in_array($category->id, $c->children)}aria-expanded="true"{/if}>
 								<i class="far fa-angle-down"></i>
 							</a>
 						{/if}
 					</span>
 					{if $c->subcategories}
-						<div class="collapse cat {if in_array($articles_category->id, $c->children)}show{/if}" id="menu{$c->id}">
+						<div class="collapse cat {if in_array($category->id, $c->children)}show{/if}" id="menu{$c->id}">
 							{foreach $c->subcategories as $cat}
 								{if $c->visible}
-									<span class="hidden-sm-down list-group-item {if $articles_category->id == $cat->id}bg-primary{/if}">
+									<span class="hidden-sm-down list-group-item {if $category->id == $cat->id}bg-primary{/if}">
 										<a data-articles-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}">
 											{$cat->name|escape}
 										</a>
 										{if $cat->subcategories}
-											<a data-bs-toggle="collapse" aria-expanded="false" class="text-decoration-none" href="#menusub{$cat->id}" {if in_array($articles_category->id, $cat->children)}aria-expanded="true"{/if}>
+											<a data-bs-toggle="collapse" aria-expanded="false" class="text-decoration-none" href="#menusub{$cat->id}" {if in_array($category->id, $cat->children)}aria-expanded="true"{/if}>
 												<i class="far fa-angle-down"></i>
 											</a>
 										{/if}
 									</span>
 									{if $cat->subcategories}
-										<div class="collapse cat3 {if in_array($articles_category->id, $cat->children)}show{/if}" id="menusub{$cat->id}">
+										<div class="collapse cat3 {if in_array($category->id, $cat->children)}show{/if}" id="menusub{$cat->id}">
 											{foreach $cat->subcategories as $cat3}
 												{if $cat3->visible}
-													<a data-articles-category="{$cat3->id}" href="{$lang_link}articles/{$cat3->url}" class="list-group-item text-decoration-none {if $articles_category->id == $cat3->id}bg-primary text-white{/if}" data-parent="#menusub{$cat->id}">{$cat3->name|escape}</a>
+													<a data-articles-category="{$cat3->id}" href="{$lang_link}articles/{$cat3->url}" class="list-group-item text-decoration-none {if $category->id == $cat3->id}bg-primary text-white{/if}" data-parent="#menusub{$cat->id}">{$cat3->name|escape}</a>
 												{/if}
 											{/foreach}
 										</div>
@@ -60,17 +60,25 @@
 			<button class="btn btn-success" type="submit"><i class="fal fa-search"></i></button>
 		</form>
 		<!-- Search (The End)-->
-		{if $categories}
+	{else}
+		{if $module!=='SearchView'}
+			<!-- Search -->
+			<form class="input-group my-4" action="{$lang_link}projects">
+				<input class="input_search form-control" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search}...">
+				<button class="btn btn-success" type="submit"><i class="fal fa-search"></i></button>
+			</form>
+			<!-- Search (The End)-->
+		{/if}
+		{if $module=='ProjectsView'}
 			<div class="list-group mt-4">
-				{foreach $categories as $c}
-					{if $c->visible}
+				{foreach $projects_categories as $c}
+						{if $c->visible}
 						<span class="hidden-sm-down list-group-item {if $category->id == $c->id}bg-primary{/if}">
-							<a data-category="{$c->id}" class="text-decoration-none" href="{$lang_link}catalog/{$c->url}">
-								{if $c->code}<i class="fal fa-{$c->code|escape} me-1"></i>{/if} {$c->name|escape}
-								<span class="badge badge-pill bg-light text-dark text-dark float-end">{$c->projects_count}</span>
+							<a data-projects-category="{$c->id}" class="text-decoration-none" href="{$lang_link}projects/{$c->url}">
+								{$c->name|escape}
 							</a>
 							{if $c->subcategories}
-								<a data-bs-toggle="collapse" data-parent="#sidebar" class="text-decoration-none" href="#menu{$c->id}" {if in_array($category->id, $c->children)}aria-expanded="true"{/if}>
+								<a data-bs-toggle="collapse" data-parent="#sidebar" class="text-decoration-none" href="#menu{$c->id}" {if $category->id == $c->id || in_array($category->id, $c->children)}aria-expanded="true"{/if}>
 									<i class="far fa-angle-down"></i>
 								</a>
 							{/if}
@@ -80,12 +88,11 @@
 								{foreach $c->subcategories as $cat}
 									{if $c->visible}
 										<span class="hidden-sm-down list-group-item {if $category->id == $cat->id}bg-primary{/if}">
-											<a data-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}">
-												{if $cat->code}<i class="fal fa-{$cat->code|escape} me-1"></i>{/if} {$cat->name|escape}
-												<span class="badge badge-pill bg-light text-dark text-dark float-end">{$cat->projects_count}</span>
+											<a data-projects-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}">
+												{$cat->name|escape}
 											</a>
 											{if $cat->subcategories}
-												<a data-bs-toggle="collapse" aria-expanded="false" class="text-decoration-none" href="#menusub{$cat->id}" {if in_array($category->id, $cat->children)}aria-expanded="true"{/if}>
+												<a data-bs-toggle="collapse" class="text-decoration-none" href="#menusub{$cat->id}" {if $category->id == $cat->id || in_array($category->id, $cat->children)}aria-expanded="true"{/if}>
 													<i class="far fa-angle-down"></i>
 												</a>
 											{/if}
@@ -94,62 +101,7 @@
 											<div class="collapse cat3 {if in_array($category->id, $cat->children)}show{/if}" id="menusub{$cat->id}">
 												{foreach $cat->subcategories as $cat3}
 													{if $cat3->visible}
-														<a href="{$lang_link}catalog/{$cat3->url}" class="list-group-item text-decoration-none {if $category->id == $cat3->id}bg-primary text-white{/if}" data-category="{$cat3->id}" data-parent="#menusub{$cat->id}">{if $cat3->code}<i class="fal fa-{$cat3->code|escape} me-1"></i>{/if} {$cat3->name|escape}<span class="badge badge-pill bg-light text-dark float-end">{$cat3->projects_count}</span></a>
-													{/if}
-												{/foreach}
-											</div>
-										{/if}
-									{/if}
-								{/foreach}
-							</div>
-						{/if}
-					{/if}
-				{/foreach}
-				<span class="hidden-sm-down list-group-item"><a href="{$lang_link}all-projects" class="text-decoration-none">{$lang->all_projects}</a></span>
-			</div>
-		{/if}
-	{else}
-		{if $module!=='SearchView'}
-			<!-- Search -->
-			<form class="input-group my-4" action="{$lang_link}search">
-				<input class="input_search form-control" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search}...">
-				<button class="btn btn-success" type="submit"><i class="fal fa-search"></i></button>
-			</form>
-			<!-- Search (The End)-->
-		{/if}
-		{if $projects}
-			<div class="list-group mt-4">
-				{foreach $projects_categories as $c}
-						{if $c->visible}
-						<span class="hidden-sm-down list-group-item {if $projects_category->id == $c->id}bg-primary{/if}">
-							<a data-projects-category="{$c->id}" class="text-decoration-none" href="{$lang_link}projects/{$c->url}">
-								{$c->name|escape}
-							</a>
-							{if $c->subcategories}
-								<a data-bs-toggle="collapse" data-parent="#sidebar" class="text-decoration-none" href="#menu{$c->id}" {if $projects_category->id == $c->id || in_array($projects_category->id, $c->children)}aria-expanded="true"{/if}>
-									<i class="far fa-angle-down"></i>
-								</a>
-							{/if}
-						</span>
-						{if $c->subcategories}
-							<div class="collapse cat {if in_array($projects_category->id, $c->children)}show{/if}" id="menu{$c->id}">
-								{foreach $c->subcategories as $cat}
-									{if $c->visible}
-										<span class="hidden-sm-down list-group-item {if $projects_category->id == $cat->id}bg-primary{/if}">
-											<a data-projects-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}">
-												{$cat->name|escape}
-											</a>
-											{if $cat->subcategories}
-												<a data-bs-toggle="collapse" class="text-decoration-none" href="#menusub{$cat->id}" {if $projects_category->id == $cat->id || in_array($projects_category->id, $cat->children)}aria-expanded="true"{/if}>
-													<i class="far fa-angle-down"></i>
-												</a>
-											{/if}
-										</span>
-										{if $cat->subcategories}
-											<div class="collapse cat3 {if in_array($projects_category->id, $cat->children)}show{/if}" id="menusub{$cat->id}">
-												{foreach $cat->subcategories as $cat3}
-													{if $cat3->visible}
-														<a data-projects-category="{$cat3->id}" class="text-decoration-none" href="{$lang_link}projects/{$cat3->url}" class="list-group-item {if $projects_category->id == $cat3->id}bg-primary text-white{/if}" data-parent="#menusub{$cat->id}">{$cat3->name|escape}</a>
+														<a data-projects-category="{$cat3->id}" class="text-decoration-none" href="{$lang_link}projects/{$cat3->url}" class="list-group-item {if $category->id == $cat3->id}bg-primary text-white{/if}" data-parent="#menusub{$cat->id}">{$cat3->name|escape}</a>
 													{/if}
 												{/foreach}
 											</div>

@@ -1,8 +1,8 @@
 {* List of projects *}
 
 {* Canonical page address *}
-{if $projects_category}
-	{$canonical="/projects/{$projects_category->url}" scope=parent}
+{if $category}
+	{$canonical="/projects/{$category->url}" scope=parent}
 {elseif $keyword}
 	{$canonical="/projects/?keyword={$keyword|escape}" scope=global}
 {else}
@@ -21,8 +21,8 @@
 			<a itemprop="item" class="text-decoration-none" href="/projects"><span itemprop="name">{$lang->global_projects}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
-		{if $projects_category}
-			{foreach from=$projects_category->path item=cat}
+		{if $category}
+			{foreach from=$category->path item=cat}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
 					<a itemprop="item" class="text-decoration-none" href="projects/{$cat->url}" title="{$cat->name|escape}"><span itemprop="name">{$cat->name|escape}</span></a>
 					<meta itemprop="position" content="{$level++}">
@@ -39,7 +39,7 @@
 		{elseif $page}
 			<h1>{$page->name|escape}</h1>
 		{else}
-			<h1>{$projects_category->name|escape}</h1>
+			<h1>{$category->name|escape}</h1>
 		{/if}
 		<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="sortBy" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			{$lang->sort_by}
@@ -82,8 +82,8 @@
 
 	{if $current_page_num==1}
 		{* Category description *}
-		{$projects_category->description}
+		{$category->description}
 	{/if}
 {else}
-	{$lang->no_projects_found}
+	{$lang->nothing_found}
 {/if}

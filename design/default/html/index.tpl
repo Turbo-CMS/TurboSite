@@ -22,7 +22,7 @@
 	{/if}
 
 	{if $seo->seo_automation == "on"}
-		<meta name="keywords" content="{($meta_keywords|default:$auto_meta->keywords)|escape}">
+	<meta name="keywords" content="{($meta_keywords|default:$auto_meta->keywords)|escape}">
 	{else}
 		<meta name="keywords" content="{($auto_meta->keywords|default:$meta_keywords)|escape}">
 	{/if}
@@ -644,12 +644,6 @@
 	]}{/js}
 	{javascript minify=true}
 
-	{* Projects *}
-	{js id="projects" priority=99 include=[
-	"design/{$settings->theme|escape}/js/projects.js"
-	]}{/js}
-	{javascript minify=true}
-
 	{* Reviews *}
 	{if $module == 'CommentsView'}
 		{js id="reviews" priority=99 include=[
@@ -673,7 +667,7 @@
 	{/if}
 	
 	{* Description *}
-	{if $module == 'BlogView' && $post || $module=='ArticlesView' && $post || $module=='PageView' || $module=='ProjectView'}
+	{if $module == 'BlogView' && $post || $module=='ArticlesView' && $post || $module=='ProjectsView' && $project || $module=='PageView'}
 		{css id="description" include=[
 		"design/{$settings->theme|escape}/css/owl.carousel.css"
 		]}{/css}
