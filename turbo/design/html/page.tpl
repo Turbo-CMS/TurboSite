@@ -70,7 +70,7 @@
 {/if}
 
 <form method="post" enctype="multipart/form-data">
-	<input type=hidden name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="boxed match_matchHeight_true">
@@ -80,21 +80,21 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$page->name|escape}" />
-							<input name="id" type="hidden" value="{$page->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$page->name|escape}">
+							<input name="id" type="hidden" value="{$page->id|escape}">
 						</div>
 						<div class="heading_label">
 							{$btr->page_menu_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="header" type="text" value="{$page->header|escape}" />
+							<input class="form-control" name="header" type="text" value="{$page->header|escape}">
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-lg-6 col-md-10">
 								<div class="mt-h mb-h">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $page->id}fn_disabled{/if}" {if $page->id}readonly="" {/if} type="text" value="{$page->url|escape}" />
+										<input name="url" class="fn_meta_field form-control fn_url {if $page->id}fn_disabled{/if}" {if $page->id}readonly="" {/if} type="text" value="{$page->url|escape}">
 										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $page->id}checked="" {/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $page->id}
@@ -136,24 +136,13 @@
 				</div>
 				<div class="toggle_body_wrap on fn_card">
 					<div class="heading_label">{$btr->page_menu|escape}</div>
-					<select name="menu_id" class="selectpicker mb-1">
+					<select name="menu_id" class="selectpicker mb-1" id="menu_id">
 						{foreach $menus as $m}
 							<option value='{$m->id}' {if $page->menu_id == $m->id}selected{/if}>{$m->name|escape}</option>
 						{/foreach}
 					</select>
 					<div class="heading_label">{$btr->page_root|escape}</div>
-					<select name="parent_id" class="selectpicker">
-						<option value='0'>{$btr->page_not_selected|escape}</option>
-						{function name=page_select level=0}
-							{foreach from=$pages item=p}
-								{if $page->id != $p->id}
-									<option value='{$p->id}' {if $page->parent_id == $p->id}selected{/if}>{section name=sp loop=$level}--{/section}{$p->name}</option>
-									{page_select pages=$p->subpages level=$level+1}
-								{/if}
-							{/foreach}
-						{/function}
-						{page_select pages=$pages}
-					</select>
+					<select name="parent_id" class="selectpicker" id="parent_id"></select>
 				</div>
 			</div>
 		</div>
@@ -168,9 +157,9 @@
 				<div class="toggle_body_wrap on fn_card row">
 					<div class="col-lg-6 col-md-6">
 						<div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_title|escape}" />
+						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_title|escape}">
 						<div class="heading_label">Meta-keywords</div>
-						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_keywords|escape}" />
+						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_keywords|escape}">
 					</div>
 
 					<div class="col-lg-6 col-md-6 pl-0">
@@ -212,3 +201,38 @@
 
 {* Connect Tiny MCE *}
 {include file='tinymce_init.tpl'}
+
+<script>
+	$(document).ready(function() {
+		$('#menu_id').trigger('change');
+	});
+
+	$('#menu_id').change(function() {
+		$('#parent_id').html('');
+		var option = $(this).find('option:selected');
+		$.ajax({
+			type: 'POST',
+			url: 'ajax/get_pages.php',
+			data: {
+				'menu_id': option.val(),
+				'exclude': {if $page->id}{$page->id}{else}0{/if},
+				'session_id': '{$smarty.session.id}'
+			},
+			success: function(data) {
+				if (data.success) {
+					for (var index in data.data) {
+						var row = data.data[index];
+						var option = $('<option></option>');
+						option.val(row.id);
+						option.addClass(row.class);
+						option.html(row.text);
+						{if $page->id}if (row.id == {$page->parent_id})
+						option.prop('selected', true);{/if}
+						$('#parent_id').append(option);
+						$('.selectpicker').selectpicker('refresh');
+					}
+				}
+			}
+		});
+	});
+</script>
