@@ -9,9 +9,6 @@ class ExportAjax extends Turbo
 		'name' =>             'Name',
 		'email' =>            'Email',
 		'phone' =>            'Phone',
-		'address' =>          'Address',
-		'group_name' =>       'Group',
-		'discount' =>         'Discount',
 		'enabled' =>          'Enabled',
 		'created' =>          'Created',
 		'last_ip' =>          'IP'
@@ -50,8 +47,6 @@ class ExportAjax extends Turbo
 		$filter = array();
 		$filter['page'] = $page;
 		$filter['limit'] = $this->users_count;
-		if ($this->request->get('group_id'))
-			$filter['group_id'] = intval($this->request->get('group_id'));
 		$filter['sort'] = $this->request->get('sort');
 		$filter['keyword'] = $this->request->get('keyword');
 

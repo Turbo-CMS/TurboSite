@@ -66,7 +66,7 @@
 {/if}
 
 <!-- Heading Row -->
-<div class="row align-items-center my-5">
+<div class="row align-items-center">
 	<div class="col-lg-7">
 		<img class="img-fluid rounded mb-4 mb-lg-0" src="design/{$settings->theme|escape}/images/about-extra-1.svg" alt="{$lang->about_company}">
 	</div>
