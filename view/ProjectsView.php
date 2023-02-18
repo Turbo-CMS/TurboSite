@@ -1,14 +1,4 @@
-<?PHP
-
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * This class uses the project.tpl and project.tpl templates
- *
- */
+<?php
 
 require_once('View.php');
 

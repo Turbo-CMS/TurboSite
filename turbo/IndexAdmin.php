@@ -36,7 +36,7 @@ class IndexAdmin extends Turbo
 		'TranslationAdmin'          => 'languages',
 		'TranslationsAdmin'         => 'languages',
 		'SeoAdmin'                  => 'seo',
-		'SettingsCounterAdmin'      => 'seo',
+		'SettingsCounterAdmin'      => 'scripts',
 		'BannersAdmin'              => 'banners',
 		'BannerAdmin'               => 'banners',
 		'BannersImagesAdmin'        => 'banners',

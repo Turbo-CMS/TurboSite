@@ -25,6 +25,10 @@ class SettingsAdmin extends Turbo
 				$this->settings->admin_email = $this->request->post('admin_email');
 				$this->settings->site_work = $this->request->post('site_work');
 				$this->settings->lang = $this->request->post('manager_lang');
+				$this->settings->admin_theme = $this->request->post('admin_theme');
+				$this->settings->sidebar = $this->request->post('sidebar');
+				$this->settings->layout = $this->request->post('layout');
+				$this->settings->position = $this->request->post('position');
 
 				$this->settings->captcha_project = $this->request->post('captcha_project', 'boolean');
 				$this->settings->captcha_post = $this->request->post('captcha_post', 'boolean');

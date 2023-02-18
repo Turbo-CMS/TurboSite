@@ -1,20 +1,12 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Managers extends Turbo
 {
 	public $permissions_list = array(
 		'callbacks', 'users', 'pages', 'menus', 'blog', 'comments', 'feedbacks', 'clear', 'articles', 'projects',
-		'backup', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'managers', 'languages'
+		'backup', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'managers', 'languages'
 	);
 
 	public $passwd_file = "turbo/.passwd";

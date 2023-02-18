@@ -91,9 +91,9 @@
 	<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 		{* Comments *}
 		{if $settings->comments_tree_projects == "on"}
-			{include file='comments_tree_projects.tpl'}
+			{include file='comments/comments_tree_projects.tpl'}
 		{else}
-			{include file='comments_projects.tpl'}
+			{include file='comments/comments_projects.tpl'}
 		{/if}
 	</div>
 </div>

@@ -6,12 +6,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>
         {$btr->email_comment_new|escape}
-        {if $comment->type == 'project'}
-			{$btr->email_to_project|escape}
+        {if $comment->type == 'product'}
+			{$btr->email_to_product|escape}
         {elseif $comment->type == 'blog'}
 			{$btr->email_to_article|escape}
         {elseif $comment->type == 'article'}
@@ -119,7 +119,7 @@
 		}
 		.es-wrapper-color a {
 			text-decoration: underline;
-			color: #3f80ea;
+			color: #3b7ddd;
 			margin-bottom: 0;
 		}
 
@@ -226,9 +226,9 @@
 		.es-wrapper-color .es-button {
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #3f80ea;
+			border: 2px solid #3b7ddd;
 			display: inline-block;
-			background: #3f80ea;
+			background: #3b7ddd;
 			border-radius: 4px;
 			font-size: 14px;
 			font-weight: 600;
@@ -243,14 +243,14 @@
 		.es-wrapper-color .es-download{
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #3f80ea;
+			border: 2px solid #3b7ddd;
 			display: inline-block;
 			background: #fff;
 			border-radius: 4px;
 			font-size: 11px;
 			font-weight: 600;
 			font-style: normal;
-			color: #3f80ea;
+			color: #3b7ddd;
 			width: auto;
 			text-align: center;
 			padding: 4px 10px;
@@ -259,8 +259,8 @@
 		}
 
 		.es-wrapper-color .es-button-border {
-			border: 2px solid #d9534f;
-			color: #d9534f;
+			border: 2px solid #dc3545;
+			color: #dc3545;
 			background: #fff;
 			display: inline-block;
 			border-radius: 4px;
@@ -273,11 +273,11 @@
 			text-align: center;
 		}
 		.es-wrapper-color .es-number-order {
-			color: #d9534f;
+			color: #dc3545;
 			padding: 0px 8px;
 			display: inline-block;
 			font-size: 18px;
-			border: 2px solid #d9534f;
+			border: 2px solid #dc3545;
 			border-radius: 4px;
 			line-height: 1.3;
 			margin: 0px 5px;
@@ -287,7 +287,7 @@
 		.es-wrapper-color .es-status-color{
 			font-weight: 600;
 			color: #fff;
-			background: #4bbf73;
+			background: #1cbb8c;
 			padding: 2px 8px;
 			border-radius: 5px;
 			font-size: 12px;
@@ -391,7 +391,7 @@
 															<tr>
 																<td align="center">
 																	<a target="_blank" href="{$config->root_url}">
-																		<img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto" />
+																		<img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto">
 																	</a>
 																</td>
 															</tr>
@@ -424,8 +424,8 @@
 																				<td class="es-p10t es-p15b" align="center">
 																					<h1>
 																						{$btr->email_comment_new|escape}
-																						{if $comment->type == 'project'}
-																							{$btr->email_to_project|escape}
+																						{if $comment->type == 'product'}
+																							{$btr->email_to_product|escape}
 																						{elseif $comment->type == 'blog'}
 																							{$btr->email_to_news|escape}
 																						{elseif $comment->type == 'article'}
@@ -438,8 +438,8 @@
 																				<td class="es-p5t es-p5b es-p40r es-p40l" align="center">
 																					<p style="font-size: 16px;color: #5c5c5c;">
 																						{$btr->email_inform_first|escape} {$comment->name|escape} {$btr->email_left_comment|escape}
-																						{if $comment->type == 'project'}
-																							{$btr->email_to_project|escape}
+																						{if $comment->type == 'product'}
+																							{$btr->email_to_product|escape}
 																						{elseif $comment->type == 'blog'}
 																							{$btr->email_to_news|escape}
 																						{elseif $comment->type == 'article'}
@@ -455,17 +455,17 @@
 																			</tr>
 																			<tr>
 																				<td class="es-p15t es-p10b" align="center">
-																					{if $comment->type == 'project'}
-																						<a class="es-button" target="_blank" href="{$config->root_url}/project/{$comment->project->url}#comment_{$comment->id}">
-																							{$btr->email_order_info|escape}
+																					{if $comment->type == 'product'}
+																						<a class="es-button" target="_blank" href="{$config->root_url}/products/{$comment->product->url}#comment_{$comment->id}">
+																							{$btr->global_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'blog'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/blog/{$comment->post->url}#comment_{$comment->id}">
-																							{$btr->email_order_info|escape}
+																							{$btr->global_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'article'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/article/{$comment->post->url}#comment_{$comment->id}">
-																							{$btr->email_order_info|escape}
+																							{$btr->global_order_info|escape}
 																						</a>
 																					{/if}
 																				</td>
@@ -521,11 +521,11 @@
 															<table class="es-table-infobox" cellspacing="1" cellpadding="1" border="0" align="left">
 																<tbody>
 																<tr valign="top">
-																	<td class="es-p5t es-p5b" width="180"><span>{$btr->index_name|escape}:</span></td>
+																	<td class="es-p5t es-p5b" width="180"><span>{$btr->global_name|escape}:</span></td>
 																	<td class="es-p5t es-p5b"><span>{$comment->name|escape}</span></td>
 																</tr>
 																<tr valign="top">
-																	<td class="es-p5t es-p5b" width="180"><span>{$btr->email_time|escape}:</span></td>
+																	<td class="es-p5t es-p5b" width="180"><span>{$btr->global_time|escape}:</span></td>
 																	<td class="es-p5t es-p5b"><span>{$comment->date|date} {$comment->date|time}</span></td>
 																</tr>
 																<tr valign="top">
@@ -536,7 +536,7 @@
 																	</td>
 																</tr>
 																<tr valign="top">
-																	<td class="es-p5t es-p5b" width="180"><span>{$btr->general_comment|escape}:</span></td>
+																	<td class="es-p5t es-p5b" width="180"><span>{$btr->global_comment|escape}:</span></td>
 																	<td class="es-p5t es-p5b"><span>{$comment->text|escape|nl2br}</span></td>
 																</tr>
 																</tbody>
@@ -570,7 +570,6 @@
 														<td align="center">
 															<p>
 																<span>{$btr->email_details|escape}</span><br>
-																<a target="_blank" href="https://turbo-cms.com">turbo-cms.com</a>
 															</p>
 														</td>
 													</tr>

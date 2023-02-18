@@ -14,7 +14,6 @@
 			$('[data-post]').on('mouseover', show_tooltip);
 			$('[data-articles-category]').on('mouseover', show_tooltip);
 			$('[data-article]').on('mouseover', show_tooltip);
-			$('[data-feature]').on('mouseover', show_tooltip);
 		});
 
 		function show_tooltip() {
@@ -37,30 +36,30 @@
 			}
 
 			if (id = $(this).attr('data-page')) {
-				tooltipcontent = "<a href='turbo/index.php?module=PageAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_page}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=PageAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 				tooltipcontent += "<a href='turbo/index.php?module=PageAdmin&return="+from+lang+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_page}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-projects-category')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ProjectsCategoryAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_category}{literal}</a>";
-				tooltipcontent += "<a href='turbo/index.php?module=ProjectAdmin&return="+from+"' class=admin_tooltip_add>{/literal}{$btr->project_add}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ProjectsCategoryAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipcontent += "<a href='turbo/index.php?module=ProjectAdmin&category_id="+id+"&return="+from+lang+"' class=admin_tooltip_add>{/literal}{$btr->project_add}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-project')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ProjectAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_project}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ProjectAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-articles-category')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ArticlesCategoryAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_category}{literal}</a>";
-				tooltipcontent += "<a href='turbo/index.php?module=ArticleAdmin&return="+from+"' class=admin_tooltip_add>{/literal}{$btr->article_add}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ArticlesCategoryAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipcontent += "<a href='turbo/index.php?module=ArticleAdmin&return="+from+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_article}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-article')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ArticleAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_post}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ArticleAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-post')) {
-				tooltipcontent = "<a href='turbo/index.php?module=PostAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_post}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=PostAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			$('.tooltipBody').html(tooltipcontent);
@@ -74,12 +73,9 @@
 		}
 
 		function ShowTooltip(i, content) {
-
 			tooltip = document.getElementById('tooltip');
-
 			document.getElementById('tooltipBody').innerHTML = content;
 			tooltip.style.display = 'block';
-
 			var xleft = 0;
 			var xtop = 0;
 			o = i;
