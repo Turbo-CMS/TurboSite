@@ -109,9 +109,9 @@
 	.turbo-list .turbo-list-banners-name {
 		width: calc(100% - 500px);
 	}
-
-	.turbo-list .variants-item-name {
-		width: calc(100% - 1072px);
+	
+	.turbo-list .turbo-list-tag {
+		width: 260px;
 	}
 
 	.mh-210px,
@@ -170,9 +170,9 @@
 	.turbo-list-translations-num,
 	.turbo-list .turbo-list-option,
 	.turbo-list-comments-btn,
+	.turbo-list-tag,
 	.turbo-list .turbo-list-footer,
 	.turbo-list-check,
-	.variants-item-drag,
 	.turbo-list-drag {
 		display: none;
 	}

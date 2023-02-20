@@ -22,7 +22,7 @@
 								</label>
 							</div>
 							<div class="turbo-list-heading turbo-list-banners-name">{$btr->banners_group_name|escape}</div>
-							<div class="turbo-list-heading turbo-list-brands-tag">{$btr->banners_display|escape}</div>
+							<div class="turbo-list-heading turbo-list-tag">{$btr->banners_display|escape}</div>
 							<div class="turbo-list-heading turbo-list-status">{$btr->global_enable|escape}</div>
 							<div class="turbo-list-heading turbo-list-delete"></div>
 						</div>
@@ -44,7 +44,7 @@
 												{$banner->name|escape}
 											</a>
 										</div>
-										<div class="turbo-list-boding turbo-list-brands-tag">
+										<div class="turbo-list-boding turbo-list-tag">
 											<div class="wrap_tags">
 												{if $banner->show_all_pages}
 													<span class="badge badge-success-light">{$btr->global_all_pages|escape}</span>

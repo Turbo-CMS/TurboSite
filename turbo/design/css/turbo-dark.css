@@ -997,9 +997,8 @@ textarea.form-control {
 	text-align: left;
 }
 
-.turbo-list .turbo-list-brands-name {
-	width: calc(100% - 400px);
-	position: relative;
+.turbo-list .turbo-list-tag {
+	width: 420px;
 	text-align: left;
 }
 
