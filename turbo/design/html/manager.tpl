@@ -110,7 +110,7 @@
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
-								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_porfolio|escape}</h5>
+								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_portfolio|escape}</h5>
 								<div class="row">
 									{foreach $projects as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
