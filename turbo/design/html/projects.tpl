@@ -127,8 +127,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $project->visible}js-active-class{/if}" id="id_{$project->id}" data-module="projects" data-action="visible" data-id="{$project->id}" name="visible" value="1" type="checkbox" {if $project->visible}checked="" {/if}>
-													<label class="form-check-label" for="id_{$project->id}"></label>
+													<input class="form-check-input js-ajax-action {if $project->visible}js-active-class{/if}" id="id-{$project->id}" data-module="projects" data-action="visible" data-id="{$project->id}" name="visible" value="1" type="checkbox" {if $project->visible}checked="" {/if}>
+													<label class="form-check-label" for="id-{$project->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-setting">

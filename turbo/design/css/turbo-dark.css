@@ -52,14 +52,10 @@ img {
 	transform: rotate(180deg);
 }
 
-.stat {
-	height: 50px;
-	width: 50px;
-}
-
-.stat svg {
-	height: 24px;
-	width: 24px;
+.dropdown .list-group .list-group-item:last-child {
+	border-bottom: none;
+	border-bottom-right-radius: inherit;
+	border-bottom-left-radius: inherit;
 }
 
 /************************************************************************* Sidebar  */
@@ -257,6 +253,20 @@ img {
 .js-fast-save button {
 	display: inline-block;
 	float: none;
+}
+
+.alert-dismissible .btn-return {
+	padding: 0.95rem 0.95rem;
+	position: absolute;
+	opacity: 0.5;
+	color: #fff;
+	right: 0;
+	top: 0;
+	z-index: 2;
+}
+
+.alert-dismissible .btn-return:hover {
+	opacity: 0.75;
 }
 
 /************************************************************************* Form  */
@@ -1297,14 +1307,6 @@ textarea.form-control {
 	margin-left: 15px;
 }
 
-.turbo-list .subcomments-level-2 .turbo-list-subcomment {
-	margin-left: 55px;
-}
-
-.turbo-list .subcomments-level-3 .turbo-list-subcomment {
-	margin-left: 85px;
-}
-
 .turbo-list .turbo-list-boding.turbo-list-comments-name .admin a {
 	display: inline-block;
 	text-decoration: underline;
@@ -1315,13 +1317,13 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-boding.turbo-list-comments-name .comment-object {
-	color: #bdc0c5;
+	color: #495057;
 	display: inline-block;
 	text-decoration: underline;
 }
 
 .turbo-list .turbo-list-boding.turbo-list-comments-name .comment-object:hover {
-	color: #bdc0c5;
+	color: #495057;
 	text-decoration: none;
 }
 
@@ -1407,6 +1409,10 @@ textarea.form-control {
 	max-width: 100%;
 	text-align: center;
 	max-height: 400px;
+}
+
+textarea.banner-textarea {
+	min-height: calc(1.9125rem + 152px);
 }
 
 /************************************************************************* categories.tpl  */

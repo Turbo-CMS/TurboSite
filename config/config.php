@@ -38,8 +38,6 @@ php_locale_time = en_US;
 ;php_timezone = Europe/Kiev;
 debug_mode = false;
 
-logfile = admin/log/log.txt;
-
 [debug]
 
 debug = false;

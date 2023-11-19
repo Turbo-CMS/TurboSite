@@ -318,38 +318,14 @@
 						<div class="row">
 							<div class="col-xl-3 col-lg-4 col-md-6">
 								<div class="mb-3">
-									<div class="form-label"> {$btr->comments_tree_blog|escape}</div>
-									<select name="comments_tree_blog" class="selectpicker">
-										<option value="on" {if $settings->comments_tree_blog == "on"}selected{/if}>{$btr->global_do_enable|escape}</option>
-										<option value="off" {if $settings->comments_tree_blog == "off"}selected{/if}>{$btr->global_do_disable|escape}</option>
-									</select>
+									<div class="form-label">{$btr->settings_comments_site|escape}</div>
+									<input name="comments_num" class="form-control" type="text" value="{$settings->comments_num|escape}">
 								</div>
 							</div>
 							<div class="col-xl-3 col-lg-4 col-md-6">
 								<div class="mb-3">
-									<div class="form-label"> {$btr->comments_tree_articles|escape}</div>
-									<select name="comments_tree_articles" class="selectpicker">
-										<option value="on" {if $settings->comments_tree_articles == "on"}selected{/if}>{$btr->global_do_enable|escape}</option>
-										<option value="off" {if $settings->comments_tree_articles == "off"}selected{/if}>{$btr->global_do_disable|escape}</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-xl-3 col-lg-4 col-md-6">
-								<div class="mb-3">
-									<div class="form-label"> {$btr->comments_tree_reviews|escape}</div>
-									<select name="comments_tree_reviews" class="selectpicker">
-										<option value="on" {if $settings->comments_tree_reviews == "on"}selected{/if}>{$btr->global_do_enable|escape}</option>
-										<option value="off" {if $settings->comments_tree_reviews == "off"}selected{/if}>{$btr->global_do_disable|escape}</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-xl-3 col-lg-4 col-md-6">
-								<div class="mb-3">
-									<div class="form-label"> {$btr->comments_tree_projects|escape}</div>
-									<select name="comments_tree_projects" class="selectpicker">
-										<option value="on" {if $settings->comments_tree_projects == "on"}selected{/if}>{$btr->global_do_enable|escape}</option>
-										<option value="off" {if $settings->comments_tree_projects == "off"}selected{/if}>{$btr->global_do_disable|escape}</option>
-									</select>
+									<div class="form-label">{$btr->settings_comments_admin|escape}</div>
+									<input name="comments_num_admin" class="form-control" type="text" value="{$settings->comments_num_admin|escape}">
 								</div>
 							</div>
 						</div>

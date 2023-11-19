@@ -1,6 +1,6 @@
 (function ($) {
 	"use strict";
-	
+
 	/*
 	// Carousel
 	*/
@@ -14,5 +14,5 @@
 			$(this).addClass('selected');
 		});
 	});
-
+	
 })(jQuery);		

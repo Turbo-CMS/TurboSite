@@ -1,37 +1,45 @@
 {* Project page *}
 
-{* Canonical page address *}
+{* Canonical *}
 {$canonical="/project/{$project->url}" scope=global}
 
-
-<!-- Breadcrumbs -->
+{* Breadcrumb *}
 {$level = 1}
 <nav class="mt-4" aria-label="breadcrumb">
 	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name">{$lang->home}</span></a>
+			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
+				<span itemprop="name"><i class="fal fa-house me-2"></i>{$lang->home}</span>
+			</a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects"><span itemprop="name">{$lang->global_projects}</span></a>
+			<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects">
+				<span itemprop="name">{$lang->global_projects}</span>
+			</a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
 		{foreach from=$category->path item=cat}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}" title="{$cat->name|escape}"><span itemprop="name">{$cat->name|escape}</span></a>
+				<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}" title="{$cat->name|escape}">
+					<span itemprop="name">{$cat->name|escape}</span>
+				</a>
 				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/foreach}
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}"><span itemprop="name">{$project->name|escape}</span></a>
+			<a itemprop="item" class="text-decoration-none" href="{$lang_link}">
+				<span itemprop="name">{$project->name|escape}</span>
+			</a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
-<!-- Portfolio Item Row -->
-<div class="row">
-	<div class="col-md-8">
-		<div id="ProjectImages" class="carousel slide my-4" data-bs-ride="false">
+
+{* Project *}
+<div class="row mb-3">
+	<div class="col-md-7 pt-3">
+		<div id="projectImages" class="carousel slide" data-bs-ride="false">
 			<div class="carousel-inner" role="listbox">
 				{if $project->image}
 					{foreach $project->images as $i=>$image name=img}
@@ -49,36 +57,39 @@
 				{/if}
 			</div>
 		</div>
-		{if $project->images|count>1}
-			<span class="d-sm-none d-md-block d-none">
-				<div id="project-slider-pagination" class="row text-center text-lg-start">
-					{foreach $project->images as $i=>$image name=images}
-						<div id="image{$image->id}" class="col-lg-3 col-md-4 col-xs-6 mb-4">
-							<a href="#" id="carousel-selector-{$image->id}" data-bs-target="#ProjectImages" data-bs-slide-to="{$smarty.foreach.images.index}" class="d-block text-center img-thumbnail {if $smarty.foreach.images.first}selected{/if}">
-								<img class="img-fluid thumbnail" src="{$image->filename|resize:95:95}" alt="{$project->name|escape}">
-							</a>
-						</div>
-					{/foreach}
-				</div>
-			</span>
+		{* Gallery Thumblist *}
+		{if $project->images|count > 1}
+			<div id="project-slider-pagination" class="project-gallery-thumblist">
+				{foreach $project->images as $i => $image name=images}
+					<div id="image{$image->id}">
+						<a id="carousel-selector-{$image->id}" class="project-gallery-thumblist-item d-flex justify-content-center align-items-center {if $smarty.foreach.images.first}selected{/if}" href="#" data-bs-target="#projectImages" data-bs-slide-to="{$smarty.foreach.images.index}">
+							<img src="{$image->filename|resize:95:95}" alt="{$project->name|escape}">
+						</a>
+					</div>
+				{/foreach}
+			</div>
 		{/if}
 	</div>
-	<div class="col-md-4 mb-4">
-		<h1 data-project="{$project->id}" class="h3">{$project->name|escape}</h1>
-		{if $project->annotation}
-			<p>{$project->annotation}</p>
-		{/if}
-		<h3 class="my-3">{$lang->project_details}</h3>
-		<ul class="list-unstyled">
-			<li><strong>{$lang->date}:</strong> {$project->date|date}</li>
-			{if $category}<li><strong>{$lang->category}:</strong> {$category->name|escape}</li>{/if}
-			{if $project->site}<li><strong>{$lang->site}:</strong> {$project->site|escape}</li>{/if}
-			{if $project->client}<li><strong>{$lang->customer}:</strong> {$project->client|escape}</li>{/if}
-		</ul>
+	{* Details *}
+	<div class="col-md-5 pt-4 pt-lg-1">
+		<div class="project-details ms-auto pb-3">
+			<h1 data-project="{$project->id}" class="h3">{$project->name|escape}</h1>
+			{if $project->annotation}
+				<div class="my-3">{$project->annotation}</div>
+			{/if}
+			<h3 class="my-3">{$lang->project_details}</h3>
+			<ul class="list-unstyled">
+				<li><strong>{$lang->date}:</strong> {$project->date|date}</li>
+				{if $category}<li><strong>{$lang->category}:</strong> {$category->name|escape}</li>{/if}
+				{if $project->site}<li><strong>{$lang->site}:</strong> {$project->site|escape}</li>{/if}
+				{if $project->client}<li><strong>{$lang->customer}:</strong> {$project->client|escape}</li>{/if}
+			</ul>
+		</div>
 	</div>
 </div>
-<!-- /.row -->
-<ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+
+{* Tabs *}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
 	<li class="nav-item">
 		<a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{$lang->description}</a>
 	</li>
@@ -86,19 +97,18 @@
 		<a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{$lang->comments_global} ({$comments|count})</a>
 	</li>
 </ul>
+
 <div class="tab-content mt-4" id="myTabContent">
-	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><div class="block-description">{$project->text}</div></div>
+	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+		<div class="block-description">{$project->text}</div>
+	</div>
 	<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-		{* Comments *}
-		{if $settings->comments_tree_projects == "on"}
-			{include file='comments/comments_tree_projects.tpl'}
-		{else}
-			{include file='comments/comments_projects.tpl'}
-		{/if}
+		{include file='comments/comments_projects.tpl'}
 	</div>
 </div>
+
+{* Next & Prev *}
 {if $prev_project || $next_project}
-	<!-- Neighboring projects /-->
 	<hr class="text-black-50">
 	<div class="row">
 		<div class="col-lg-6 col-sm-6 col-6 text-start">
@@ -114,8 +124,9 @@
 	</div>
 	<hr class="text-black-50">
 {/if}
+
+{* Related Projects *}
 {if $related_projects}
-	<!-- Related Projects Row -->
 	<h3 class="my-4">{$lang->related_projects}</h3>
 	<div class="row">
 		{foreach $related_projects as $related_project}
@@ -133,11 +144,10 @@
 						<p class="card-text"><small class="text-muted">{$related_project->date|date}</small></p>
 					</div>
 					<div class="card-footer">
-						<a href="{$lang_link}project/{$related_project->url}" class="btn btn-primary btn-sm">{$lang->more_details}</a>
+						<a href="{$lang_link}project/{$related_project->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
 					</div>
 				</div>
 			</div>
 		{/foreach}
 	</div>
-	<!-- /.row -->
 {/if}

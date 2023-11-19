@@ -1,15 +1,16 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ProjectAdmin extends Turbo
 {
 	public function fetch()
 	{
-		$images = array();
-		$related_projects = array();
+		$images = [];
+		$relatedProjects = [];
 		$project = new stdClass;
-		if ($this->request->method('post')) {
+
+		if ($this->request->isMethod('post')) {
 			$project->id = $this->request->post('id', 'integer');
 			$project->name = $this->request->post('name');
 			$project->date = date('Y-m-d', strtotime($this->request->post('date')));
@@ -29,29 +30,30 @@ class ProjectAdmin extends Turbo
 			$project->site = $this->request->post('site');
 			$project->type = $this->request->post('type');
 
-			// Related projects
+			// Related Projects
 			if (is_array($this->request->post('related_projects'))) {
 				foreach ($this->request->post('related_projects') as $p) {
 					$rp[$p] = new stdClass;
 					$rp[$p]->project_id = $project->id;
 					$rp[$p]->related_id = $p;
 				}
-				$related_projects = $rp;
+
+				$relatedProjects = $rp;
 			}
 
 			// Do not allow duplicate section URLs
-			if (($a = $this->projects->get_project($project->url)) && $a->id != $project->id) {
+			if (($a = $this->projects->getProject($project->url)) && $a->id != $project->id) {
 				$this->design->assign('message_error', 'url_exists');
-				$images = $this->projects->get_images(array('project_id' => $project->id));
+				$images = $this->projects->getImages(array('project_id' => $project->id));
 			} else {
 				if (empty($project->id)) {
-					// Last-Modified
+					// Last Modified
 					if ($project->category_id > 0) {
 						$this->db->query('update __projects_categories set last_modified=now() where id=?', $project->category_id);
 					}
 
-					$project->id = $this->projects->add_project($project);
-					$project = $this->projects->get_project($project->id);
+					$project->id = $this->projects->addProject($project);
+					$project = $this->projects->getProject($project->id);
 					$this->design->assign('message_success', 'added');
 				} else {
 					// Last-Modified                    
@@ -61,85 +63,100 @@ class ProjectAdmin extends Turbo
 						$this->db->query('update __projects_categories set last_modified=now() where id in(?@)', $c_ids);
 					}
 
-					$this->projects->update_project($project->id, $project);
-					$project = $this->projects->get_project($project->id);
+					$this->projects->updateProject($project->id, $project);
+					$project = $this->projects->getProject($project->id);
 					$this->design->assign('message_success', 'updated');
 				}
 
 				if ($project->id) {
 
 					// Deleting images
-					$images = (array)$this->request->post('images');
-					$current_images = $this->projects->get_images(array('project_id' => $project->id));
-					foreach ($current_images as $image) {
-						if (!in_array($image->id, $images))
-							$this->projects->delete_image($image->id);
+					$images = (array) $this->request->post('images');
+					$currentImages = $this->projects->getImages(array('project_id' => $project->id));
+
+					foreach ($currentImages as $image) {
+						if (!in_array($image->id, $images)) {
+							$this->projects->deleteImage($image->id);
+						}
 					}
 
-					// Image order
+					// Image Order
 					if ($images = $this->request->post('images')) {
 						$i = 0;
 						foreach ($images as $id) {
-							$this->projects->update_image($id, array('position' => $i));
+							$this->projects->updateImage($id, array('position' => $i));
 							$i++;
 						}
 					}
+
 					// Image upload
 					if ($images = $this->request->files('images')) {
 						for ($i = 0; $i < count($images['name']); $i++) {
-							if ($image_name = $this->image->upload_image($images['tmp_name'][$i], $images['name'][$i])) {
-								$this->projects->add_image($project->id, $image_name);
+							if ($imageName = $this->image->uploadImage($images['tmp_name'][$i], $images['name'][$i])) {
+								$this->projects->addImage($project->id, $imageName);
 							} else {
 								$this->design->assign('error', 'error uploading image');
 							}
 						}
 					}
-					// Downloading images from the Internet and drag-n-drop files
 					if ($images = $this->request->post('images_urls')) {
 						foreach ($images as $url) {
-							// If not an empty address and the file is not local
-							if (!empty($url) && $url != 'http://' && strstr($url, '/') !== false)
-								$this->projects->add_image($project->id, $url);
-							elseif ($dropped_images = $this->request->files('dropped_images')) {
-								$key = array_search($url, $dropped_images['name']);
-								if ($key !== false && $image_name = $this->image->upload_image($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]))
-									$this->projects->add_image($project->id, $image_name);
+							if (!empty($url) && $url != 'http://' && strstr($url, '/') !== false) {
+								$this->projects->addImage($project->id, $url);
+							} elseif ($droppedImages = $this->request->files('dropped_images')) {
+								$key = array_search($url, $droppedImages['name']);
+
+								if ($key !== false && $imageName = $this->image->uploadImage($droppedImages['tmp_name'][$key], $droppedImages['name'][$key])) {
+									$this->projects->addImage($project->id, $imageName);
+								}
 							}
 						}
 					}
-					$images = $this->projects->get_images(array('project_id' => $project->id));
+
+					$images = $this->projects->getImages(['project_id' => $project->id]);
 
 					// Related projects
 					$query = $this->db->placehold('DELETE FROM __related_projects WHERE project_id=?', $project->id);
 					$this->db->query($query);
-					if (is_array($related_projects)) {
+
+					if (is_array($relatedProjects)) {
 						$pos = 0;
-						foreach ($related_projects  as $i => $related_project)
-							$this->projects->add_related_project($project->id, $related_project->related_id, $pos++);
+						foreach ($relatedProjects  as $i => $relatedProject) {
+							$this->projects->addRelatedProject($project->id, $relatedProject->related_id, $pos++);
+						}
 					}
 				}
 			}
 		} else {
 			$project->id = $this->request->get('id', 'integer');
-			$project = $this->projects->get_project(intval($project->id));
+			$project = $this->projects->getProject((int) $project->id);
+
 			if ($project && $project->id) {
 				// Project Images
-				$images = $this->projects->get_images(array('project_id' => $project->id));
-				// Related projects
-				$related_projects = $this->projects->get_related_projects(array('project_id' => $project->id));
+				$images = $this->projects->getImages(['project_id' => $project->id]);
+				// Related Projects
+				$relatedProjects = $this->projects->getRelatedProjects(['project_id' => $project->id]);
 			}
 		}
 
-		if (!empty($related_projects)) {
-			foreach ($related_projects as &$r_p)
-				$r_projects[$r_p->related_id] = &$r_p;
-			$temp_projects = $this->projects->get_projects(array('id' => array_keys($r_projects)));
-			foreach ($temp_projects as $temp_project)
-				$r_projects[$temp_project->id] = $temp_project;
+		if (!empty($relatedProjects)) {
 
-			$related_projects_images = $this->projects->get_images(array('project_id' => array_keys($r_projects)));
-			foreach ($related_projects_images as $image) {
-				$r_projects[$image->project_id]->images[] = $image;
+			$rProjects = [];
+
+			foreach ($relatedProjects as &$rP) {
+				$rProjects[$rP->related_id] = &$rP;
+			}
+
+			$tempProjects = $this->projects->getProjects(['id' => array_keys($rProjects)]);
+
+			foreach ($tempProjects as $tempProject) {
+				$rProjects[$tempProject->id] = $tempProject;
+			}
+
+			$relatedProjectsImages = $this->projects->getImages(['project_id' => array_keys($rProjects)]);
+
+			foreach ($relatedProjectsImages as $image) {
+				$rProjects[$image->project_id]->images[] = $image;
 			}
 		}
 
@@ -150,11 +167,11 @@ class ProjectAdmin extends Turbo
 
 		$this->design->assign('project_images', $images);
 		$this->design->assign('project', $project);
-		$this->design->assign('related_projects', $related_projects);
+		$this->design->assign('related_projects', $relatedProjects);
 
 		// Categories
-		$projects_categories = $this->projects_categories->get_projects_categories_tree();
-		$this->design->assign('projects_categories', $projects_categories);
+		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
+		$this->design->assign('projects_categories', $projectsCategories);
 
 		return $this->design->fetch('project.tpl');
 	}

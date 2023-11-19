@@ -49,7 +49,7 @@
 												{if $banner->show_all_pages}
 													<span class="badge badge-success-light">{$btr->global_all_pages|escape}</span>
 												{/if}
-												{if !$banner->show_all_pages && $banner->articles_category_show}
+												{if !$banner->show_all_pages && isset($banner->articles_category_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->article_categories|escape}:</span>
 														{foreach $banner->articles_category_show as $cat_show}
@@ -65,7 +65,7 @@
 														{/foreach}
 													</div>
 												{/if}
-												{if !$banner->show_all_pages && $banner->page_show}
+												{if !$banner->show_all_pages && isset($banner->page_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->global_pages|escape}:</span>
 														{foreach $banner->page_show as $page_show}
@@ -77,8 +77,8 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-status">
 											<div class="form-check form-switch">
-												<input class="form-check-input js-ajax-action {if $banner->visible}js-active-class{/if}" id="id_{$banner->id}" data-module="banner" data-action="visible" data-id="{$banner->id}" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
-												<label class="form-check-label" for="id_{$banner->id}"></label>
+												<input class="form-check-input js-ajax-action {if $banner->visible}js-active-class{/if}" id="id-{$banner->id}" data-module="banner" data-action="visible" data-id="{$banner->id}" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
+												<label class="form-check-label" for="id-{$banner->id}"></label>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">

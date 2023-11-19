@@ -51,7 +51,7 @@
 												<div class="mb-0">
 													<span class="text-secondary">{$btr->global_request_sent|escape}:</span>
 													<span class="badge badge-secondary-light">{$subscribe->date|time} | {$subscribe->date|date}</span>
-												</div>	
+												</div>
 												{if !$subscribe->processed}
 													<div class="d-block d-md-none mt-1">
 														<button type="button" class="btn btn-outline-secondary js-ajax-action {if $subscribe->processed}js-active-class{/if}" data-module="subscribe" data-action="processed" data-id="{$subscribe->id}" onclick="$(this).hide();">
@@ -99,7 +99,7 @@
 							</div>
 						</div>
 					</form>
-					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-12">
@@ -113,15 +113,13 @@
 </div>
 
 {* Piecon *}
-{js id="piecon" priority=99 include=[
-	"turbo/design/js/piecon/piecon.min.js"
-]}{/js}
+{js id="piecon" priority=99 include=["turbo/design/js/piecon/piecon.min.js"]}{/js}
 {javascript minify=true}
 
 <script>
 	var in_process = false;
-	var keyword='{$keyword|escape}';
-	var sort='{$sort|escape}';
+	var keyword='{if isset($keyword)}{$keyword|escape}{/if}';
+	var sort='{if isset($sort)}{$sort|escape}{/if}';
 
 	{literal}
 		$(function() {
@@ -129,7 +127,7 @@
 			$(document).on('click', '.feather-file-text', function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
-				var progress_item = $("#progressbar"); // specify an element selector with animation
+				var progress_item = $("#progressbar");
 				$(".progress").show();
 				do_export('', progress_item);
 			});
@@ -155,7 +153,6 @@
 					error: function(xhr, status, errorThrown) {
 						alert(errorThrown + '\n' + xhr.responseText);
 					}
-
 				});
 			}
 		});

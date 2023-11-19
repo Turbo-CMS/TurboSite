@@ -1,229 +1,304 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class ProjectsCategories extends Turbo
 {
-	// List of pointers to categories in the category tree (key = category id)
-	private $all_projects_categories;
-	// Category tree
-	private $projects_categories_tree;
+	private $allProjectsCategories;
+	private $projectsCategoriesTree;
 
-	// The function returns an array of categories
-	public function get_projects_categories($filter = array())
+	/**
+	 * Get Projects Categories
+	 */
+	public function getProjectsCategories($filter = [])
 	{
-		if (!isset($this->projects_categories_tree))
-			$this->init_projects_categories();
+		if (!isset($this->projectsCategoriesTree)) {
+			$this->initProjectsCategories();
+		}
 
-		return $this->all_projects_categories;
+		return $this->allProjectsCategories;
 	}
 
-	// The function returns a tree of categories
-	public function get_projects_categories_tree()
+	/**
+	 * Get Projects Categories Tree
+	 */
+	public function getProjectsCategoriesTree()
 	{
-		if (!isset($this->projects_categories_tree))
-			$this->init_projects_categories();
+		if (!isset($this->projectsCategoriesTree)) {
+			$this->initProjectsCategories();
+		}
 
-		return $this->projects_categories_tree;
+		return $this->projectsCategoriesTree;
 	}
 
-	// The function returns the given category
-	public function get_projects_category($id)
+	/**
+	 * Get Projects Category
+	 */
+	public function getProjectsCategory($id)
 	{
-		if (!isset($this->all_projects_categories))
-			$this->init_projects_categories();
-		if (is_int($id) && array_key_exists(intval($id), $this->all_projects_categories))
-			return $category = $this->all_projects_categories[intval($id)];
-		elseif (is_string($id))
-			foreach ($this->all_projects_categories as $category)
-				if ($category->url == $id)
-					return $this->get_projects_category((int)$category->id);
+		if (!isset($this->allProjectsCategories)) {
+			$this->initProjectsCategories();
+		}
+
+		if (is_int($id) && array_key_exists((int) $id, $this->allProjectsCategories)) {
+			return $category = $this->allProjectsCategories[intval($id)];
+		} elseif (is_string($id)) {
+			foreach ($this->allProjectsCategories as $category) {
+				if ($category->url == $id) {
+					return $this->getProjectsCategory((int) $category->id);
+				}
+			}
+		}
 
 		return false;
 	}
 
-	// Adding a category
-	public function add_projects_category($category)
+	/**
+	 * Add Projects Category
+	 */
+	public function addProjectsCategory($category)
 	{
-		$category = (array)$category;
+		if (!is_array($category)) {
+			$category = (array) $category;
+		}
+
 		if (empty($category['url'])) {
 			$category['url'] = preg_replace("/[\s]+/ui", '_', $category['name']);
 			$category['url'] = strtolower(preg_replace("/[^0-9a-zа-я_]+/ui", '', $category['url']));
 		}
 
-		// If there is a category with this URL, add a number to it
-		while ($this->get_projects_category((string)$category['url'])) {
-			if (preg_match('/(.+)_([0-9]+)$/', $category['url'], $parts))
+		while ($this->getProjectsCategory((string)$category['url'])) {
+			if (preg_match('/(.+)_([0-9]+)$/', $category['url'], $parts)) {
 				$category['url'] = $parts[1] . '_' . ($parts[2] + 1);
-			else
+			} else {
 				$category['url'] = $category['url'] . '_2';
+			}
 		}
 
 		$category = (object)$category;
 
-		$result = $this->languages->get_description($category, 'project_category');
-		if (!empty($result->data)) $category = $result->data;
+		$result = $this->languages->getDescription($category, 'project_category');
+
+		if (!empty($result->data)) {
+			$category = $result->data;
+		}
 
 		$this->db->query("INSERT INTO __projects_categories SET ?%", $category);
-		$id = $this->db->insert_id();
+		$id = $this->db->insertId();
+
 		$this->db->query("UPDATE __projects_categories SET position=id WHERE id=?", $id);
 
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'project_category');
+			$this->languages->actionDescription($id, $result->description, 'project_category');
 		}
 
-		unset($this->projects_categories_tree);
-		unset($this->all_projects_categories);
-		return intval($id);
+		unset($this->projectsCategoriesTree);
+		unset($this->allProjectsCategories);
+
+		return (int) $id;
 	}
 
-	// Change category
-	public function update_projects_category($id, $category)
+	/**
+	 * Update Projects Category
+	 */
+	public function updateProjectsCategory($id, $category)
 	{
-		$category = (object)$category;
-		$result = $this->languages->get_description($category, 'project_category');
-		if (!empty($result->data)) $category = $result->data;
+		if (!is_array($category)) {
+			$category = (array) $category; 
+		}
 
-		$query = $this->db->placehold("UPDATE __projects_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, intval($id));
+		$category = (object) $category;
+		$result = $this->languages->getDescription($category, 'project_category');
+
+		if (!empty($result->data)) {
+			$category = $result->data;
+		}
+
+		$query = $this->db->placehold("UPDATE __projects_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'project_category', $this->languages->lang_id());
+			$this->languages->actionDescription($id, $result->description, 'project_category', $this->languages->langId());
 		}
 
-		unset($this->projects_categories_tree);
-		unset($this->all_projects_categories);
-		return intval($id);
+		unset($this->projectsCategoriesTree);
+		unset($this->allProjectsCategories);
+
+		return (int) $id;
 	}
 
-	// Deleting a category
-	public function delete_projects_category($id)
+	/**
+	 * Delete Projects Category
+	 */
+	public function deleteProjectsCategory($id)
 	{
-		if (!$category = $this->get_projects_category(intval($id)))
+		$category = $this->getProjectsCategory((int) $id);
+
+		if (!$category) {
 			return false;
-		foreach ($category->children as $id) {
-			if (!empty($id)) {
-				$this->delete_image($id);
-				$query = $this->db->placehold("DELETE FROM __projects_categories WHERE id=? LIMIT 1", $id);
+		}
+
+		foreach ($category->children as $childId) {
+			if (!empty($childId)) {
+				$this->deleteImage($childId);
+
+				$query = $this->db->placehold("DELETE FROM __projects_categories WHERE id=? LIMIT 1", $childId);
 				$this->db->query($query);
-				$query = $this->db->placehold("DELETE FROM __projects_categories WHERE category_id=?", $id);
+
+				$this->initProjectsCategories();
+
+				$this->db->query("DELETE FROM __lang_projects_categories WHERE project_category_id IN(?@)", $category->children);
 				$this->db->query($query);
-				$this->init_projects_categories();
-				$this->db->query($query);
-				$this->db->query("DELETE FROM __lang_projects_categories WHERE project_category_id in(?@)", $category->children);
 			}
 		}
+
 		return true;
 	}
 
-	// Delete category image
-	public function delete_image($category_id)
+	/**
+	 * Delete Image
+	 */
+	public function deleteImage($categoriesIds)
 	{
-		$query = $this->db->placehold("SELECT image FROM __projects_categories WHERE id=?", $category_id);
-		$this->db->query($query);
-		$filename = $this->db->result('image');
-		if (!empty($filename)) {
-			$query = $this->db->placehold("UPDATE __projects_categories SET image=NULL WHERE id=?", $category_id);
+		$categoriesIds = (array) $categoriesIds;
+		$query = $this->db->placehold("SELECT image FROM __projects_categories WHERE id IN(?@)", $categoriesIds);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('image');
+		}
+
+		if (!empty($filenames)) {
+			$query = $this->db->placehold("UPDATE __projects_categories SET image=NULL WHERE id IN(?@)", $categoriesIds);
 			$this->db->query($query);
-			$query = $this->db->placehold("SELECT count(*) as count FROM __projects_categories WHERE image=? LIMIT 1", $filename);
-			$this->db->query($query);
-			$count = $this->db->result('count');
-			if ($count == 0) {
-				$file = pathinfo($filename, PATHINFO_FILENAME);
-				$ext = pathinfo($filename, PATHINFO_EXTENSION);
-				$webp = 'webp';
 
-				// Remove all resizes
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_category_images_dir . $file . "*." . $ext);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_category_images_dir . $file . "*." . $ext) as $f) {
-						@unlink($f);
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT count(*) AS count FROM __projects_categories WHERE image=?", $filename);
+				$this->db->query($query);
+
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					$file = pathinfo($filename, PATHINFO_FILENAME);
+					$ext = pathinfo($filename, PATHINFO_EXTENSION);
+					$webp = 'webp';
+
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_category_images_dir . $file . "*." . $ext);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_category_images_dir . $file . "*." . $webp);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_category_images_dir . $file . "*." . $webp) as $f) {
-						@unlink($f);
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_category_images_dir . $file . "*." . $webp);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				@unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+					unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+				}
 			}
-			$this->init_projects_categories();
+
+			unset($this->initArticlesCategories);
 		}
 	}
 
-	// Initialization of categories, after which categories will be selected from a local variable
-	private function init_projects_categories()
+	/**
+	 * Initializes Projects Categories
+	 */
+	private function initProjectsCategories()
 	{
-		// Category tree
 		$tree = new stdClass();
-		$tree->subcategories = array();
+		$tree->subcategories = [];
 
-		// Pointers to tree nodes
-		$pointers = array();
+		$pointers = [];
 		$pointers[0] = &$tree;
-		$pointers[0]->path = array();
+		$pointers[0]->path = [];
 
-		$lang_sql = $this->languages->get_query(array('object' => 'project_category', 'px' => 'c'));
+		$langSql = $this->languages->getQuery(['object' => 'project_category', 'px' => 'c']);
 
-		// Select all categories
-		$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.visible, c.position, c.last_modified, " . $lang_sql->fields . " 
-										FROM __projects_categories c " . $lang_sql->join . " ORDER BY c.parent_id, c.position");
+		$query = $this->db->placehold(
+			"SELECT 
+				c.id, 
+				c.parent_id, 
+				c.name, 
+				c.name_h1, 
+				c.description, 
+				c.url, 
+				c.meta_title, 
+				c.meta_keywords, 
+				c.meta_description, 
+				c.image, 
+				c.visible, 
+				c.position, 
+				c.last_modified, 
+				$langSql->fields 
+			FROM __projects_categories c 
+			$langSql->join 
+			ORDER BY c.parent_id, c.position"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				$projects_categories = $result; // return data from memcached
+				$projectsCategories = $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
-				$projects_categories = $result;
+				$this->cache->set($query, $result);
+				$projectsCategories = $result;
 			}
 		} else {
 			$this->db->query($query);
-			$projects_categories = $this->db->results();
+			$projectsCategories = $this->db->results();
 		}
 
 		$finish = false;
-		// We don't stop until the categories run out, or until none of the remaining ones have anywhere to stick
-		while (!empty($projects_categories)  && !$finish) {
+
+		while (!empty($projectsCategories)  && !$finish) {
 			$flag = false;
-			// Loop through all selected categories
-			foreach ($projects_categories as $k => $category) {
+
+			foreach ($projectsCategories as $k => $category) {
 				if (isset($pointers[$category->parent_id])) {
-					// Add the current category to the category tree (through the pointer)
 					$pointers[$category->id] = $pointers[$category->parent_id]->subcategories[] = $category;
 
-					// Path to the current category
 					$curr = $pointers[$category->id];
-					$pointers[$category->id]->path = array_merge((array)$pointers[$category->parent_id]->path, array($curr));
+					$pointers[$category->id]->path = array_merge((array) $pointers[$category->parent_id]->path, array($curr));
 
-					// Remove the used category from the categories array
-					unset($projects_categories[$k]);
+					unset($projectsCategories[$k]);
 					$flag = true;
 				}
 			}
-			if (!$flag) $finish = true;
+
+			if (!$flag) {
+				$finish = true;
+			}
 		}
 
-		// For each category id of all its children, find out
 		$ids = array_reverse(array_keys($pointers));
+
 		foreach ($ids as $id) {
 			if ($id > 0) {
 				$pointers[$id]->children[] = $id;
 
-				if (isset($pointers[$pointers[$id]->parent_id]->children))
+				if (isset($pointers[$pointers[$id]->parent_id]->children)) {
 					$pointers[$pointers[$id]->parent_id]->children = array_merge($pointers[$id]->children, $pointers[$pointers[$id]->parent_id]->children);
-				else
+				} else {
 					$pointers[$pointers[$id]->parent_id]->children = $pointers[$id]->children;
+				}
 			}
 		}
+
 		unset($pointers[0]);
 		unset($ids);
 
-		$this->projects_categories_tree = $tree->subcategories;
-		$this->all_projects_categories = $pointers;
+		$this->projectsCategoriesTree = $tree->subcategories;
+		$this->allProjectsCategories = $pointers;
 	}
 }

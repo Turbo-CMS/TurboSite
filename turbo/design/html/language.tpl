@@ -12,7 +12,7 @@
 	{/if}
 </h1>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -22,6 +22,12 @@
 					{elseif $message_success == 'updated'}
 						{$btr->language_updated|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -29,7 +35,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -56,10 +62,10 @@
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="mb-3">
-								<div class="form-label">{$btr->language_select|escape} </div>
+								<div class="form-label">{$btr->language_select|escape}</div>
 								<select name="lang" class="selectpicker" data-live-search="true" data-width="fit">
 									{foreach $lang_list as $lang}
-										<option value="{$lang->label}" {if $lang->label == $language->label}selected="" {/if} data-content='<span class="flag-icon flag-icon-{$lang->label}"></span> {$lang->name|escape} [{$lang->label|escape}]'>{$lang->name|escape} [{$lang->label|escape}]</option>
+										<option value="{$lang->label}" {if isset($language->label) && $lang->label == $language->label}selected="" {/if} data-content='<span class="flag-icon flag-icon-{$lang->label}"></span> {$lang->name|escape} [{$lang->label|escape}]'>{$lang->name|escape} [{$lang->label|escape}]</option>
 									{/foreach}
 								</select>
 							</div>
@@ -67,7 +73,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $language->enabled}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($language->enabled) && $language->enabled}checked="" {/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -90,7 +96,5 @@
 </form>
 
 {* Flag icon *}
-{css id="flag" include=[
-	"turbo/design/css/flag-icon.min.css"
-]}{/css}
+{css id="flag" include=["turbo/design/css/flag-icon.min.css"]}{/css}
 {stylesheet minify=true}

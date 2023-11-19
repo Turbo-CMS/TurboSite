@@ -1,44 +1,53 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ProjectsCategoriesAdmin extends Turbo
 {
 	function fetch()
 	{
-		if ($this->request->method('post')) {
-			// Actions with selected
+		if ($this->request->isMethod('post')) {
+			// Actions
 			$ids = $this->request->post('check');
 			if (is_array($ids))
 				switch ($this->request->post('action')) {
 					case 'disable': {
-							foreach ($ids as $id)
-								$this->projects_categories->update_projects_category($id, array('visible' => 0));
+							foreach ($ids as $id) {
+								$this->projectsCategories->updateProjectsCategory($id, ['visible' => 0]);
+							}
+
 							break;
 						}
 					case 'enable': {
-							foreach ($ids as $id)
-								$this->projects_categories->update_projects_category($id, array('visible' => 1));
+							foreach ($ids as $id) {
+								$this->projectsCategories->updateProjectsCategory($id, ['visible' => 1]);
+							}
+
 							break;
 						}
 					case 'delete': {
-							foreach ($ids as $id)
-								$this->projects_categories->delete_projects_category($id);
+							foreach ($ids as $id) {
+								$this->projectsCategories->deleteProjectsCategory($id);
+							}
+
 							break;
 						}
 				}
 
-			// Sorting
+			// Sort
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);
-			foreach ($positions as $i => $position)
-				$this->projects_categories->update_projects_category($ids[$i], array('position' => $position));
+
+			foreach ($positions as $i => $position) {
+				$this->projectsCategories->updateProjectsCategory($ids[$i], ['position' => $position]);
+			}
 		}
 
-		$projects_categories = $this->projects_categories->get_projects_categories_tree();
+		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
 
-		$this->design->assign('projects_categories', $projects_categories);
+		$this->design->assign('projects_categories', $projectsCategories);
+
 		return $this->design->fetch('projects_categories.tpl');
 	}
 }

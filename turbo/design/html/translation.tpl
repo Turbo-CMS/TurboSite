@@ -6,9 +6,9 @@
 
 <h1 class="mb-3">
 	{if !$translation->id}
-		{$btr->translation_add|escape}{if $settings->admin_theme} {$btr->global_theme} {$settings->admin_theme|escape}{/if}
+		{$btr->translation_add|escape}
 	{else}
-		{$translation->label|escape}{if $settings->admin_theme} {$btr->global_theme} {$settings->admin_theme|escape}{/if}
+		{$translation->label|escape}
 	{/if}
 </h1>
 
@@ -25,7 +25,7 @@
 	</div>
 {/if}
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -35,6 +35,12 @@
 					{elseif $message_success == 'updated'}
 						{$btr->translation_updated|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -42,7 +48,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -79,7 +85,7 @@
 							<div class="col-12">
 								<div class="mb-3">
 									<div class="form-label">{$btr->translation_name|escape}</div>
-									<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly="" {/if} />
+									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly="" {/if} />
 								</div>
 							</div>
 						</div>
@@ -93,7 +99,7 @@
 											</div>
 											{$lang->name|escape}
 										</div>
-										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly="" {/if}>{$translation->lang_{$lang->label}}</textarea>
+										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly="" {/if}>{if $translation->id}{$translation->lang_{$lang->label}}{/if}</textarea>
 									</div>
 								</div>
 							{/foreach}

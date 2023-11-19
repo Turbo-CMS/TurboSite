@@ -1,6 +1,6 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class ProjectsView extends View
 {
@@ -8,345 +8,391 @@ class ProjectsView extends View
 	{
 		$url = $this->request->get('project_url', 'string');
 
-		// If the project address is specified
 		if (!empty($url)) {
-			// Displaying the project
-			return $this->fetch_project($url);
+			return $this->fetchProject($url);
 		} else {
-			// Otherwise, we display a list of projects
-			return $this->fetch_projects($url);
+			return $this->fetchProjects($url);
 		}
 	}
 
-	private function fetch_project($url)
+	/**
+	 * Fetch Project
+	 */
+	private function fetchProject($url)
 	{
-		// Selecting a project from the database
-		$project = $this->projects->get_project($url);
-		$project->images = $this->projects->get_images(array('project_id' => $project->id));
+		// GET Parameters
+		$project = $this->projects->getProject($url);
+		$project->images = $this->projects->getImages(['project_id' => $project->id]);
 		$project->image = &$project->images[0];
 
-		// If not found - error
-		if (!$project || (!$project->visible && empty($_SESSION['admin'])))
+		// Visible Admin
+		if (!$project || (!$project->visible && empty($_SESSION['admin']))) {
 			return false;
+		}
 
-		// Last-Modified 
-		$LastModified_unix = strtotime($project->last_modified); // time the page was last modified
-		$LastModified = gmdate("D, d M Y H:i:s \G\M\T", $LastModified_unix);
+		// Last Modified
+		$LastModifiedUnix = strtotime($project->last_modified);
+		$LastModified = gmdate("D, d M Y H:i:s \G\M\T", $LastModifiedUnix);
 		$IfModifiedSince = false;
-		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE']))
+
+		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
 			$IfModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']))
+		}
+
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
 			$IfModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
-		if ($IfModifiedSince && $IfModifiedSince >= $LastModified_unix) {
+		}
+
+		if ($IfModifiedSince && $IfModifiedSince >= $LastModifiedUnix) {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
 			exit;
 		}
+
 		header('Last-Modified: ' . $LastModified);
 
-		// Name autocomplete for comment form
-		if (!empty($this->user))
+		// Comments
+		if (!empty($this->user)) {
 			$this->design->assign('comment_name', $this->user->name);
+		}
 
-		// Accept comment
-		if ($this->request->method('post') && $this->request->post('comment')) {
+		// Comment Form
+		if ($this->request->isMethod('post') && $this->request->post('comment')) {
 			$comment = new stdClass;
 			$comment->name = $this->request->post('name');
 			$comment->text = $this->request->post('text');
-			$captcha_code =  $this->request->post('captcha_code', 'string');
+			$comment->parent_id = $this->request->post('parent_id');
+			$comment->admin = $this->request->post('admin');
 
-			if ($this->settings->comments_tree_projects == "on") {
-				$comment->parent_id = $this->request->post('parent_id');
-				$comment->admin = $this->request->post('admin');
-			}
+			$captchaCode =  $this->request->post('captcha_code', 'string');
 
-			// Let's pass the comment back to the template - in case of an error, you will need to fill out the form
 			$this->design->assign('comment_text', $comment->text);
 			$this->design->assign('comment_name', $comment->name);
+			$this->design->assign('parent_id', $comment->parent_id);
 
-			if ($this->settings->comments_tree_projects == "on") {
-				$this->design->assign('parent_id', $comment->parent_id);
-			}
-
-			// Checking the captcha and filling out the form
-			if ($this->settings->captcha_project && ($_SESSION['captcha_project'] != $captcha_code || empty($captcha_code))) {
+			if ($this->settings->captcha_project && ($_SESSION['captcha_project'] != $captchaCode || empty($captcha_code))) {
 				$this->design->assign('error', 'captcha');
 			} elseif (empty($comment->name)) {
 				$this->design->assign('error', 'empty_name');
 			} elseif (empty($comment->text)) {
 				$this->design->assign('error', 'empty_comment');
 			} else {
-				// Create a comment
 				$comment->object_id = $project->id;
 				$comment->type      = 'project';
 				$comment->ip        = $_SERVER['REMOTE_ADDR'];
 
-				// If there were approved comments from the current ip, we approve immediately
-				$this->db->query("SELECT 1 FROM __comments WHERE approved=1 AND ip=? LIMIT 1", $comment->ip);
-				if ($this->db->num_rows() > 0)
+				$approveComment = $this->db->query("SELECT 1 FROM __comments WHERE approved=1 AND ip=? LIMIT 1", $comment->ip);
+
+				if ($this->db->numRows($approveComment) > 0) {
 					$comment->approved = 1;
+				}
 
-				// Adding a comment to the database
-				$comment_id = $this->comments->add_comment($comment);
+				$commentId = $this->comments->addComment($comment);
 
-				// Sending email
-				$this->notify->email_comment_admin($comment_id);
+				$this->notify->emailCommentAdmin($commentId);
 
-				// Get saved captcha
 				unset($_SESSION['captcha_code']);
-				header('location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $comment_id);
+				header('location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $commentId);
 			}
 		}
 
-		if ($this->settings->comments_tree_projects == "on") {
-			$filter = array();
-			$filter['type'] = 'project';
-			$filter['object_id'] = $project->id;
-			$filter['approved'] = 1;
-			$filter['ip'] = $_SERVER['REMOTE_ADDR'];
+		// Comments List
+		$filter = [
+			'type' => 'project',
+			'object_id' => $project->id,
+			'approved' => 1,
+			'ip' => $_SERVER['REMOTE_ADDR']
+		];
 
-			// Sort comments, save in session so that the current sorting remains for the entire site
-			if ($sort = $this->request->get('sort', 'string'))
-				$_SESSION['sort'] = $sort;
-			if (!empty($_SESSION['sort']))
-				$filter['sort'] = $_SESSION['sort'];
-			else
-				$filter['sort'] = 'rate';
-			$this->design->assign('sort', $filter['sort']);
+		// Sort
+		if ($sort = $this->request->get('sort', 'string')) {
+			$_SESSION['sort'] = $sort;
+		}
 
-			// Reading the total number of comments to calculate pages         
-			$comments_count = $this->comments->count_comments($filter);
-
-			// Tree comments to the project
-			$comments = $this->comments->get_comments_tree($filter);
-			$this->design->assign('comments_count', $comments_count);
+		if (!empty($_SESSION['sort'])) {
+			$filter['sort'] = $_SESSION['sort'];
 		} else {
-
-			// Project comments
-			$comments = $this->comments->get_comments(array('type' => 'project', 'object_id' => $project->id, 'approved' => 1, 'ip' => $_SERVER['REMOTE_ADDR']));
+			$filter['sort'] = 'rate';
 		}
 
-		// Related projects
-		$related_ids = array();
-		$related_projects = array();
-		foreach ($this->projects->get_related_projects($project->id) as $p) {
-			$related_ids[] = $p->related_id;
-			$related_projects[$p->related_id] = null;
+		$this->design->assign('sort', $filter['sort']);
+
+		// Pagination Comments
+		$itemsPerPage = $this->settings->comments_num;
+		$currentPage = max(1, $this->request->get('page', 'integer'));
+
+		$this->design->assign('current_page_num', $currentPage);
+
+		$commentsCount = $this->comments->countComments($filter);
+		$pagesNum = ceil($commentsCount / $itemsPerPage);
+
+		$this->design->assign('total_pages_num', $pagesNum);
+
+		if ($this->request->get('page') == 'all') {
+			$itemsPerPage = $commentsCount;
 		}
-		if (!empty($related_ids)) {
-			foreach ($this->projects->get_projects(array('id' => $related_ids, 'in_stock' => 1, 'visible' => 1)) as $p)
-				$related_projects[$p->id] = $p;
 
-			$related_projects_images = $this->projects->get_images(array('project_id' => array_keys($related_projects)));
-			foreach ($related_projects_images as $related_project_image)
-				if (isset($related_projects[$related_project_image->project_id]))
-					$related_projects[$related_project_image->project_id]->images[] = $related_project_image;
+		$filter['page'] = $currentPage;
+		$filter['limit'] = $itemsPerPage;
 
-			foreach ($related_projects as $id => $r) {
+		// Get Comments
+		$comments = $this->comments->getComments($filter);
+
+		$children = [];
+
+		foreach ($this->comments->getComments() as $c) {
+			$children[$c->parent_id][] = $c;
+		}
+
+		// Related Projects
+		$relatedIds = [];
+		$relatedProjects = [];
+
+		foreach ($this->projects->getRelatedProjects($project->id) as $p) {
+			$relatedIds[] = $p->related_id;
+			$relatedProjects[$p->related_id] = null;
+		}
+
+		if (!empty($relatedIds)) {
+			foreach ($this->projects->getProjects(['id' => $relatedIds, 'in_stock' => 1, 'visible' => 1]) as $p) {
+				$relatedProjects[$p->id] = $p;
+			}
+
+			$relatedProjectsImages = $this->projects->getImages(['project_id' => array_keys($relatedProjects)]);
+			foreach ($relatedProjectsImages as $relatedProjectImage) {
+				if (isset($relatedProjects[$relatedProjectImage->project_id])) {
+					$relatedProjects[$relatedProjectImage->project_id]->images[] = $relatedProjectImage;
+				}
+			}
+
+			foreach ($relatedProjects as $id => $r) {
 				if (is_object($r)) {
 					$r->image = &$r->images[0];
 				} else {
-					unset($related_projects[$id]);
+					unset($relatedProjects[$id]);
 				}
 			}
-			$this->design->assign('related_projects', $related_projects);
+
+			$this->design->assign('related_projects', $relatedProjects);
 		}
 
-		$this->design->assign('comments', $comments);
+
+		// Design
 		$this->design->assign('project',  $project);
+		$this->design->assign('comments', $comments);
+		$this->design->assign('children', $children);
+		$this->design->assign('comments_count', $commentsCount);
 
 		// Category
-		$category = $this->projects_categories->get_projects_category(intval($project->category_id));
+		$category = $this->projectsCategories->getProjectsCategory((int) $project->category_id);
 		$this->design->assign('category', $category);
 
-		// Neighboring projects
-		$this->design->assign('next_project', $this->projects->get_next_project($project->id));
-		$this->design->assign('prev_project', $this->projects->get_prev_project($project->id));
+		// Next & Prev
+		$this->design->assign('next_project', $this->projects->getNextProject($project->id));
+		$this->design->assign('prev_project', $this->projects->getPrevProject($project->id));
 
-		// Meta tags
+		// Meta Tags
 		$this->design->assign('meta_title', $project->meta_title);
 		$this->design->assign('meta_keywords', $project->meta_keywords);
 		$this->design->assign('meta_description', $project->meta_description);
 
-		$auto_meta = new StdClass;
+		$autoMeta = new StdClass;
 
-		$auto_meta->title       = $this->seo->project_meta_title       ? $this->seo->project_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->project_meta_keywords    ? $this->seo->project_meta_keywords    : '';
-		$auto_meta->description = $this->seo->project_meta_description ? $this->seo->project_meta_description : '';
+		$autoMeta->title = $this->seo->project_meta_title ?: '';
+		$autoMeta->keywords = $this->seo->project_meta_keywords ?: '';
+		$autoMeta->description = $this->seo->project_meta_description ?: '';
 
-		$auto_meta_parts = array(
-			'{project}' => ($project ? $project->name : ''),
-			'{category}' => ($category ? $category->name : ''),
-			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+		$autoMetaParts = [
+			'{project}' => $project ? $project->name : '',
+			'{category}' => $category ? $category->name : '',
+			'{page}' => $this->page ? $this->page->header : '',
+			'{site_url}' => $this->seo->am_url ?: '',
+			'{site_name}' => $this->seo->am_name ?: '',
+			'{site_phone}' => $this->seo->am_phone ?: '',
+			'{site_email}' => $this->seo->am_email ?: '',
+		];
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		$autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
+		$autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
+		$autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+		$autoMeta->title = preg_replace("/\{.*\}/", '', $autoMeta->title);
+		$autoMeta->keywords = preg_replace("/\{.*\}/", '', $autoMeta->keywords);
+		$autoMeta->description = preg_replace("/\{.*\}/", '', $autoMeta->description);
 
-		$this->design->assign('auto_meta', $auto_meta);
+		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('project.tpl');
 	}
 
-	// Project list display
-	private function fetch_projects()
+	/**
+	 * Fetch Projects
+	 */
+	private function fetchProjects()
 	{
-		$filter = array();
+		$filter = [];
 
-		// If the keyword is set
+		// Search
 		$keyword = $this->request->get('keyword');
+
 		if (!empty($keyword)) {
 			$this->design->assign('keyword', $keyword);
 			$filter['keyword'] = $keyword;
 		}
 
-		// GET parameters
-		$category_url = $this->request->get('category', 'string');
+		// GET Parameters
+		$categoryUrl = $this->request->get('category', 'string');
 
-		// Select the current category
-		if (!empty($category_url)) {
-			$category = $this->projects_categories->get_projects_category((string)$category_url);
-			if (empty($category) || (!$category->visible && empty($_SESSION['admin'])))
+		// Category
+		if (!empty($categoryUrl)) {
+			$category = $this->projectsCategories->getProjectsCategory((string) $categoryUrl);
+
+			if (empty($category) || (!$category->visible && empty($_SESSION['admin']))) {
 				return false;
-			$this->design->assign('category', $category);
+			}
+
+			$this->design->assign('projects_category', $category);
+
 			$filter['category_id'] = $category->children;
 		}
 
-		// Sorting projects, save in session so that the current sorting remains for the entire site
-		if ($sort = $this->request->get('sort', 'string'))
+		// Sort
+		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
-		if (!empty($_SESSION['sort']))
+		}
+
+		if (!empty($_SESSION['sort'])) {
 			$filter['sort'] = $_SESSION['sort'];
-		else
+		} else {
 			$filter['sort'] = 'position';
+		}
+
 		$this->design->assign('sort', $filter['sort']);
 
-		// Number of projects on 1 page
-		$items_per_page = $this->settings->projects_num;
+		// Pagination
+		$itemsPerPage = $this->settings->projects_num;
 
-		// Select only visible projects
 		$filter['visible'] = 1;
 
-		// Current page in pagination
-		$current_page = $this->request->get('page', 'integer');
+		$currentPage = $this->request->get('page', 'integer');
 
-		// If not set, then equal to 1
-		$current_page = max(1, $current_page);
-		$this->design->assign('current_page_num', $current_page);
+		$currentPage = max(1, $currentPage);
+		$this->design->assign('current_page_num', $currentPage);
 
-		// Calculate the number of pages
-		$projects_count = $this->projects->count_projects($filter);
+		$projectsCount = $this->projects->countProjects($filter);
 
-		// Show all pages at once
-		if ($this->request->get('page') == 'all')
-			$items_per_page = $projects_count;
+		if ($this->request->get('page') == 'all') {
+			$itemsPerPage = $projectsCount;
+		}
 
-		$pages_num = ceil($projects_count / $items_per_page);
+		$pages_num = ceil($projectsCount / $itemsPerPage);
 		$this->design->assign('total_pages_num', $pages_num);
 
-		$filter['page'] = $current_page;
-		$filter['limit'] = $items_per_page;
+		$filter['page'] = $currentPage;
+		$filter['limit'] = $itemsPerPage;
 
 		// Projects 
-		$projects = array();
-		foreach ($this->projects->get_projects($filter) as $p)
-			$projects[$p->id] = $p;
+		$projects = [];
 
-		// If you searched for a project and found exactly one, redirect to it
-		if (!empty($keyword) && $projects_count == 1)
+		foreach ($this->projects->getProjects($filter) as $p) {
+			$projects[$p->id] = $p;
+		}
+
+		if (!empty($keyword) && $projectsCount == 1) {
 			header('Location: ' . $this->config->root_url . '/project/' . $p->url);
+		}
 
 		if (!empty($projects)) {
-			$projects_ids = array_keys($projects);
+			$projectsIds = array_keys($projects);
+
 			foreach ($projects as &$project) {
-				$project->images = array();
+				$project->images = [];
 			}
 
-			$images = $this->projects->get_images(array('project_id' => $projects_ids));
-			foreach ($images as $image)
+			$images = $this->projects->getImages(['project_id' => $projectsIds]);
+
+			foreach ($images as $image) {
 				$projects[$image->project_id]->images[] = $image;
-
-			foreach ($projects as &$project) {
-				if (isset($project->images[0]))
-					$project->image = $project->images[0];
 			}
 
+			foreach ($projects as &$project) {
+				if (isset($project->images[0])) {
+					$project->image = $project->images[0];
+				}
+			}
+
+			// Design
 			$this->design->assign('projects', $projects);
 		}
 
-		// Set meta tags depending on the request
-		$auto_meta = new StdClass;
+		// Meta Tags
+		$autoMeta = new StdClass;
 
-		$auto_meta->title = "";
-		$auto_meta->keywords = "";
-		$auto_meta->description = "";
-
-		$auto_meta_parts = @array(
-			'{category}' => ($category ? $category->name : ''),
-			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+		$autoMetaParts = [
+			'{category}' => isset($category, $category->name) ? $category->name : '',
+			'{page}' => $this->page ? $this->page->header : '',
+			'{site_url}' => $this->seo->am_url ?: '',
+			'{site_name}' => $this->seo->am_name ?: '',
+			'{site_phone}' => $this->seo->am_phone ?: '',
+			'{site_email}' => $this->seo->am_email ?: '',
+		];
 
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
 			$this->design->assign('meta_description', $this->page->meta_description);
 
-			$LastModified_unix = strtotime($this->page->last_modified);
+			$LastModifiedUnix = strtotime($this->page->last_modified);
 
-			$auto_meta->title       = $this->seo->page_meta_title       ? $this->seo->page_meta_title       : '';
-			$auto_meta->keywords    = $this->seo->page_meta_keywords    ? $this->seo->page_meta_keywords    : '';
-			$auto_meta->description = $this->seo->page_meta_description ? $this->seo->page_meta_description : '';
+			$autoMeta->title = $this->seo->page_meta_title ?: '';
+			$autoMeta->keywords = $this->seo->page_meta_keywords ?: '';
+			$autoMeta->description = $this->seo->page_meta_description ?: '';
 		} elseif (isset($category)) {
 			$this->design->assign('meta_title', $category->meta_title);
 			$this->design->assign('meta_keywords', $category->meta_keywords);
 			$this->design->assign('meta_description', $category->meta_description);
 
-			$LastModified_unix = strtotime($category->last_modified);
+			$LastModifiedUnix = strtotime($category->last_modified);
 
-			$auto_meta->title       = $this->seo->category_meta_title       ? $this->seo->category_meta_title       : '';
-			$auto_meta->keywords    = $this->seo->category_meta_keywords    ? $this->seo->category_meta_keywords    : '';
-			$auto_meta->description = $this->seo->category_meta_description ? $this->seo->category_meta_description : '';
+			$autoMeta->title = $this->seo->category_meta_title ?: '';
+			$autoMeta->keywords = $this->seo->category_meta_keywords ?: '';
+			$autoMeta->description = $this->seo->category_meta_description ?: '';
 		} elseif (isset($keyword)) {
 			$this->design->assign('meta_title', $keyword);
 		}
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		$autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
+		$autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
+		$autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+		$autoMeta->title = preg_replace("/\{.*\}/", '', $autoMeta->title);
+		$autoMeta->keywords = preg_replace("/\{.*\}/", '', $autoMeta->keywords);
+		$autoMeta->description = preg_replace("/\{.*\}/", '', $autoMeta->description);
 
-		$this->design->assign('auto_meta', $auto_meta);
+		$this->design->assign('auto_meta', $autoMeta);
 
-		// Last-Modified 
-		if (isset($LastModified_unix)) {
-			$LastModified = gmdate("D, d M Y H:i:s \G\M\T", $LastModified_unix);
+		// Last Modified 
+		if (isset($LastModifiedUnix)) {
+			$LastModified = gmdate("D, d M Y H:i:s \G\M\T", $LastModifiedUnix);
 			$IfModifiedSince = false;
-			if (isset($_ENV['HTTP_IF_MODIFIED_SINCE']))
+
+			if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
 				$IfModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
-			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']))
+			}
+
+			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
 				$IfModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
-			if ($IfModifiedSince && $IfModifiedSince >= $LastModified_unix) {
+			}
+
+			if ($IfModifiedSince && $IfModifiedSince >= $LastModifiedUnix) {
 				header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
 				exit;
 			}
+
 			header('Last-Modified: ' . $LastModified);
 		}
 
+		// Display
 		$body = $this->design->fetch('projects.tpl');
 
 		return $body;

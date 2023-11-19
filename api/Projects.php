@@ -1,107 +1,155 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Projects extends Turbo
 {
 	/*
-	*
-	* The function returns the project by its id or url
-	* (depending on the argument type, int - id, string - url)
-	* @param $id project id or url
-	*
+	* Get Project
 	*/
-	public function get_project($id)
+	public function getProject($id)
 	{
-		if (is_int($id))
-			$where = $this->db->placehold(' WHERE b.id=? ', intval($id));
-		else
-			$where = $this->db->placehold(' WHERE b.url=? ', $id);
+		if (is_int($id)) {
+			$where = $this->db->placehold(' WHERE p.id=? ', (int) $id);
+		} else {
+			$where = $this->db->placehold(' WHERE p.url=? ', $id);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'project', 'px' => 'b'));
+		$langSql = $this->languages->getQuery(array('object' => 'project', 'px' => 'p'));
 
-		$query = $this->db->placehold("SELECT b.id, b.category_id, b.url, b.name, b.client, b.site, b.type, b.annotation, b.text, b.meta_title,
-		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.position, b.last_modified, " . $lang_sql->fields . "
-		                               FROM __projects b " . $lang_sql->join . " $where LIMIT 1");
-		if ($this->db->query($query))
+		$query = $this->db->placehold(
+			"SELECT 
+				p.id, 
+				p.category_id, 
+				p.url, 
+				p.name, 
+				p.client, 
+				p.site, 
+				p.type, 
+				p.annotation, 
+				p.text, 
+				p.meta_title,
+				p.meta_keywords, 
+				p.meta_description, 
+				p.visible, 
+				p.date, 
+				p.position, 
+				p.last_modified, 
+				$langSql->fields
+			FROM 
+				__projects p 
+				$langSql->join 
+				$where 
+			LIMIT 1"
+		);
+
+		if ($this->db->query($query)) {
 			return $this->db->result();
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/*
-	*
-	* The function returns an array of projects that match the filter
-	* @param $filter
-	*
+	* Get Projects
 	*/
-	public function get_projects($filter = array())
+	public function getProjects($filter = [])
 	{
-		// Default
 		$limit = 1000;
 		$page = 1;
-		$project_id_filter = '';
-		$category_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
-		$order = 'b.position DESC';
-		$projects = array();
+		$projectIdFilter = '';
+		$categoryIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
+		$order = 'p.position DESC';
+		$projects = [];
 
-		$lang_id  = $this->languages->lang_id();
-		$px = ($lang_id ? 'l' : 'b');
+		$langId  = $this->languages->langId();
+		$px = ($langId ? 'l' : 'p');
 
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
-
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
-
-		if (!empty($filter['id']))
-			$project_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
-
-		if (!empty($filter['category_id'])) {
-			$category_id_filter = $this->db->placehold('AND b.category_id in(?@)', (array)$filter['category_id']);
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
 		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
+
+		if (!empty($filter['id'])) {
+			$projectIdFilter = $this->db->placehold('AND p.id IN(?@)', (array) $filter['id']);
+		}
+
+		if (!empty($filter['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('AND p.category_id IN(?@)', (array) $filter['category_id']);
+		}
+
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND p.visible=?', (int) $filter['visible']);
+		}
 
 		if (!empty($filter['sort']))
 			switch ($filter['sort']) {
 				case 'position':
-					$order = 'b.position DESC';
+					$order = 'p.position DESC';
 					break;
 				case 'name':
-					$order = 'b.name';
+					$order = 'p.name';
 					break;
 				case 'date':
-					$order = 'b.date DESC,b.id DESC';
+					$order = 'p.date DESC,p.id DESC';
 					break;
 			}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
 
-		$lang_sql = $this->languages->get_query(array('object' => 'project', 'px' => 'b'));
+		$langSql = $this->languages->getQuery(array('object' => 'project', 'px' => 'p'));
 
-		$query = $this->db->placehold("SELECT b.id, b.category_id, b.url, b.name, b.client, b.site, b.type, b.annotation, b.text,
-		                                      b.meta_title, b.meta_keywords, b.meta_description, b.visible,
-		                                      b.date, b.position, b.last_modified, " . $lang_sql->fields . "
-		                                      FROM __projects b " . $lang_sql->join . " WHERE 1 $project_id_filter $category_id_filter $visible_filter $keyword_filter
-		                                      ORDER BY $order $sql_limit");
+		$query = $this->db->placehold(
+			"SELECT 
+				p.id, 
+				p.category_id, 
+				p.url, 
+				p.name, 
+				p.client, 
+				p.site, 
+				p.type, 
+				p.annotation, 
+				p.text,
+		        p.meta_title, 
+				p.meta_keywords, 
+				p.meta_description, 
+				p.visible,
+		        p.date, 
+				p.position, 
+				p.last_modified, 
+				$langSql->fields
+		    FROM 
+				__projects p 
+			    $langSql->join
+			WHERE 1 
+				$projectIdFilter 
+				$categoryIdFilter 
+				$visibleFilter 
+				$keywordFilter
+		    ORDER BY 
+				$order 
+				$sqlLimit"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
@@ -110,65 +158,65 @@ class Projects extends Turbo
 		}
 	}
 
-	/*
-	*
-	* The function calculates the number of projects that match the filter
-	* @param $filter
-	*
-	*/
-	public function count_projects($filter = array())
+	/**
+	 * Count Projects
+	 */
+	public function countProjects($filter = [])
 	{
-		$project_id_filter = '';
-		$category_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
+		$projectIdFilter = '';
+		$categoryIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
 
-		if (!empty($filter['id']))
-			$project_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
-
-		if (!empty($filter['category_id'])) {
-			$category_id_filter = $this->db->placehold('AND b.category_id in(?@)', (array)$filter['category_id']);
+		if (!empty($filter['id'])) {
+			$projectIdFilter = $this->db->placehold('AND p.id in(?@)', (array) $filter['id']);
 		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
+		if (!empty($filter['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('AND p.category_id IN(?@)', (array) $filter['category_id']);
+		}
+
+		if (isset($filter['visible'])) {
+			$visibleFRilter = $this->db->placehold('AND p.visible = ?', (int) $filter['visible']);
+		}
 
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (p.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR p.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$query = "SELECT COUNT(distinct b.id) as count
-		          FROM __projects b WHERE 1 $project_id_filter $category_id_filter $visible_filter $keyword_filter";
+		$query = $this->db->placehold(
+			"SELECT COUNT(distinct p.id) AS count
+			 FROM __projects p WHERE 1 $projectIdFilter $categoryIdFilter $visibleFilter $keywordFilter"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
+					$this->cache->set($query, $result);
 					return $result;
 				} else
 					return false;
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->result('count');
-			else
+			} else {
 				return false;
+			}
 		}
 	}
 
-	/*
-	*
-	* Create a project
-	* @param $project
-	*
-	*/
-	public function add_project($project)
+	/**
+	 * Add Project
+	 */
+	public function addProject($project)
 	{
 		$project = (array) $project;
 
@@ -177,46 +225,54 @@ class Projects extends Turbo
 			$project['url'] = strtolower(preg_replace("/[^0-9a-zа-я\-]+/ui", '', $project['url']));
 		}
 
-		// If there is a project with this URL, add a number to it
-		while ($this->get_project((string)$project['url'])) {
-			if (preg_match('/(.+)_([0-9]+)$/', $project['url'], $parts))
+		while ($this->getProject((string)$project['url'])) {
+			if (preg_match('/(.+)_([0-9]+)$/', $project['url'], $parts)) {
 				$project['url'] = $parts[1] . '_' . ($parts[2] + 1);
-			else
+			} else {
 				$project['url'] = $project['url'] . '_2';
+			}
 		}
 
-		$project = (object)$project;
-		$result = $this->languages->get_description($project, 'project');
-		if (!empty($result->data)) $project = $result->data;
+		$project = (object) $project;
+
+		$result = $this->languages->getDescription($project, 'project');
+
+		if (!empty($result->data)) {
+			$project = $result->data;
+		}
 
 		if ($this->db->query("INSERT INTO __projects SET ?%", $project)) {
-			$id = $this->db->insert_id();
+			$id = $this->db->insertId();
 			$this->db->query("UPDATE __projects SET `last_modified`=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'project');
+				$this->languages->actionDescription($id, $result->description, 'project');
 			}
+
 			return $id;
-		} else
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* Update project(s)
-	* @param $project
-	*
-	*/
-	public function update_project($id, $project)
+	/**
+	 * Update Projects
+	 */
+	public function updateProject($id, $project)
 	{
 		$project = (object)$project;
-		$result = $this->languages->get_description($project, 'project');
-		if (!empty($result->data)) $project = $result->data;
 
-		$query = $this->db->placehold("UPDATE __projects SET `last_modified`=NOW(), ?% WHERE id in(?@) LIMIT ?", $project, (array)$id, count((array)$id));
+		$result = $this->languages->getDescription($project, 'project');
+
+		if (!empty($result->data)) {
+			$project = $result->data;
+		}
+
+		$query = $this->db->placehold("UPDATE __projects SET `last_modified`=NOW(), ?% WHERE id IN(?@) LIMIT ?", $project, (array) $id, count((array) $id));
+
 		if ($this->db->query($query)) {
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'project', $this->languages->lang_id());
+				$this->languages->actionDescription($id, $result->description, 'project', $this->languages->langId());
 			}
 			return $id;
 		} else
@@ -224,112 +280,158 @@ class Projects extends Turbo
 	}
 
 	/*
-	*
 	* Delete project
-	* @param $id
-	*
 	*/
-	public function delete_project($id)
+	public function deleteProject($id)
 	{
 		if (!empty($id)) {
 
-			// Removing images
-			$images = $this->get_images(array('project_id' => $id));
-			foreach ($images as $i)
-				$this->delete_image($i->id);
+			$images = $this->getImages(['project_id' => $id]);
 
-			// Removing related projects
-			$related = $this->get_related_projects($id);
-			foreach ($related as $r)
-				$this->delete_related_project($id, $r->related_id);
+			foreach ($images as $i) {
+				$this->deleteImage($i->id);
+			}
 
-			// Remove project from related to others
-			$query = $this->db->placehold("DELETE FROM __related_projects WHERE related_id=?", intval($id));
+			$related = $this->getRelatedProjects($id);
+
+			foreach ($related as $r) {
+				$this->deleteRelatedProject($id, $r->related_id);
+			}
+
+			$query = $this->db->placehold("DELETE FROM __related_projects WHERE related_id=?", (int) $id);
 			$this->db->query($query);
 
-			// Delete reviews
-			$comments = $this->comments->get_comments(array('object_id' => $id, 'type' => 'project'));
-			foreach ($comments as $c)
-				$this->comments->delete_comment($c->id);
+			$comments = $this->comments->getComments(['object_id' => $id, 'type' => 'project']);
 
-			// Removing languages
-			$query = $this->db->placehold("DELETE FROM __lang_projects WHERE project_id=?", intval($id));
+			foreach ($comments as $c) {
+				$this->comments->deleteComment($c->id);
+			}
+
+			$query = $this->db->placehold("DELETE FROM __lang_projects WHERE project_id=?", (int) $id);
 			$this->db->query($query);
 
-			$query = $this->db->placehold("DELETE FROM __projects WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __projects WHERE id=? LIMIT 1", (int) $id);
+
 			if ($this->db->query($query)) {
-				$query = $this->db->placehold("DELETE FROM __comments WHERE type='project' AND object_id=? LIMIT 1", intval($id));
-				if ($this->db->query($query))
+				$query = $this->db->placehold("DELETE FROM __comments WHERE type='project' AND object_id=? LIMIT 1", (int) $id);
+
+				if ($this->db->query($query)) {
 					return true;
+				}
 			}
 		}
 		return false;
 	}
 
-	public function get_related_projects($project_id = array())
+	/*
+	* Get Related Projects
+	*/
+	public function getRelatedProjects($projectId = [])
 	{
-		if (empty($project_id))
-			return array();
+		if (empty($projectId)) {
+			return [];
+		}
 
-		$project_id_filter = $this->db->placehold('AND project_id in(?@)', (array)$project_id);
+		$projectIdFilter = $this->db->placehold('AND project_id IN(?@)', (array) $projectId);
 
-		$query = $this->db->placehold("SELECT project_id, related_id, position
-					FROM __related_projects
-					WHERE 
-					1
-					$project_id_filter   
-					ORDER BY position       
-					");
+		$query = $this->db->placehold(
+			"SELECT 
+				project_id, 
+				related_id, 
+				position
+			FROM 
+				__related_projects
+			WHERE 1
+				$projectIdFilter   
+			ORDER BY 
+				position"
+		);
+
 		$this->db->query($query);
 		return $this->db->results();
 	}
 
-	// Function returns related projects
-	public function add_related_project($project_id, $related_id, $position = 0)
+	/*
+	* Add Related Projects
+	*/
+	public function addRelatedProject($projectId, $relatedId, $position = 0)
 	{
-		$query = $this->db->placehold("INSERT IGNORE INTO __related_projects SET project_id=?, related_id=?, position=?", $project_id, $related_id, $position);
+		$query = $this->db->placehold("INSERT IGNORE INTO __related_projects SET project_id=?, related_id=?, position=?", $projectId, $relatedId, $position);
+
 		$this->db->query($query);
-		return $related_id;
+		return $relatedId;
 	}
 
-	// Deleting a linked project
-	public function delete_related_project($project_id, $related_id)
+	/*
+	* Delete Related Projects
+	*/
+	public function deleteRelatedProject($projectId, $relatedId)
 	{
-		$query = $this->db->placehold("DELETE FROM __related_projects WHERE project_id=? AND related_id=? LIMIT 1", intval($project_id), intval($related_id));
+		$query = $this->db->placehold("DELETE FROM __related_projects WHERE project_id=? AND related_id=? LIMIT 1", (int) $projectId, (int) $relatedId);
 		$this->db->query($query);
 	}
 
-	function get_images($filter = array())
+	/*
+	* Get Images
+	*/
+	function getImages($filter = [])
 	{
-		$project_id_filter = '';
-		$group_by = '';
+		$projectIdFilter = '';
+		$groupBy = '';
 
-		if (!empty($filter['project_id']))
-			$project_id_filter = $this->db->placehold('AND i.project_id in(?@)', (array)$filter['project_id']);
+		if (!empty($filter['project_id'])) {
+			$projectIdFilter = $this->db->placehold('AND i.project_id IN(?@)', (array) $filter['project_id']);
+		}
 
-		// images
-		$query = $this->db->placehold("SELECT i.id, i.project_id, i.name, i.filename, i.position
-									FROM __images_project AS i WHERE 1 $project_id_filter $group_by ORDER BY i.project_id, i.position");
+		$query = $this->db->placehold(
+			"SELECT 
+				i.id, 
+				i.project_id, 
+				i.name, 
+				i.filename, 
+				i.position
+			FROM 
+				__images_project 
+			AS 
+				i 
+			WHERE 1 
+				$projectIdFilter 
+				$groupBy 
+			ORDER BY 
+				i.project_id, 
+				i.position"
+		);
 		$this->db->query($query);
 		return $this->db->results();
 	}
 
-	public function add_image($project_id, $filename, $name = '')
+	/*
+	* Add Image
+	*/
+	public function addImage($projectId, $filename, $name = '')
 	{
-		$query = $this->db->placehold("SELECT id FROM __images_project WHERE project_id=? AND filename=?", $project_id, $filename);
+		$query = $this->db->placehold("SELECT id FROM __images_project WHERE project_id=? AND filename=?", $projectId, $filename);
 		$this->db->query($query);
+
 		$id = $this->db->result('id');
+
 		if (empty($id)) {
-			$query = $this->db->placehold("INSERT INTO __images_project SET project_id=?, filename=?", $project_id, $filename);
+			$query = $this->db->placehold("INSERT INTO __images_project SET project_id=?, filename=?", $projectId, $filename);
 			$this->db->query($query);
-			$id = $this->db->insert_id();
+
+			$id = $this->db->insertId();
+
 			$query = $this->db->placehold("UPDATE __images_project SET position=id WHERE id=?", $id);
 			$this->db->query($query);
 		}
+
 		return ($id);
 	}
 
-	public function update_image($id, $image)
+	/*
+	* Update Image
+	*/
+	public function updateImage($id, $image)
 	{
 
 		$query = $this->db->placehold("UPDATE __images_project SET ?% WHERE id=?", $image, $id);
@@ -338,92 +440,114 @@ class Projects extends Turbo
 		return ($id);
 	}
 
-	public function delete_image($id)
+	/**
+	 * Delete Image
+	 */
+	public function deleteImage($id)
 	{
 		$query = $this->db->placehold("SELECT filename FROM __images_project WHERE id=?", $id);
 		$this->db->query($query);
+
 		$filename = $this->db->result('filename');
+
 		$query = $this->db->placehold("DELETE FROM __images_project WHERE id=? LIMIT 1", $id);
 		$this->db->query($query);
-		$query = $this->db->placehold("SELECT count(*) as count FROM __images_project WHERE filename=? LIMIT 1", $filename);
+
+		$query = $this->db->placehold("SELECT count(*) AS count FROM __images_project WHERE filename=? LIMIT 1", $filename);
 		$this->db->query($query);
+
 		$count = $this->db->result('count');
+
 		if ($count == 0) {
 			$file = pathinfo($filename, PATHINFO_FILENAME);
 			$ext = pathinfo($filename, PATHINFO_EXTENSION);
 			$webp = 'webp';
 
-			// Delete all resizes
-			$rezised_images = glob($this->config->root_dir . $this->config->resized_images_dir . $file . ".*x*." . $ext);
-			if (is_array($rezised_images))
-				foreach (glob($this->config->root_dir . $this->config->resized_images_dir . $file . ".*x*." . $ext) as $f)
-					@unlink($f);
+			$resizedImages = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $ext);
 
-			$rezised_images = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $webp);
-			if (is_array($rezised_images)) {
-				foreach (glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $webp) as $f) {
-					@unlink($f);
+			if (is_array($resizedImages)) {
+				foreach ($resizedImages as $f) {
+					if (is_file($f)) {
+						unlink($f);
+					}
 				}
 			}
-			@unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
+
+			$resizedImages = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $webp);
+
+			if (is_array($resizedImages)) {
+				foreach ($resizedImages as $f) {
+					if (is_file($f)) {
+						unlink($f);
+					}
+				}
+			}
+
+			unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
 		}
 	}
 
 	/*
-	*
-	* Next project
-	* @param $project
-	*
+	* Next Project
 	*/
-	public function get_next_project($id)
+	public function getNextProject($id)
 	{
 		$this->db->query("SELECT date FROM __projects WHERE id=? LIMIT 1", $id);
+
 		$date = $this->db->result('date');
+
 		$this->db->query("SELECT category_id FROM __projects WHERE id=? LIMIT 1", $id);
-		$category_id = $this->db->result('category_id');
+
+		$categoryId = $this->db->result('category_id');
 
 		$this->db->query(
 			"(SELECT id FROM __projects WHERE date=? AND id>? AND visible  ORDER BY id limit 1)
-		                   UNION
-		                  (SELECT id FROM __projects WHERE date>? AND category_id=? AND visible ORDER BY date, id limit 1)",
+		    UNION
+		    (SELECT id FROM __projects WHERE date>? AND category_id=? AND visible ORDER BY date, id limit 1)",
 			$date,
 			$id,
 			$date,
-			$category_id
+			$categoryId
 		);
-		$next_id = $this->db->result('id');
-		if ($next_id)
-			return $this->get_project(intval($next_id));
-		else
+
+		$nextId = $this->db->result('id');
+
+		if ($nextId) {
+			return $this->getProject((int) $nextId);
+		} else {
 			return false;
+		}
 	}
 
 	/*
-	*
-	* Previous project
-	* @param $project
-	*
+	* Prev Project
 	*/
-	public function get_prev_project($id)
+	public function getPrevProject($id)
 	{
 		$this->db->query("SELECT date FROM __projects WHERE id=? LIMIT 1", $id);
+
 		$date = $this->db->result('date');
+
 		$this->db->query("SELECT category_id FROM __projects WHERE id=? LIMIT 1", $id);
-		$category_id = $this->db->result('category_id');
+
+		$categoryId = $this->db->result('category_id');
 
 		$this->db->query(
 			"(SELECT id FROM __projects WHERE date=? AND id<? AND visible ORDER BY id DESC limit 1)
-		                   UNION
-		                  (SELECT id FROM __projects WHERE date<? AND category_id=? AND visible ORDER BY date DESC, id DESC limit 1)",
+		    UNION
+		    (SELECT id FROM __projects WHERE date<? AND category_id=? AND visible ORDER BY date DESC, id DESC limit 1)",
 			$date,
 			$id,
 			$date,
-			$category_id
+			$categoryId
 		);
-		$prev_id = $this->db->result('id');
-		if ($prev_id)
-			return $this->get_project(intval($prev_id));
-		else
+
+		$prevId = $this->db->result('id');
+
+		if ($prevId) {
+			return $this->getProject((int) $prevId);
+		} else {
 			return false;
+		}
 	}
 }

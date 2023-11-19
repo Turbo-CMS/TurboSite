@@ -13,12 +13,14 @@
 
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
+	{* CSS *}
 	{if $settings->admin_theme == "dark"}
 		{css id="main" include=[
 			"turbo/design/css/dark.css",
 			"turbo/design/css/turbo-dark.css",
 			"turbo/design/css/media.css",
 			"turbo/design/css/bootstrap-select-dark.css",
+			"turbo/design/css/jquery.scrollbar.css",
 			"turbo/design/css/icon-font.css"
 		]}{/css}
 		{stylesheet minify=true}
@@ -28,13 +30,17 @@
 			"turbo/design/css/turbo.css",
 			"turbo/design/css/media.css",
 			"turbo/design/css/bootstrap-select.css",
+			"turbo/design/css/jquery.scrollbar.css",
 			"turbo/design/css/icon-font.css"
 		]}{/css}
 		{stylesheet minify=true}
 	{/if}
+
+	{* JS *}
 	{js id="libs" priority=99 include=[
 		"turbo/design/js/jquery/jquery.js",
 		"turbo/design/js/jquery/jquery.form.min.js",
+		"turbo/design/js/jquery.scrollbar.min.js",
 		"turbo/design/js/bootstrap-select.js",
 		"turbo/design/js/sortable.min.js"
 	]}{/js}
@@ -201,26 +207,29 @@
 						</li>
 					{/if}
 					{if in_array('design', $manager->permissions)}
-						<li class="sidebar-item {if in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
-							<a data-bs-target="#design" data-bs-toggle="collapse" {if in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
+							<a data-bs-target="#design" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
 								<i class="align-middle" data-feather="layout"></i>
 								<span class="align-middle">{$btr->global_design|escape}</span>
 							</a>
-							<ul id="design" class="sidebar-dropdown list-unstyled collapse {if in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}show{/if}" data-bs-parent="#sidebar">
-								<li class="sidebar-item {if in_array($smarty.get.module, array('ThemeAdmin'))}active{/if}">
+							<ul id="design" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}show{/if}" data-bs-parent="#sidebar">
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=ThemeAdmin">{$btr->global_templates|escape}</a>
 								</li>
-								<li class="sidebar-item {if in_array($smarty.get.module, array('TemplatesAdmin'))}active{/if}">
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('TemplatesAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=TemplatesAdmin">{$btr->global_template_files|escape}</a>
 								</li>
-								<li class="sidebar-item {if in_array($smarty.get.module, array('StylesAdmin'))}active{/if}">
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('StylesAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=StylesAdmin">{$btr->global_template_style|escape}</a>
 								</li>
-								<li class="sidebar-item {if in_array($smarty.get.module, array('ImagesAdmin'))}active{/if}">
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ImagesAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=ImagesAdmin">{$btr->global_template_images|escape}</a>
 								</li>
-								<li class="sidebar-item {if in_array($smarty.get.module, array('TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=TranslationsAdmin">{$btr->global_translations|escape}</a>
+								</li>
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeSettingsAdmin'))}active{/if}">
+									<a class="sidebar-link" href="index.php?module=ThemeSettingsAdmin">{$btr->global_theme_settings|escape}</a>
 								</li>
 							</ul>
 						</li>
@@ -294,7 +303,6 @@
 				<a class="sidebar-toggle js-sidebar-toggle">
 					<i class="hamburger align-self-center"></i>
 				</a>
-
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav navbar-align">
 						<li class="nav-item dropdown">
@@ -311,24 +319,24 @@
 							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
 								<div class="dropdown-menu-header">
 									{if $all_counter}
-										{$all_counter} {$btr->new_notifications|escape}
+										{$btr->new_notifications|escape} ({$all_counter})
 									{else}
 										{$btr->no_notification|escape}
 									{/if}
 								</div>
-								{if $all_counter}
+								{if $all_counter} 
 									<div class="list-group">
 										{if in_array('comments', $manager->permissions)}
 											{if $new_comments_counter > 0}
 												<a href="index.php?module=CommentsAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-danger" data-feather="message-square"></i>
+														<div class="col-1">
+															<i class="text-danger mt-n1" data-feather="message-square"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_comments|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_comments|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-danger">{$new_comments_counter}</span>
 														</div>
 													</div>
@@ -339,13 +347,13 @@
 											{if $new_feedbacks_counter > 0}
 												<a href="index.php?module=FeedbacksAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-warning" data-feather="mail"></i>
+														<div class="col-1">
+															<i class="text-warning mt-n1" data-feather="mail"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_feedback|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_feedback|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-warning">{$new_feedbacks_counter}</span>
 														</div>
 													</div>
@@ -356,13 +364,13 @@
 											{if $new_subscribes_counter > 0}
 												<a href="index.php?module=SubscribesAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-info" data-feather="at-sign"></i>
+														<div class="col-1">
+															<i class="text-info mt-n1" data-feather="at-sign"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_subscribes|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_subscribes|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-info">{$new_subscribes_counter}</span>
 														</div>
 													</div>
@@ -373,13 +381,13 @@
 											{if $new_callbacks_counter > 0}
 												<a href="index.php?module=CallbacksAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-primary" data-feather="phone"></i>
+														<div class="col-1">
+															<i class="text-primary mt-n1" data-feather="phone"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_callback|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_callback|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-primary">{$new_callbacks_counter}</span>
 														</div>
 													</div>
@@ -426,12 +434,12 @@
 					<div class="row text-muted">
 						<div class="col-6 text-start">
 							<p class="mb-0">
-								<a href="index.php?module=PagesAdmin" class="text-muted"><strong>TurboCMS</strong></a> &copy;
+								<a href="index.php?module=PagesAdmin" class="text-muted">&copy; {$smarty.now|date_format:"Y"} <strong>TurboCMS</strong></a>
 							</p>
 						</div>
 						<div class="col-6 text-end">
 							<p class="mb-0">
-								{$smarty.now|date_format:"Y"} v.{$config->version} | {$manager->login|escape}
+								TurboSite v.{$config->version} | {$manager->login|escape}
 							</p>
 						</div>
 					</div>
@@ -459,12 +467,19 @@
 			</div>
 		</div>
 	</div>
+	{if isset($product_images)}
+		<div class="modal fade images-modal" id="imagesModal" tabindex="-1" style="display: none;" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+	{/if}
 
-	{js id="app" priority=99 include=[
-		"turbo/design/js/app.js"
-	]}{/js}
+	{* App *}
+	{js id="app" priority=99 include=["turbo/design/js/app.js"]}{/js}
 	{javascript minify=true}
 	
+	{* Flatpickr Lang *}
 	{if $settings->lang !='en'}
 		<script src="https://npmcdn.com/flatpickr/dist/l10n/{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}.js"></script>
 	{/if}
@@ -480,7 +495,6 @@
 				});
 			}
 			
-			/* Check */
 			if ($('.js-check-all').size() > 0) {
 				$(document).on('change', '.js-check-all', function() {
 					if ($(this).is(":checked")) {
@@ -499,7 +513,6 @@
 				});
 			}
 			
-			/* Input file */
 			if ($('.input-file').size() > 0) {
 				document.querySelector("html").classList.add('js-input-file');
 
@@ -521,37 +534,43 @@
 				});
 			}
 			
-			/* Initializing sorting */
+			if ($('.scrollbar-inner').size() > 0) {
+				$('.scrollbar-inner').scrollbar();
+			}
+
+			if ($(window).width() < 1620) {
+				if ($('.scrollbar-variants').size() > 0) {
+					$('.scrollbar-variants').scrollbar();
+				}
+			}
+			
 			if ($(".sortable").size() > 0) {
 				{literal}
 					var el = document.querySelectorAll(".sortable");
 					for (var i = 0; i < el.length; i++) {
 						var sortable = Sortable.create(el[i], {
-							handle: ".move-zone", // Drag handle selector within list items
-							sort: true, // sorting inside list
-							animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
-							ghostClass: "sortable-ghost", // Class name for the drop placeholder
-							chosenClass: "sortable-chosen", // Class name for the chosen item
-							dragClass: "sortable-drag", // Class name for the dragging item
-							scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
-							scrollSpeed: 10, // px
-							// Changed sorting within list
+							handle: ".move-zone",
+							sort: true,
+							animation: 150,
+							ghostClass: "sortable-ghost",
+							chosenClass: "sortable-chosen",
+							dragClass: "sortable-drag",
+							scrollSensitivity: 30,
+							scrollSpeed: 10,
 							onUpdate: function(evt) {
-								if ($(".product-images-list").size() > 0) {
-									var itemEl = evt.item; // dragged HTMLElement
-									if ($(itemEl).closest(".js-droplist-wrap").data("image") == "product") {
-										$(".product-images-list").find("li.first-image").removeClass("first-image");
-										$(".product-images-list").find("li:nth-child(2)").addClass("first-image");
+								if ($(".project-images-list").size() > 0) {
+									var itemEl = evt.item;
+									if ($(itemEl).closest(".js-droplist-wrap").data("image") == "project") {
+										$(".project-images-list").find("li.first-image").removeClass("first-image");
+										$(".project-images-list").find("li:nth-child(2)").addClass("first-image");
 									}
 								}
-							{/literal}{if !in_array($smarty.get.module, array("CurrencyAdmin"))}$(".js-form-list").ajaxSubmit();{/if}{literal}
 							},
 						});
 					}
 				{/literal}
 			}
 			
-			/* Call an ajax entity update */
 			if ($(".js-ajax-action").size() > 0) {
 				$(document).on("click", ".js-ajax-action", function() {
 					ajax_action($(this));
@@ -664,12 +683,6 @@
 			});
 			
 			if ($('.js-remove').size() > 0) {
-				/* Confirm deletion */
-				/*
-				 * modal window function with delete confirmation
-				 * takes an argument $ this - in fact, the delete button itself
-				 * the function is called directly in the tpl files
-				 * */
 				function success_action($this) {
 					$(document).on('click', '.js-submit-delete', function() {
 						$('.js-form-list input[type="checkbox"][name*="check"]').attr('checked', false);
@@ -686,12 +699,6 @@
 			}
 			{literal}
 				if ($(".js-ajax-action").size() > 0) {
-				/* Function for ajax update of fields */
-				/* state - the state of the object (enabled / disabled)
-				 * id - id of the updated entity
-				 * module - type of entity
-				 * action - updated field (field in the database)
-				 * */
 					function ajax_action($this) {
 						var state, module, session_id, action, id;
 						state = $this.hasClass('js-active-class') ? 0 : 1;
@@ -729,10 +736,8 @@
 				}
 			{/literal}
 		
-			/* Metadata generation functions */
 			if ($('input').is('.js-meta-field')) {
 				$(window).on("load", function() {
-					// Autocomplete meta tags
 					header_touched = true;
 					meta_title_touched = true;
 					meta_keywords_touched = true;
@@ -845,15 +850,12 @@
 				}
 			}
 			
-			/* Metadata generation functions end */
 			$(window).on('load', function() {
-				// Information block folding script
 				 $(document).on("click", ".card-actions", function() {
 					$(this).closest(".card").find('.collapse-chevron').toggleClass('rotate-180');
 					$(this).closest(".card").find(".collapse-card").slideToggle(500);
 				});
 				
-				// Blocking link auto-generation
 				$(document).on("click", ".js-disable-url", function() {
 					if ($(".js-url").attr("readonly")) {
 						$(".js-url").removeAttr("readonly");
@@ -865,7 +867,6 @@
 					$("#block-translit").trigger("click");
 				});
 				
-				// Blocking link auto-generation end
 				if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 					$('.selectpicker').selectpicker('mobile');
 				}

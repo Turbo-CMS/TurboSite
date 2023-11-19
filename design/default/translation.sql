@@ -18,7 +18,6 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('28','delete','Удалить','Delete','Видалити'),
 ('34','sale','Акционные товары','Sale','Акційні товари'),
 ('36','registration','Регистрация','Registration','Реєстрація'),
-('49','index_blog','Блог','Blog','Блог'),
 ('50','enter_your_email','Оставьте свой e-mail','Enter your Email','Залиште свій e-mail'),
 ('51','main_description','Этот сайт является демонстрацией скрипта Turbo CMS. Все материалы на этом сайте присутствуют исключительно в демонстрационных целях.','This website is a demo of the script of the Turbo CMS. All materials on this site are present for demonstration purposes only.','Цей сайт є демонстрацією скрипта Turbo CMS. Всі матеріали на цьому сайті присутні виключно в демонстраційних цілях.'),
 ('54','information','Информация','Information','Інформація'),
@@ -72,7 +71,6 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('122','subscribe_to','Подписаться','Subscribe to','Підписатися'),
 ('123','search_article','Поиск статьи...','Search article...','Пошук статті...'),
 ('124','sitemap','Карта сайта','Sitemap','Карта сайту'),
-('125','index_articles','Статьи','Articles','Статті'),
 ('127','sort_date','По дате','Date','За датою'),
 ('128','search_blog','Поиск в блоге...','Search blog...','Пошук в блозі...'),
 ('130','apply','Применить','Apply','Застосувати'),
@@ -141,5 +139,12 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('246','date','Дата','Date','Дата'),
 ('247','category','Категория','Category','Категорія'),
 ('248','site','Сайт','Site','Сайт'),
-('249','customer','Клиент','Customer','Клієнт ');
+('249','customer','Клиент','Customer','Клієнт '),
+('252','global_pages','Страницы','Pages','Сторінки'),
+('253','global_blog','Блог','Blog','Блог'),
+('254','global_articles','Статьи','Articles','Статті'),
+('256','subscribe','Подписаться','Subscribe','Підписатися'),
+('257','faq','FAQ','FAQ','FAQ'),
+('258','account','Аккаунт','Account','Аккаунт'),
+('259','author','Автор','Author','Автор');
 

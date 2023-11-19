@@ -1,4 +1,4 @@
-/* Carusel images */
+/* Project gallery */
 
 .project .carousel {
 	min-height: 320px;
@@ -29,18 +29,8 @@
 	line-height: 100%;
 }
 
-.thumbnail {
-	max-height: 70px;
-	min-height: 70px;
-}
-
-.img-thumbnail {
-	min-width: 100px;
-}
-
 .icon-focus {
 	color: #fff;
-	font-family: "MobiriseIcons";
 	font-size: 3rem;
 	left: calc(50% - 24px);
 	opacity: 0;
@@ -49,6 +39,51 @@
 	transition: opacity 0.2s ease-in-out 0s;
 	z-index: 5;
 }
+
+/* Project gallery thumblist */
+
+.project-gallery-thumblist {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: start;
+	margin-left: -10px;
+}
+
+.project-gallery-thumblist-item {
+	margin: 0.3125rem;
+}
+
+.project-gallery-thumblist-item {
+	display: block;
+	position: relative;
+	width: 5rem;
+	height: 5rem;
+	margin: 0.625rem;
+	transition: border-color 0.2s ease-in-out;
+	border-radius: 0.3125rem;
+	text-decoration: none !important;
+	overflow: hidden;
+	text-align: center !important;
+}
+
+.project-gallery-thumblist-item>img {
+	max-height: 70px;
+	min-height: 70px;
+	padding: 10px;
+	transition: opacity 0.2s ease-in-out;
+	opacity: 0.6;
+}
+
+.project-gallery-thumblist-item.selected {
+	border-color: #0d6efd;
+}
+
+.project-gallery-thumblist-item.selected>img,
+.project-gallery-thumblist-item:hover img {
+	opacity: 1;
+}
+
+/* Badges */
 
 .icons {
 	position: absolute !important;
@@ -60,4 +95,57 @@
 
 .icons .badge {
 	margin: 5px 0 0 0;
+}
+
+/* Project details */
+
+@media (min-width: 992px) {
+	.project-details {
+		width: 100%;
+		max-width: 26rem;
+		padding-top: 0.25rem;
+	}
+}
+
+/* Variants */
+
+.variants label input {
+	display: none;
+}
+
+.color-project .btn {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.color-project .btn.active {
+	border: 1px solid #0d6efd;
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+}
+
+.color-project .btn:hover {
+	border: 1px solid #0d6efd;
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+}
+
+.color-project .btn:focus {
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+	border: 1px solid #0d6efd;
+}
+
+.btn span.fa-check {
+	opacity: 0;
+}
+
+.btn.active span.fa-check {
+	opacity: 1;
+	color: #fff;
+}
+
+.btn.white.active span.fa-check {
+	opacity: 1;
+	color: #000;
+}
+
+.variants-size .btn {
+	min-width: 33px;
 }

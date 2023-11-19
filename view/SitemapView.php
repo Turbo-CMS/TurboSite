@@ -1,22 +1,26 @@
 <?php
- 
-require_once('View.php');
+
+require_once 'View.php';
 
 class SitemapView extends View
 {
 	function fetch()
 	{
-		$posts = $this->blog->get_posts(array('visible' => 1));
+		// Blog
+		$posts = $this->blog->getPosts(['visible' => 1]);
 		$this->design->assign('posts', $posts);
 
-		$projects_categories = $this->projects_categories->get_projects_categories_tree();
-        $projects_categories = $this->projects_cat_tree($projects_categories);
-        $this->design->assign('projects_cats', $projects_categories);
+		// Projects
+		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
+		$projectsCategories = $this->projectCategoryTree($projectsCategories);
+		$this->design->assign('projects_cats', $projectsCategories);
 
-		$articles_categories = $this->articles_categories->get_articles_categories_tree();
-		$articles_categories = $this->articles_cat_tree($articles_categories);
-		$this->design->assign('articles_cats', $articles_categories);
+		// Articles
+		$articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
+		$articlesCategories = $this->articleCategoryTree($articlesCategories);
+		$this->design->assign('articles_cats', $articlesCategories);
 
+		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -24,52 +28,60 @@ class SitemapView extends View
 			$this->design->assign('page', $this->page);
 		}
 
-		$auto_meta = new StdClass;
+		$autoMeta = new stdClass();
 
-		$auto_meta->title       = $this->seo->page_meta_title       ? $this->seo->page_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->page_meta_keywords    ? $this->seo->page_meta_keywords    : '';
-		$auto_meta->description = $this->seo->page_meta_description ? $this->seo->page_meta_description : '';
+		$autoMeta->title = $this->seo->page_meta_title ?? '';
+		$autoMeta->keywords = $this->seo->page_meta_keywords ?? '';
+		$autoMeta->description = $this->seo->page_meta_description ?? '';
 
-		$auto_meta_parts = array(
+		$autoMetaParts = [
 			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+			'{site_url}' => ($this->seo->am_url ?: ''),
+			'{site_name}' => ($this->seo->am_name ?: ''),
+			'{site_phone}' => ($this->seo->am_phone ?: ''),
+			'{site_email}' => ($this->seo->am_email ?: ''),
+		];
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		foreach ($autoMeta as $key => $value) {
+			$autoMeta->$key = strtr($value, $autoMetaParts);
+			$autoMeta->$key = preg_replace("/\{.*\}/", '', $autoMeta->$key);
+		}
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+		$this->design->assign('auto_meta', $autoMeta);
 
-		$this->design->assign('auto_meta', $auto_meta);
-
+		// Display
 		return $this->design->fetch('sitemap.tpl');
 	}
 
-	private function projects_cat_tree($projects_categories)
-    {
-
-        foreach ($projects_categories as $k => $v) {
-            if (isset($v->subcategories)) $this->cat_tree($v->subcategories);
-            $projects_categories[$k]->projects = $this->projects->get_projects(array('category_id' => $v->id));
-        }
-
-        return $projects_categories;
-    }
-
-	private function articles_cat_tree($articles_categories)
+	/**
+	 * Project Category Tree
+	 */
+	private function projectCategoryTree($projectsCategories)
 	{
+		foreach ($projectsCategories as $key => $projectCategory) {
+			if (isset($projectCategory->subcategories)) {
+				$this->projectCategoryTree($projectCategory->subcategories);
+			}
 
-		foreach ($articles_categories as $k => $v) {
-			if (isset($v->subcategories)) $this->cat_tree($v->subcategories);
-			$articles_categories[$k]->articles = $this->articles->get_articles(array('category_id' => $v->id));
+			$projectsCategories[$key]->projects = $this->projects->getProjects(['category_id' => $projectCategory->id]);
 		}
 
-		return $articles_categories;
+		return $projectsCategories;
+	}
+
+	/**
+	 * Article Category Tree
+	 */
+	private function articleCategoryTree($articlesCategories)
+	{
+		foreach ($articlesCategories as $key => $articleCategory) {
+			if (isset($articleCategory->subcategories)) {
+				$this->articleCategoryTree($articleCategory->subcategories);
+			}
+
+			$articlesCategories[$key]->articles = $this->articles->getArticles(['category_id' => $articleCategory->id]);
+		}
+
+		return $articlesCategories;
 	}
 }

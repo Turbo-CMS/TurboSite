@@ -50,8 +50,8 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-status">
 										<div class="form-check form-switch">
-											<input class="form-check-input js-ajax-action {if $language->enabled}js-active-class{/if}" id="id_{$language->id}" data-module="language" data-action="enabled" data-id="{$language->id}" name="enabled" value="1" type="checkbox" {if $language->enabled}checked="" {/if}>
-											<label class="form-check-label" for="id_{$language->id}"></label>
+											<input class="form-check-input js-ajax-action {if $language->enabled}js-active-class{/if}" id="id-{$language->id}" data-module="language" data-action="enabled" data-id="{$language->id}" name="enabled" value="1" type="checkbox" {if $language->enabled}checked="" {/if}>
+											<label class="form-check-label" for="id-{$language->id}"></label>
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
@@ -89,9 +89,7 @@
 				</div>
 			</form>
 		{else}
-			<div class="card-header">
-				<h5 class="card-title mb-0">{$btr->languages_no_list|escape}</h5>
-			</div>
+			<h5 class="card-title ms-1 my-3">{$btr->languages_no_list|escape}</h5>
 		{/if}
 	</div>
 </div>

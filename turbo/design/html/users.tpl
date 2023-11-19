@@ -116,8 +116,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id_{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
-													<label class="form-check-label" for="id_{$user->id}"></label>
+													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id-{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
+													<label class="form-check-label" for="id-{$user->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">

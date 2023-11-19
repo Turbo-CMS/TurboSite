@@ -1,113 +1,152 @@
 <?php
 
+require_once 'Turbo.php';
+
 class Notify extends Turbo
 {
-	function email($to, $subject, $message, $from = '', $reply_to = '')
+	/**
+	 * Send Email
+	 */
+	function email($to, $subject, $message, $from = '', $replyTo = '')
 	{
-		$headers = "MIME-Version: 1.0\n";
-		$headers .= "Content-type: text/html; charset=utf-8; \r\n";
-		$headers .= "From: $from\r\n";
-		if (!empty($reply_to))
-			$headers .= "reply-to: $reply_to\r\n";
+		$headers = "MIME-Version: 1.0\r\n";
+		$headers .= "Content-type: text/html; charset=utf-8\r\n";
 
-		$subject = "=?utf-8?B?" . base64_encode($subject) . "?=";
+		if (!empty($from)) {
+			$headers .= "From: $from\r\n";
+		}
 
-		@mail($to, $subject, $message, $headers);
+		if (!empty($replyTo)) {
+			$headers .= "Reply-To: $replyTo\r\n";
+		}
+
+		$subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
+
+		return mail($to, $subject, $message, $headers);
 	}
-	
-	public function email_comment_admin($comment_id)
-	{
-		if (!($comment = $this->comments->get_comment(intval($comment_id))))
-			return false;
 
-		if ($comment->type == 'project')
-			$comment->project = $this->projects->get_project(intval($comment->object_id));
-		if ($comment->type == 'article')
-			$comment->article = $this->articles->get_article(intval($comment->object_id));
-		if ($comment->type == 'blog')
-			$comment->post = $this->blog->get_post(intval($comment->object_id));
+	/**
+	 * Email Comment Admin
+	 */
+	public function emailCommentAdmin($commentId)
+	{
+		$comment = $this->comments->getComment((int) $commentId);
+
+		if (!$comment) {
+			return false;
+		}
+
+		if ($comment->type == 'project') {
+			$comment->project = $this->products->getProject((int) $comment->object_id);
+		} elseif ($comment->type == 'article') {
+			$comment->article = $this->articles->getArticle((int) $comment->object_id);
+		} elseif ($comment->type == 'blog') {
+			$comment->post = $this->blog->getPost((int) $comment->object_id);
+		}
 
 		$this->design->assign('comment', $comment);
-		
-		$backend_translations = $this->backend_translations;
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+
+		$backendTranslations = $this->backendTranslations;
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
 	}
 
-	public function email_password_remind($user_id, $code)
+	/**
+	 * Email Password Remind
+	 */
+	public function emailPasswordRemind($userId, $code)
 	{
-		if (!($user = $this->users->get_user(intval($user_id))))
+		$user = $this->users->getUser($userId);
+		if (!$user) {
 			return false;
+		}
 
 		$this->design->assign('user', $user);
 		$this->design->assign('code', $code);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_password_remind.tpl');
-		$subject = $this->design->get_var('subject');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_password_remind.tpl');
+		$subject = $this->design->getVar('subject');
 		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
-		$this->email($user->email, $subject, $email_template, $from);
+		$this->email($user->email, $subject, $emailTemplate, $from);
 
 		$this->design->smarty->clearAssign('user');
 		$this->design->smarty->clearAssign('code');
+
+		return true;
 	}
 
-	public function email_feedback_admin($feedback_id)
+	/**
+	 * Email Feedback Admin
+	 */
+	public function emailFeedbackAdmin($feedbackId)
 	{
-		if (!($feedback = $this->feedbacks->get_feedback(intval($feedback_id))))
+		if (!$feedback = $this->feedbacks->getFeedback($feedbackId)) {
 			return false;
+		}
 
 		$this->design->assign('feedback', $feedback);
-		
-		$backend_translations = $this->backend_translations;
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+
+		$backendTranslations = $this->backendTranslations;
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
+
+		return true;
 	}
 
-	public function email_callback_admin($callback_id)
+	/**
+	 * Email Callback Admin
+	 */
+	public function emailCallbackAdmin($callbackId)
 	{
-		if (!($callback = $this->callbacks->get_callback(intval($callback_id))))
+		if (!$callback = $this->callbacks->getCallback($callbackId)) {
 			return false;
+		}
+
 		$this->design->assign('callback', $callback);
-		
-		$backend_translations = $this->backend_translations;
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+
+		$backendTranslations = $this->backendTranslations;
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
+
+		return true;
 	}
 }

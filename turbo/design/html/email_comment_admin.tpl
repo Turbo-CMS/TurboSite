@@ -10,8 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>
         {$btr->email_comment_new|escape}
-        {if $comment->type == 'product'}
-			{$btr->email_to_product|escape}
+        {if $comment->type == 'project'}
+			{$btr->email_to_project|escape}
         {elseif $comment->type == 'blog'}
 			{$btr->email_to_article|escape}
         {elseif $comment->type == 'article'}
@@ -424,8 +424,8 @@
 																				<td class="es-p10t es-p15b" align="center">
 																					<h1>
 																						{$btr->email_comment_new|escape}
-																						{if $comment->type == 'product'}
-																							{$btr->email_to_product|escape}
+																						{if $comment->type == 'project'}
+																							{$btr->email_to_project|escape}
 																						{elseif $comment->type == 'blog'}
 																							{$btr->email_to_news|escape}
 																						{elseif $comment->type == 'article'}
@@ -438,8 +438,8 @@
 																				<td class="es-p5t es-p5b es-p40r es-p40l" align="center">
 																					<p style="font-size: 16px;color: #5c5c5c;">
 																						{$btr->email_inform_first|escape} {$comment->name|escape} {$btr->email_left_comment|escape}
-																						{if $comment->type == 'product'}
-																							{$btr->email_to_product|escape}
+																						{if $comment->type == 'project'}
+																							{$btr->email_to_project|escape}
 																						{elseif $comment->type == 'blog'}
 																							{$btr->email_to_news|escape}
 																						{elseif $comment->type == 'article'}
@@ -455,17 +455,17 @@
 																			</tr>
 																			<tr>
 																				<td class="es-p15t es-p10b" align="center">
-																					{if $comment->type == 'product'}
-																						<a class="es-button" target="_blank" href="{$config->root_url}/products/{$comment->product->url}#comment_{$comment->id}">
-																							{$btr->global_order_info|escape}
+																					{if $comment->type == 'project'}
+																						<a class="es-button" target="_blank" href="{$config->root_url}/products/{$comment->project->url}#comment_{$comment->id}">
+																							{$btr->email_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'blog'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/blog/{$comment->post->url}#comment_{$comment->id}">
-																							{$btr->global_order_info|escape}
+																							{$btr->email_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'article'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/article/{$comment->post->url}#comment_{$comment->id}">
-																							{$btr->global_order_info|escape}
+																							{$btr->email_order_info|escape}
 																						</a>
 																					{/if}
 																				</td>
