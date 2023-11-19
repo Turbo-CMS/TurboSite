@@ -2,7 +2,7 @@
 
 	{* Header Sidebar *}
 	<div class="offcanvas-header mt-3">
-		<h5 class="offcanvas-title" id="sidebarLabel">{$lang->catalog}</h5>
+		<h5 class="offcanvas-title" id="sidebarLabel">{$lang->sidebar}</h5>
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
 	</div>
 

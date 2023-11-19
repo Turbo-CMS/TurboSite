@@ -111,7 +111,7 @@
 					{if in_array('projects', $manager->permissions)}
 						<li class="sidebar-item {if in_array($smarty.get.module, array('ProjectsCategoriesAdmin', 'ProjectsAdmin', 'ProjectAdmin', 'ProjectsCategoryAdmin'))}active{/if}">
 							<a data-bs-target="#projects" data-bs-toggle="collapse" {if in_array($smarty.get.module, array('ProjectsCategoriesAdmin', 'ProjectsAdmin', 'ProjectAdmin', 'ProjectsCategoryAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
-								<i class="align-middle" data-feather="briefcase"></i> <span class="align-middle">{$btr->global_catalog|escape}</span>
+								<i class="align-middle" data-feather="briefcase"></i> <span class="align-middle">{$btr->global_portfolio|escape}</span>
 							</a>
 							<ul id="projects" class="sidebar-dropdown list-unstyled collapse {if in_array($smarty.get.module, array('ProjectsCategoriesAdmin', 'ProjectsAdmin', 'ProjectAdmin', 'ProjectsCategoryAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								<li class="sidebar-item {if in_array($smarty.get.module, array('ProjectsCategoriesAdmin', 'ProjectsCategoryAdmin'))}active{/if}">

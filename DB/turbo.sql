@@ -1120,7 +1120,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (6, 'bloge', 'Блоге', 'entries', 'Блогу'),
 (41, 'phone_number', '(903) 782-82-82', '(210) 876-5432', '(095) 545-54-54'),
 (42, 'close', 'Закрыть', 'Close', 'Закрити'),
-(43, 'catalog', 'Каталог', 'Catalog', 'Каталог'),
+(43, 'sidebar', 'Сайдбар', 'Sidebar', 'Сайдбар'),
 (9, 'aktsionnye_tovary', 'Акционные товары', 'Action goods', 'Акційні товари'),
 (37, 'login', 'Вход', 'Login', 'Вхід'),
 (22, 'votes', 'голосов', 'votes', 'голосів'),

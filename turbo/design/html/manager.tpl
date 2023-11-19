@@ -105,14 +105,14 @@
 								<label class="form-check-label" for="all-perms">{$btr->manager_all_access|escape}</label>
 							</div>
 						</div>
-						{$catalog = [
-							'projects'   => $btr->global_projects
+						{$projects = [
+							'projects' => $btr->global_projects
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
-								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_catalog|escape}</h5>
+								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_porfolio|escape}</h5>
 								<div class="row">
-									{foreach $catalog as $title=>$items}
+									{foreach $projects as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
 												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
@@ -126,7 +126,7 @@
 							</div>
 						</div>
 						{$users = [
-							'users'   => $btr->global_users
+							'users' => $btr->global_users
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
@@ -167,7 +167,7 @@
 							</div>
 						</div>
 						{$blog = [
-							'blog'     => $btr->global_blog,
+							'blog' => $btr->global_blog,
 							'articles' => $btr->global_articles
 						]}
 						<div class="bg-light rounded mb-3">
@@ -188,9 +188,9 @@
 							</div>
 						</div>
 						{$feedbacks = [
-							'comments'   => $btr->global_comments,
-							'feedbacks'  => $btr->global_feedback,
-							'callbacks'  => $btr->global_callbacks,
+							'comments' => $btr->global_comments,
+							'feedbacks' => $btr->global_feedback,
+							'callbacks' => $btr->global_callbacks,
 							'subscribes' => $btr->global_subscribes
 						]}
 						<div class="bg-light rounded mb-3">
@@ -232,7 +232,7 @@
 						</div>
 						{$automation = [
 							'backup' => $btr->global_backup,
-							'clear'  => $btr->global_clear
+							'clear' => $btr->global_clear
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
@@ -313,9 +313,9 @@
 							</div>
 						</div>
 						{$settings = [
-							'settings'   => $btr->global_settings,
-							'managers'   => $btr->global_managers,
-							'languages'  => $btr->global_languages
+							'settings' => $btr->global_settings,
+							'managers' => $btr->global_managers,
+							'languages' => $btr->global_languages
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">

@@ -253,20 +253,20 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->settings_blog_articles|escape}</h5>
+					<h5 class="card-title mb-0">{$btr->settings_display|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
-									<div class="form-label">{$btr->settings_catalog_projects_on_page|escape}</div>
+									<div class="form-label">{$btr->settings_projects_on_page|escape}</div>
 									<input name="projects_num" class="form-control" type="text" value="{$settings->projects_num|escape}">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
-									<div class="form-label">{$btr->settings_catalog_projects_on_admin|escape}</div>
+									<div class="form-label">{$btr->settings_projects_on_admin|escape}</div>
 									<input name="projects_num_admin" class="form-control" type="text" value="{$settings->projects_num_admin|escape}">
 								</div>
 							</div>
@@ -513,7 +513,7 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->settings_catalog_watermark|escape}</h5>
+					<h5 class="card-title mb-0">{$btr->settings_watermark|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
@@ -549,7 +549,7 @@
 								<div class="row">
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_catalog_watermark_position|escape}
+											{$btr->settings_watermark_position|escape}
 											<span class="js-show-range">{$settings->watermark_offset_x|escape}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
@@ -563,7 +563,7 @@
 									</div>
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_catalog_watermark_position_y|escape}
+											{$btr->settings_watermark_position_y|escape}
 											<span class="font-weight-bold js-show-range">{$settings->watermark_offset_y|escape}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
@@ -577,7 +577,7 @@
 									</div>
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_catalog_watermark_transparency|escape}
+											{$btr->settings_watermark_transparency|escape}
 											<span class="font-weight-bold js-show-range">{$settings->watermark_transparency}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
@@ -591,7 +591,7 @@
 									</div>
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_catalog_watermark_sharpness|escape}
+											{$btr->settings_watermark_sharpness|escape}
 											<span class="font-weight-bold js-show-range">{$settings->images_sharpen}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
