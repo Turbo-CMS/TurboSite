@@ -6,11 +6,16 @@ header("Pragma: no-cache");
 header("Expires: -1");
 
 session_start();
+
 require_once '../api/Turbo.php';
 
 $turbo = new Turbo();
 
-$output = ['success' => 0, 'value' => 0, 'message' => '',];
+$output = [
+	'success' => 0,
+	'value' => 0,
+	'message' => '',
+];
 
 if ($turbo->request->isMethod('get') && $turbo->request->get('id') && $turbo->request->get('rate')) {
 
@@ -22,6 +27,7 @@ if ($turbo->request->isMethod('get') && $turbo->request->get('id') && $turbo->re
 
 	if (in_array($postId, $_SESSION['post_rate_ids'], true)) {
 		echo json_encode($output);
+
 		return false;
 	} else {
 		$_SESSION['post_rate_ids'][] = $postId;

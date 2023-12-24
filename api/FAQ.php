@@ -26,7 +26,7 @@ class FAQ extends Turbo
 				$langSql->fields
 			FROM __faq f
 				$langSql->join
-			$where
+				$where
 			LIMIT 1"
 		);
 
@@ -47,7 +47,6 @@ class FAQ extends Turbo
 		$faqIdFilter = '';
 		$visibleFilter = '';
 		$keywordFilter = '';
-		$order = 'f.position DESC';
 
 		$langId = $this->languages->langId();
 		$px = ($langId ? 'l' : 'f');
@@ -68,14 +67,6 @@ class FAQ extends Turbo
 			$visibleFilter = $this->db->placehold('AND f.visible=?', (int) $filter['visible']);
 		}
 
-		if (!empty($filter['sort'])) {
-			switch ($filter['sort']) {
-				case 'position':
-					$order = 'f.position DESC';
-					break;
-			}
-		}
-
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
@@ -84,7 +75,6 @@ class FAQ extends Turbo
 		}
 
 		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
-
 		$langSql = $this->languages->getQuery(['object' => 'faq',]);
 
 		$query = $this->db->placehold(
@@ -96,16 +86,14 @@ class FAQ extends Turbo
 				f.position,
 				f.last_modified,
 				$langSql->fields
-			FROM 
-				__faq f
+			FROM __faq f
 				$langSql->join
-			WHERE 
-				1 
+			WHERE 1 
 				$faqIdFilter 
 				$visibleFilter
 				$keywordFilter
 			ORDER BY 
-				$order
+				f.position
 				$sqlLimit"
 		);
 
@@ -188,7 +176,7 @@ class FAQ extends Turbo
 		}
 
 		$this->settings->lastModifyFAQ = date("Y-m-d H:i:s");
-		$query = $this->db->placehold('INSERT INTO __faq SET ?%', $faq);
+		$query = $this->db->placehold("INSERT INTO __faq SET ?%", $faq);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -211,6 +199,7 @@ class FAQ extends Turbo
 	public function updateFaq($id, $faq)
 	{
 		$faq = (object) $faq;
+
 		$result = $this->languages->getDescription($faq, 'faq');
 
 		if (!empty($result->data)) {
@@ -218,7 +207,8 @@ class FAQ extends Turbo
 		}
 
 		$this->settings->lastModifyFAQ = date("Y-m-d H:i:s");
-		$query = $this->db->placehold("UPDATE __faq SET `last_modified`=NOW(), ?% WHERE id IN(?@) LIMIT ?", $faq, (array) $id, count((array) $id));
+
+		$query = $this->db->placehold("UPDATE __faq SET last_modified=NOW(), ?% WHERE id IN(?@) LIMIT ?", $faq, (array) $id, count((array) $id));
 		$this->db->query($query);
 
 		if (!empty($result->description)) {

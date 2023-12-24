@@ -4,7 +4,7 @@
 	<h1 class="d-inline align-middle me-3">{$btr->seo_automation|escape}</h1>
 </div>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -19,7 +19,7 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-12">

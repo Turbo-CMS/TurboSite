@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ClearAdminAjax extends Turbo
@@ -24,7 +25,7 @@ class ClearAdminAjax extends Turbo
                     $this->cleanAdmin($fullpath);
                     rmdir($fullpath);
                 } else {
-                    unlink($fullpath);
+                    @unlink($fullpath);
                 }
             }
         }
@@ -34,6 +35,7 @@ class ClearAdminAjax extends Turbo
 }
 
 $clearAdminAjax = new ClearAdminAjax();
+
 $json = json_encode($clearAdminAjax->fetch());
 
 header("Content-type: application/json; charset=utf-8");

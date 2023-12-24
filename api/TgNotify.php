@@ -18,6 +18,7 @@ class TgNotify extends Turbo
 		}
 
 		$httpCode = (int) curl_getinfo($handle, CURLINFO_HTTP_CODE);
+
 		curl_close($handle);
 
 		if ($httpCode >= 500) {
@@ -70,6 +71,7 @@ class TgNotify extends Turbo
 		}
 
 		$url = $this->settings->tg_apiurl . $this->settings->tg_token . '/' . $method . '?' . http_build_query($parameters);
+		
 		$handle = curl_init($url);
 
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);

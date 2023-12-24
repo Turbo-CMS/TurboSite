@@ -1,7 +1,7 @@
 {$meta_title=$btr->managers_managers scope=global}
 
 <div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$btr->managers_managers|escape} - {$managers_count}</h1>
+	<h1 class="d-inline align-middle me-3">{$btr->managers_managers|escape} - {if isset($managers_count)}{$managers_count}{/if}</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 		<a class="btn btn-primary" href="{url module=ManagerAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->managers_add|escape}</a>
 	</div>
@@ -30,7 +30,7 @@
 										<div class="turbo-list-row narrow">
 											<div class="turbo-list-boding turbo-list-check">
 												<label class="form-check">
-													<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$m->login|escape}">
+													<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$m->login|escape}" {if $manager->login == $m->login}disabled{/if}>
 												</label>
 											</div>
 
@@ -41,7 +41,7 @@
 											</div>
 											{if $manager->login != $m->login}
 												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->managers_delete|escape}">
+													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
 															<i class="align-middle" data-feather="trash-2"></i>
 														</button>

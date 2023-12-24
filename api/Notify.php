@@ -47,6 +47,7 @@ class Notify extends Turbo
 		$this->design->assign('comment', $comment);
 
 		$backendTranslations = $this->backendTranslations;
+
 		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
@@ -57,10 +58,13 @@ class Notify extends Turbo
 		}
 
 		require_once $file;
+
 		$this->design->assign('btr', $backendTranslations);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
+
 		$subject = $this->design->getVar('subject');
+
 		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
 	}
 
@@ -70,6 +74,7 @@ class Notify extends Turbo
 	public function emailPasswordRemind($userId, $code)
 	{
 		$user = $this->users->getUser($userId);
+
 		if (!$user) {
 			return false;
 		}
@@ -78,10 +83,12 @@ class Notify extends Turbo
 		$this->design->assign('code', $code);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_password_remind.tpl');
-		$subject = $this->design->getVar('subject');
-		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
-		$this->email($user->email, $subject, $emailTemplate, $from);
 
+		$subject = $this->design->getVar('subject');
+
+		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
+
+		$this->email($user->email, $subject, $emailTemplate, $from);
 		$this->design->smarty->clearAssign('user');
 		$this->design->smarty->clearAssign('code');
 
@@ -100,6 +107,7 @@ class Notify extends Turbo
 		$this->design->assign('feedback', $feedback);
 
 		$backendTranslations = $this->backendTranslations;
+
 		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
@@ -110,10 +118,13 @@ class Notify extends Turbo
 		}
 
 		require_once $file;
+
 		$this->design->assign('btr', $backendTranslations);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
+
 		$subject = $this->design->getVar('subject');
+
 		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
 
 		return true;
@@ -131,6 +142,7 @@ class Notify extends Turbo
 		$this->design->assign('callback', $callback);
 
 		$backendTranslations = $this->backendTranslations;
+
 		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
@@ -141,10 +153,13 @@ class Notify extends Turbo
 		}
 
 		require_once $file;
+
 		$this->design->assign('btr', $backendTranslations);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
+
 		$subject = $this->design->getVar('subject');
+
 		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
 
 		return true;

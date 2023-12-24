@@ -15,7 +15,7 @@ class Articles extends Turbo
 			$where = $this->db->placehold('WHERE a.url=?', $id);
 		}
 
-		$langSql = $this->languages->getQuery(['object' => 'article', 'px' => 'a']); 
+		$langSql = $this->languages->getQuery(['object' => 'article', 'px' => 'a']);
 
 		$query = $this->db->placehold(
 			"SELECT 
@@ -37,8 +37,7 @@ class Articles extends Turbo
 				a.position,
 				a.last_modified, 
 				$langSql->fields 
-			FROM 
-				__articles a 
+			FROM __articles a 
 				$langSql->join 
 				$where 
 			LIMIT 1"
@@ -64,6 +63,7 @@ class Articles extends Turbo
 		$keywordFilter = '';
 		$authorFilter = '';
 		$order = 'a.position DESC';
+
 		$langId = $this->languages->langId();
 		$px = ($langId ? 'l' : 'a');
 
@@ -110,7 +110,7 @@ class Articles extends Turbo
 				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 			}
 		}
-		
+
 		if (isset($filter['author'])) {
 			$authors = explode(' ', $filter['author']);
 			foreach ($authors as $author) {
@@ -119,7 +119,6 @@ class Articles extends Turbo
 		}
 
 		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
-
 		$langSql = $this->languages->getQuery(['object' => 'article', 'px' => 'a']);
 
 		$query = $this->db->placehold(
@@ -142,8 +141,7 @@ class Articles extends Turbo
 				a.position,
 				a.last_modified, 
 				$langSql->fields      
-			FROM 
-				__articles a 
+			FROM __articles a 
 				$langSql->join 
 			WHERE 1 
 				$postIdFilter 
@@ -210,7 +208,7 @@ class Articles extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT a.id) AS count
-             FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
+            FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -221,11 +219,9 @@ class Articles extends Turbo
 
 		if ($this->db->query($query)) {
 			$result = $this->db->result('count');
-
 			if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 				$this->cache->set($query, $result);
 			}
-
 			return $result;
 		} else {
 			return false;
@@ -262,7 +258,8 @@ class Articles extends Turbo
 
 		if ($this->db->query("INSERT INTO __articles SET ?%", $article)) {
 			$id = $this->db->insertId();
-			$this->db->query("UPDATE __articles SET `last_modified`=NOW(), position=id WHERE id=?", $id);
+
+			$this->db->query("UPDATE __articles SET last_modified=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
 				$this->languages->actionDescription($id, $result->description, 'article');
@@ -279,14 +276,15 @@ class Articles extends Turbo
 	 */
 	public function updateArticle($id, $post)
 	{
-		$post = (object)$post;
+		$post = (object) $post;
+
 		$result = $this->languages->getDescription($post, 'article');
 
 		if (!empty($result->data)) {
 			$post = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __articles SET `last_modified` = NOW(), ?% WHERE id IN(?@) LIMIT ?", $post, (array) $id, count((array) $id));
+		$query = $this->db->placehold("UPDATE __articles SET last_modified=NOW(), ?% WHERE id IN(?@) LIMIT ?", $post, (array) $id, count((array) $id));
 
 		if ($this->db->query($query)) {
 			if (!empty($result->description)) {
@@ -315,6 +313,7 @@ class Articles extends Turbo
 	{
 		if (!empty($id)) {
 			$this->deleteImage($id);
+
 			$query = $this->db->placehold("DELETE FROM __articles WHERE id=? LIMIT 1", (int) $id);
 
 			if ($this->db->query($query)) {
@@ -348,6 +347,7 @@ class Articles extends Turbo
 			foreach ($filenames as $filename) {
 				$query = $this->db->placehold("SELECT count(*) AS count FROM __articles WHERE image=? LIMIT 1", $filename);
 				$this->db->query($query);
+
 				$count = $this->db->result('count');
 
 				if ($count == 0) {
@@ -360,7 +360,7 @@ class Articles extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -370,12 +370,12 @@ class Articles extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->articles_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->articles_images_dir . $filename);
 				}
 			}
 		}
@@ -387,9 +387,11 @@ class Articles extends Turbo
 	public function getNextArticle($id)
 	{
 		$this->db->query("SELECT date FROM __articles WHERE id=? LIMIT 1", $id);
+
 		$date = $this->db->result('date');
 
 		$this->db->query("SELECT category_id FROM __articles WHERE id=? LIMIT 1", $id);
+
 		$categoryId = $this->db->result('category_id');
 
 		$this->db->query(
@@ -417,9 +419,11 @@ class Articles extends Turbo
 	public function getPrevArticle(int $id)
 	{
 		$this->db->query("SELECT date FROM __articles WHERE id=? LIMIT 1", $id);
+
 		$date = $this->db->result('date');
 
 		$this->db->query("SELECT category_id FROM __articles WHERE id=? LIMIT 1", $id);
+
 		$categoryId = $this->db->result('category_id');
 
 		$this->db->query(

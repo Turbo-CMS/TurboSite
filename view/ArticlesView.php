@@ -110,11 +110,11 @@ class ArticlesView extends View
 
 		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['comments_article'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['comments_article'])) {
+			$filter['sort'] = $_SESSION['comments_article'];
 		} else {
 			$filter['sort'] = 'rate';
 		}
@@ -239,11 +239,11 @@ class ArticlesView extends View
 
 		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['sort_articles'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['sort_articles'])) {
+			$filter['sort'] = $_SESSION['sort_articles'];
 		} else {
 			$filter['sort'] = 'position';
 		}

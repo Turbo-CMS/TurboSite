@@ -26,6 +26,7 @@ class Managers extends Turbo
 	public function getManagers()
 	{
 		$lines = explode("\n", file_get_contents(dirname(dirname(__FILE__)) . '/' . $this->passwdFile));
+
 		$managers = [];
 
 		foreach ($lines as $line) {
@@ -35,12 +36,15 @@ class Managers extends Turbo
 				$manager = new stdClass();
 				$manager->login = trim($fields[0]);
 				$manager->permissions = [];
+
 				if (isset($fields[2])) {
 					$manager->permissions = explode(",", $fields[2]);
+
 					foreach ($manager->permissions as &$permission)
 						$permission = trim($permission);
-				} else
+				} else {
 					$manager->permissions = $this->permissionsList;
+				}
 
 				$managers[] = $manager;
 			}
@@ -69,6 +73,7 @@ class Managers extends Turbo
 				$m = new stdClass();
 				$m->login = 'manager';
 				$m->permissions = $this->permissionsList;
+
 				return $m;
 			}
 		}
@@ -108,6 +113,7 @@ class Managers extends Turbo
 		}
 
 		$line = implode(":", $m);
+
 		file_put_contents($this->passwdFile, file_get_contents($this->passwdFile) . "\n" . $line);
 
 		if ($m = $this->getManager($manager->login)) {
@@ -129,6 +135,7 @@ class Managers extends Turbo
 		}
 
 		$lines = explode("\n", file_get_contents($this->passwdFile));
+
 		$updatedFlag = false;
 
 		foreach ($lines as &$line) {
@@ -151,6 +158,7 @@ class Managers extends Turbo
 				}
 
 				$line = implode(":", $m);
+
 				$updatedFlag = true;
 			}
 		}
@@ -177,6 +185,7 @@ class Managers extends Turbo
 
 		foreach ($lines as $i => $line) {
 			$m = explode(":", $line);
+			
 			if ($m[0] == $login) {
 				unset($lines[$i]);
 			}

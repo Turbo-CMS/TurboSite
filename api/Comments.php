@@ -124,10 +124,13 @@ class Comments extends Turbo
 				$hasParent
 				$keywordFilter
 				$approvedFilter
-			ORDER BY $sort $sqlLimit"
+			ORDER BY 
+				$sort 
+				$sqlLimit"
 		);
 
 		$this->db->query($query);
+
 		return $this->db->results();
 	}
 
@@ -178,6 +181,7 @@ class Comments extends Turbo
 		);
 
 		$this->db->query($query);
+
 		$result = $this->db->result('count');
 
 		return $result;
@@ -188,7 +192,7 @@ class Comments extends Turbo
 	 */
 	public function addComment($comment)
 	{
-		$query = $this->db->placehold('INSERT INTO __comments SET ?%, date=NOW()', $comment);
+		$query = $this->db->placehold("INSERT INTO __comments SET ?%, date=NOW()", $comment);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -201,13 +205,13 @@ class Comments extends Turbo
 		if (isset($comment['approved'], $comment['object_id']) && $comment['approved'] == 1) {
 			switch ($comment['type']) {
 				case 'blog':
-					$this->db->query('UPDATE __blog SET last_modified=NOW() WHERE id=?', (int) $comment['object_id']);
+					$this->db->query("UPDATE __blog SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
 					break;
 				case 'project':
-					$this->db->query('UPDATE __projects SET last_modified=NOW() WHERE id=?', (int) $comment['object_id']);
+					$this->db->query("UPDATE __projects SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
 					break;
 				case 'article':
-					$this->db->query('UPDATE __articles SET last_modified=NOW() WHERE id=?', (int) $comment['object_id']);
+					$this->db->query("UPDATE __articles SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
 					break;
 				case 'review':
 					$this->settings->lastModifyReviews = date('Y-m-d H:i:s');
@@ -235,20 +239,20 @@ class Comments extends Turbo
 	public function deleteComment($id)
 	{
 		if (!empty($id)) {
-			$this->db->query('SELECT object_id, type, approved FROM __comments WHERE id=?', (int) $id);
+			$this->db->query("SELECT object_id, type, approved FROM __comments WHERE id=?", (int) $id);
 
 			$comment = $this->db->result();
 
 			if ($comment->approved == 1) {
 				switch ($comment->type) {
 					case 'blog':
-						$this->db->query('UPDATE __blog SET last_modified=now() WHERE id=?', (int) $comment->object_id);
+						$this->db->query("UPDATE __blog SET last_modified=NOW() WHERE id=?", (int) $comment->object_id);
 						break;
 					case 'project':
-						$this->db->query('UPDATE __projects SET last_modified=now() WHERE id=?', (int) $comment->object_id);
+						$this->db->query("UPDATE __projects SET last_modified=NOW() WHERE id=?", (int) $comment->object_id);
 						break;
 					case 'article':
-						$this->db->query('UPDATE __articles SET last_modified=now() WHERE id=?', (int) $comment->object_id);
+						$this->db->query("UPDATE __articles SET last_modified=NOW() WHERE id=?", (int) $comment->object_id);
 						break;
 				}
 			}

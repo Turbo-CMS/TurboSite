@@ -30,7 +30,6 @@ class ProjectAdmin extends Turbo
 			$project->site = $this->request->post('site');
 			$project->type = $this->request->post('type');
 
-			// Related Projects
 			if (is_array($this->request->post('related_projects'))) {
 				foreach ($this->request->post('related_projects') as $p) {
 					$rp[$p] = new stdClass;
@@ -41,36 +40,35 @@ class ProjectAdmin extends Turbo
 				$relatedProjects = $rp;
 			}
 
-			// Do not allow duplicate section URLs
 			if (($a = $this->projects->getProject($project->url)) && $a->id != $project->id) {
 				$this->design->assign('message_error', 'url_exists');
 				$images = $this->projects->getImages(array('project_id' => $project->id));
 			} else {
 				if (empty($project->id)) {
-					// Last Modified
 					if ($project->category_id > 0) {
-						$this->db->query('update __projects_categories set last_modified=now() where id=?', $project->category_id);
+						$this->db->query("UPDATE __projects_categories SET last_modified=NOW() WHERE id=?", $project->category_id);
 					}
 
 					$project->id = $this->projects->addProject($project);
 					$project = $this->projects->getProject($project->id);
+
 					$this->design->assign('message_success', 'added');
 				} else {
-					// Last-Modified                    
-					$this->db->query('select category_id from __projects where id=?', $project->id);
+					$this->db->query("SELECT category_id FROM __projects WHERE id=?", $project->id);
+
 					$c_ids = $this->db->results('category_id');
+
 					if (!empty($c_ids)) {
-						$this->db->query('update __projects_categories set last_modified=now() where id in(?@)', $c_ids);
+						$this->db->query("UPDATE __projects_categories SET last_modified=NOW() WHERE id IN(?@)", $c_ids);
 					}
 
 					$this->projects->updateProject($project->id, $project);
 					$project = $this->projects->getProject($project->id);
+
 					$this->design->assign('message_success', 'updated');
 				}
 
 				if ($project->id) {
-
-					// Deleting images
 					$images = (array) $this->request->post('images');
 					$currentImages = $this->projects->getImages(array('project_id' => $project->id));
 
@@ -80,16 +78,15 @@ class ProjectAdmin extends Turbo
 						}
 					}
 
-					// Image Order
 					if ($images = $this->request->post('images')) {
 						$i = 0;
+
 						foreach ($images as $id) {
 							$this->projects->updateImage($id, array('position' => $i));
 							$i++;
 						}
 					}
 
-					// Image upload
 					if ($images = $this->request->files('images')) {
 						for ($i = 0; $i < count($images['name']); $i++) {
 							if ($imageName = $this->image->uploadImage($images['tmp_name'][$i], $images['name'][$i])) {
@@ -115,12 +112,13 @@ class ProjectAdmin extends Turbo
 
 					$images = $this->projects->getImages(['project_id' => $project->id]);
 
-					// Related projects
-					$query = $this->db->placehold('DELETE FROM __related_projects WHERE project_id=?', $project->id);
+					$query = $this->db->placehold("DELETE FROM __related_projects WHERE project_id=?", $project->id);
+
 					$this->db->query($query);
 
 					if (is_array($relatedProjects)) {
 						$pos = 0;
+
 						foreach ($relatedProjects  as $i => $relatedProject) {
 							$this->projects->addRelatedProject($project->id, $relatedProject->related_id, $pos++);
 						}
@@ -132,9 +130,7 @@ class ProjectAdmin extends Turbo
 			$project = $this->projects->getProject((int) $project->id);
 
 			if ($project && $project->id) {
-				// Project Images
 				$images = $this->projects->getImages(['project_id' => $project->id]);
-				// Related Projects
 				$relatedProjects = $this->projects->getRelatedProjects(['project_id' => $project->id]);
 			}
 		}
@@ -169,7 +165,6 @@ class ProjectAdmin extends Turbo
 		$this->design->assign('project', $project);
 		$this->design->assign('related_projects', $relatedProjects);
 
-		// Categories
 		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
 		$this->design->assign('projects_categories', $projectsCategories);
 

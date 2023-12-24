@@ -22,7 +22,7 @@ class UserView extends View
             $this->design->assign('email', $email);
             $this->design->assign('phone', $phone);
 
-            $this->db->query('SELECT COUNT(*) AS count FROM __users WHERE email=? AND id!=?', $email, $this->user->id);
+            $this->db->query("SELECT COUNT(*) AS count FROM __users WHERE email=? AND id!=?", $email, $this->user->id);
 
             $userExists = $this->db->result('count');
 

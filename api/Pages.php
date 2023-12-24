@@ -18,27 +18,29 @@ class Pages extends Turbo
 		$langSql = $this->languages->getQuery(['object' => 'page']);
 
 		$query = $this->db->placehold(
-			"SELECT p.id,
-					p.url,
-					p.header,
-					p.name,
-					p.meta_title,
-					p.meta_description,
-					p.meta_keywords,
-					p.body,
-					p.menu_id,
-					p.parent_id,
-					p.position,
-					p.visible,
-					p.last_modified,
-					$langSql->fields
-			 FROM __pages p 
-			 $langSql->join 
-			 $where 
-			 LIMIT 1"
+			"SELECT 
+				p.id,
+				p.url,
+				p.header,
+				p.name,
+				p.meta_title,
+				p.meta_description,
+				p.meta_keywords,
+				p.body,
+				p.menu_id,
+				p.parent_id,
+				p.position,
+				p.visible,
+				p.last_modified,
+				$langSql->fields
+			FROM __pages p 
+			 	$langSql->join 
+			 	$where 
+			LIMIT 1"
 		);
 
 		$this->db->query($query);
+
 		return $this->db->result();
 	}
 
@@ -49,7 +51,6 @@ class Pages extends Turbo
 	{
 		$limit = 1000;
 		$page = 1;
-
 		$menuFilter = '';
 		$visibleFilter = '';
 		$keywordFilter = '';
@@ -101,13 +102,14 @@ class Pages extends Turbo
 				p.last_modified, 
 				$langSql->fields
 			FROM __pages p 
-			$langSql->join 
+				$langSql->join 
 			WHERE 1 
 				$menuFilter 
 				$keywordFilter 
 				$visibleFilter 
-			ORDER BY position 
-			$sqlLimit"
+			ORDER BY 
+				p.position 
+				$sqlLimit"
 		);
 
 		$this->db->query($query);
@@ -132,7 +134,7 @@ class Pages extends Turbo
 			$page = $result->data;
 		}
 
-		$query = $this->db->placehold('INSERT INTO __pages SET ?%', $page);
+		$query = $this->db->placehold("INSERT INTO __pages SET ?%", $page);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -145,6 +147,7 @@ class Pages extends Turbo
 		}
 
 		$this->db->query("UPDATE __pages SET position=id WHERE id=?", $id);
+
 		return $id;
 	}
 
@@ -161,7 +164,7 @@ class Pages extends Turbo
 			$page = $result->data;
 		}
 
-		$query = $this->db->placehold('UPDATE __pages SET `last_modified`=NOW(), ?% WHERE id IN(?@)', $page, (array) $id);
+		$query = $this->db->placehold("UPDATE __pages SET last_modified=NOW(), ?% WHERE id IN(?@)", $page, (array) $id);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -180,10 +183,10 @@ class Pages extends Turbo
 	public function deletePage($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold('DELETE FROM __pages WHERE id=? LIMIT 1', (int) $id);
+			$query = $this->db->placehold("DELETE FROM __pages WHERE id=? LIMIT 1", (int) $id);
 
 			if ($this->db->query($query)) {
-				$this->db->query('DELETE FROM __lang_pages WHERE page_id=?', (int) $id);
+				$this->db->query("DELETE FROM __lang_pages WHERE page_id=?", (int) $id);
 				return true;
 			}
 		}
@@ -219,10 +222,10 @@ class Pages extends Turbo
 		$this->menus = [];
 
 		$query = $this->db->placehold("SELECT id, name, position FROM __menu ORDER BY position");
-
 		$this->db->query($query);
 
 		$results = $this->db->results();
+
 		foreach ($results as $c) {
 			$this->menus[$c->id] = $c;
 		}
@@ -235,7 +238,7 @@ class Pages extends Turbo
 	 */
 	public function addMenu($menu)
 	{
-		$query = $this->db->placehold('INSERT INTO __menu SET ?%', $menu);
+		$query = $this->db->placehold("INSERT INTO __menu SET ?%", $menu);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -254,7 +257,7 @@ class Pages extends Turbo
 	 */
 	public function updateMenu($id, $menu)
 	{
-		$query = $this->db->placehold('UPDATE __menu SET ?% WHERE id IN(?@)', $menu, (array) $id);
+		$query = $this->db->placehold("UPDATE __menu SET ?% WHERE id IN(?@)", $menu, (array) $id);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -303,6 +306,7 @@ class Pages extends Turbo
 	public function getPagesTree($filter = [])
 	{
 		unset($this->initPages, $this->allPages);
+
 		$this->initPages($filter);
 
 		return $this->pagesTree;
@@ -317,7 +321,7 @@ class Pages extends Turbo
 		$isVisible = '';
 
 		if (isset($filter['visible'], $filter['menu_id'])) {
-			$query = $this->db->placehold('SELECT COUNT(*) FROM __pages WHERE id=? AND visible=1', (int) $filter['menu_id']);
+			$query = $this->db->placehold("SELECT COUNT(*) FROM __pages WHERE id=? AND visible=1", (int) $filter['menu_id']);
 			$this->db->query($query);
 
 			if (!$this->db->result('COUNT(*)')) {
@@ -326,11 +330,11 @@ class Pages extends Turbo
 		}
 
 		if (isset($filter['menu_id'])) {
-			$menuId = $this->db->placehold(" AND menu_id=? ", (int) $filter['menu_id']);
+			$menuId = $this->db->placehold("AND menu_id=? ", (int) $filter['menu_id']);
 		}
 
 		if (isset($filter['visible'])) {
-			$isVisible = ' AND visible =1 ';
+			$isVisible = "AND visible=1";
 		}
 
 		$tree = new stdClass();

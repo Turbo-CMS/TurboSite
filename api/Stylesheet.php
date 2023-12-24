@@ -207,7 +207,7 @@ class Stylesheet extends Turbo
 		}
 
 		if (in_array(false, $lessVerify) && is_file($cachePath)) {
-			unlink($cachePath);
+			@unlink($cachePath);
 		}
 
 		if (!is_file($cachePath)) {
@@ -247,6 +247,7 @@ class Stylesheet extends Turbo
 		$event->id = $eventId;
 		$event->data = [];
 		$event->order = $this->order_num++;
+
 		return $event;
 	}
 

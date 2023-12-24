@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ClearResizeAjax extends Turbo
@@ -27,7 +28,7 @@ class ClearResizeAjax extends Turbo
                     $this->cleanResize($fullpath);
                     rmdir($fullpath);
                 } else {
-                    unlink($fullpath);
+                    @unlink($fullpath);
                 }
             }
         }
@@ -37,6 +38,7 @@ class ClearResizeAjax extends Turbo
 }
 
 $clearResizeAjax = new ClearResizeAjax();
+
 $json = json_encode($clearResizeAjax->fetch());
 
 header("Content-type: application/json; charset=utf-8");

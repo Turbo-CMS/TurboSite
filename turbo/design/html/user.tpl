@@ -8,7 +8,7 @@
 	</h1>
 </div>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -25,7 +25,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -46,9 +46,8 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="clearfix">
+<form method="post" enctype="multipart/form-data" class="clearfix js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
@@ -64,7 +63,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $user->enabled}checked=""{/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>

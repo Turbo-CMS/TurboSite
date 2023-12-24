@@ -4,7 +4,7 @@
 	{$btr->global_settings_site|escape}
 </h1>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -21,7 +21,7 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row gx-2">
 		<div class="col-lg-6 col-md-12">

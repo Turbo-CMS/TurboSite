@@ -10,7 +10,7 @@ class ProjectsCategories extends Turbo
 	/**
 	 * Get Projects Categories
 	 */
-	public function getProjectsCategories($filter = [])
+	public function getProjectsCategories()
 	{
 		if (!isset($this->projectsCategoriesTree)) {
 			$this->initProjectsCategories();
@@ -84,6 +84,7 @@ class ProjectsCategories extends Turbo
 		}
 
 		$this->db->query("INSERT INTO __projects_categories SET ?%", $category);
+
 		$id = $this->db->insertId();
 
 		$this->db->query("UPDATE __projects_categories SET position=id WHERE id=?", $id);
@@ -104,17 +105,18 @@ class ProjectsCategories extends Turbo
 	public function updateProjectsCategory($id, $category)
 	{
 		if (!is_array($category)) {
-			$category = (array) $category; 
+			$category = (array) $category;
 		}
 
 		$category = (object) $category;
+
 		$result = $this->languages->getDescription($category, 'project_category');
 
 		if (!empty($result->data)) {
 			$category = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __projects_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
+		$query = $this->db->placehold("UPDATE __projects_categories SET last_modified=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -161,6 +163,7 @@ class ProjectsCategories extends Turbo
 	public function deleteImage($categoriesIds)
 	{
 		$categoriesIds = (array) $categoriesIds;
+
 		$query = $this->db->placehold("SELECT image FROM __projects_categories WHERE id IN(?@)", $categoriesIds);
 
 		if ($this->db->query($query)) {
@@ -187,7 +190,7 @@ class ProjectsCategories extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -197,12 +200,12 @@ class ProjectsCategories extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
 				}
 			}
 
@@ -241,8 +244,10 @@ class ProjectsCategories extends Turbo
 				c.last_modified, 
 				$langSql->fields 
 			FROM __projects_categories c 
-			$langSql->join 
-			ORDER BY c.parent_id, c.position"
+				$langSql->join 
+			ORDER BY 
+				c.parent_id, 
+				c.position"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {

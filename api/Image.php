@@ -19,6 +19,7 @@ class Image extends Turbo
 		list($sourceFile, $width, $height, $setWatermark) = $this->getResizeParams($filename);
 
 		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($setWatermark ? "w" : '');
+
 		$imageSizes = explode('|', $this->settings->image_sizes);
 
 		if (!in_array($size, $imageSizes)) {
@@ -67,6 +68,7 @@ class Image extends Turbo
 		$watermarkOffsetY = $this->settings->watermark_offset_y;
 
 		$sharpen = min(100, $this->settings->images_sharpen) / 100;
+
 		$watermarkTransparency = 1 - min(100, $this->settings->watermark_transparency) / 100;
 
 		$watermarkFile = null;
@@ -134,7 +136,7 @@ class Image extends Turbo
 	 */
 	public function downloadImage($filename)
 	{
-		$this->db->query('SELECT 1 FROM __images WHERE filename=? LIMIT 1', $filename);
+		$this->db->query("SELECT 1 FROM __images WHERE filename=? LIMIT 1", $filename);
 
 		if (!$this->db->result()) {
 			return false;
@@ -155,7 +157,8 @@ class Image extends Turbo
 			}
 		}
 
-		$this->db->query('UPDATE __images SET filename=? WHERE filename=?', $newName, $filename);
+		$this->db->query("UPDATE __images SET filename=? WHERE filename=?", $newName, $filename);
+
 		fclose(fopen($this->config->root_dir . $this->config->original_images_dir . $newName, 'w'));
 		copy($filename, $this->config->root_dir . $this->config->original_images_dir . $newName);
 

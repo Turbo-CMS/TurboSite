@@ -10,9 +10,9 @@ class Projects extends Turbo
 	public function getProject($id)
 	{
 		if (is_int($id)) {
-			$where = $this->db->placehold(' WHERE p.id=? ', (int) $id);
+			$where = $this->db->placehold('WHERE p.id=?', (int) $id);
 		} else {
-			$where = $this->db->placehold(' WHERE p.url=? ', $id);
+			$where = $this->db->placehold('WHERE p.url=?', $id);
 		}
 
 		$langSql = $this->languages->getQuery(array('object' => 'project', 'px' => 'p'));
@@ -36,8 +36,7 @@ class Projects extends Turbo
 				p.position, 
 				p.last_modified, 
 				$langSql->fields
-			FROM 
-				__projects p 
+			FROM __projects p 
 				$langSql->join 
 				$where 
 			LIMIT 1"
@@ -62,7 +61,6 @@ class Projects extends Turbo
 		$visibleFilter = '';
 		$keywordFilter = '';
 		$order = 'p.position DESC';
-		$projects = [];
 
 		$langId  = $this->languages->langId();
 		$px = ($langId ? 'l' : 'p');
@@ -108,7 +106,6 @@ class Projects extends Turbo
 		}
 
 		$sqlLimit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
-
 		$langSql = $this->languages->getQuery(array('object' => 'project', 'px' => 'p'));
 
 		$query = $this->db->placehold(
@@ -130,8 +127,7 @@ class Projects extends Turbo
 				p.position, 
 				p.last_modified, 
 				$langSql->fields
-		    FROM 
-				__projects p 
+		    FROM __projects p 
 			    $langSql->join
 			WHERE 1 
 				$projectIdFilter 
@@ -190,7 +186,7 @@ class Projects extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT COUNT(distinct p.id) AS count
-			 FROM __projects p WHERE 1 $projectIdFilter $categoryIdFilter $visibleFilter $keywordFilter"
+			FROM __projects p WHERE 1 $projectIdFilter $categoryIdFilter $visibleFilter $keywordFilter"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -243,7 +239,7 @@ class Projects extends Turbo
 
 		if ($this->db->query("INSERT INTO __projects SET ?%", $project)) {
 			$id = $this->db->insertId();
-			$this->db->query("UPDATE __projects SET `last_modified`=NOW(), position=id WHERE id=?", $id);
+			$this->db->query("UPDATE __projects SET last_modified=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
 				$this->languages->actionDescription($id, $result->description, 'project');
@@ -268,7 +264,7 @@ class Projects extends Turbo
 			$project = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __projects SET `last_modified`=NOW(), ?% WHERE id IN(?@) LIMIT ?", $project, (array) $id, count((array) $id));
+		$query = $this->db->placehold("UPDATE __projects SET last_modified=NOW(), ?% WHERE id IN(?@) LIMIT ?", $project, (array) $id, count((array) $id));
 
 		if ($this->db->query($query)) {
 			if (!empty($result->description)) {
@@ -339,8 +335,7 @@ class Projects extends Turbo
 				project_id, 
 				related_id, 
 				position
-			FROM 
-				__related_projects
+			FROM __related_projects
 			WHERE 1
 				$projectIdFilter   
 			ORDER BY 
@@ -357,8 +352,8 @@ class Projects extends Turbo
 	public function addRelatedProject($projectId, $relatedId, $position = 0)
 	{
 		$query = $this->db->placehold("INSERT IGNORE INTO __related_projects SET project_id=?, related_id=?, position=?", $projectId, $relatedId, $position);
-
 		$this->db->query($query);
+
 		return $relatedId;
 	}
 
@@ -390,10 +385,7 @@ class Projects extends Turbo
 				i.name, 
 				i.filename, 
 				i.position
-			FROM 
-				__images_project 
-			AS 
-				i 
+			FROM __images_project AS i 
 			WHERE 1 
 				$projectIdFilter 
 				$groupBy 
@@ -401,7 +393,9 @@ class Projects extends Turbo
 				i.project_id, 
 				i.position"
 		);
+
 		$this->db->query($query);
+
 		return $this->db->results();
 	}
 
@@ -468,7 +462,7 @@ class Projects extends Turbo
 			if (is_array($resizedImages)) {
 				foreach ($resizedImages as $f) {
 					if (is_file($f)) {
-						unlink($f);
+						@unlink($f);
 					}
 				}
 			}
@@ -478,12 +472,12 @@ class Projects extends Turbo
 			if (is_array($resizedImages)) {
 				foreach ($resizedImages as $f) {
 					if (is_file($f)) {
-						unlink($f);
+						@unlink($f);
 					}
 				}
 			}
 
-			unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
+			@unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
 		}
 	}
 

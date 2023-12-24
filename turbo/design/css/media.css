@@ -55,12 +55,11 @@
 	.turbo-list-banners-info,
 	.turbo-list-users-email,
 	.turbo-list-users-date,
-	.turbo-list-order-status,
 	.turbo-list-setting,
 	.turbo-list-projects-setting {
 		display: none;
 	}
-	
+
 	/* Resizing Lists */
 	.turbo-list .turbo-list-blog-name {
 		width: calc(100% - 300px);
@@ -89,7 +88,7 @@
 	.turbo-list .turbo-list-article-name {
 		width: calc(100% - 315px);
 	}
-	
+
 	.turbo-list .turbo-list-project-name {
 		width: calc(100% - 315px);
 	}
@@ -109,7 +108,7 @@
 	.turbo-list .turbo-list-banners-name {
 		width: calc(100% - 500px);
 	}
-	
+
 	.turbo-list .turbo-list-tag {
 		width: 260px;
 	}
@@ -147,11 +146,11 @@
 	.content {
 		width: 100vw;
 	}
-	
+
 	body[data-theme=dark] .feature-name {
 		border-right: 1px solid #7a828a;
 	}
-	
+
 	body[data-theme=dark] .new-feature-row .new-feature.new-feature-name {
 		border-bottom: 1px solid #7a828a;
 	}

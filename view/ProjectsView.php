@@ -105,11 +105,11 @@ class ProjectsView extends View
 
 		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['comments_project'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['comments_project'])) {
+			$filter['sort'] = $_SESSION['comments_project'];
 		} else {
 			$filter['sort'] = 'rate';
 		}
@@ -258,11 +258,11 @@ class ProjectsView extends View
 
 		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['sort_project'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['sort_project'])) {
+			$filter['sort'] = $_SESSION['sort_project'];
 		} else {
 			$filter['sort'] = 'position';
 		}

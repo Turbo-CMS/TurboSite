@@ -117,6 +117,7 @@ class Design extends Turbo
 	private function resizeImage($filename, $width, $height, $setWatermark, $resizedImagesDir)
 	{
 		$resizedFilename = $this->image->addResizeParams($filename, $width, $height, $setWatermark);
+
 		$resizedFilenameEncoded = $resizedFilename;
 
 		$size = ($width ?: 0) . 'x' . ($height ?: 0) . ($setWatermark ? "w" : '');

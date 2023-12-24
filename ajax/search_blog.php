@@ -25,8 +25,7 @@ $px = ($langId ? 'l' : 'b');
 $langSql = $turbo->languages->getQuery(['object' => 'blog']);
 
 $keyword = $turbo->request->get('query', 'string');
-
-$sanitizedKeyword = $turbo->db->escape($keyword);
+$sk = $turbo->db->escape($keyword);
 
 $turbo->db->query(
     "SELECT
@@ -37,8 +36,8 @@ $turbo->db->query(
         $langSql->fields
     FROM __blog b
         $langSql->join
-    WHERE ($px.name LIKE '%$sanitizedKeyword%' OR b.meta_keywords LIKE '%$sanitizedKeyword%')
-        AND visible = 1
+    WHERE ($px.name LIKE '%$sk%' OR b.meta_keywords LIKE '%$sk%')
+    AND visible=1
     ORDER BY b.name
     LIMIT ?",
     $limit
@@ -61,14 +60,13 @@ foreach ($posts as $post) {
 	$suggestions[] = $suggestion;
 }
 
-$responseObj = new stdClass();
-
-$responseObj->query = $keyword;
-$responseObj->suggestions = $suggestions;
+$res = new stdClass();
+$res->query = $keyword;
+$res->suggestions = $suggestions;
 
 header('Content-Type: application/json; charset=UTF-8');
 header('Cache-Control: must-revalidate');
 header('Pragma: no-cache');
 header('Expires: -1');
 
-print json_encode($responseObj);
+print json_encode($res);

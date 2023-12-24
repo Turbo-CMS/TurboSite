@@ -16,19 +16,6 @@ class FaqView extends View
 			$filter['keyword'] = $keyword;
 		}
 
-		// Sort
-		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
-		}
-
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
-		} else {
-			$filter['sort'] = 'date';
-		}
-
-		$this->design->assign('sort', $filter['sort']);
-
 		// Pagination
 		$itemsPerPage = '20';
 

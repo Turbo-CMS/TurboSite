@@ -1021,7 +1021,7 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (60, 'cached', '0'),
 (61, 'cache_type', '0'),
 (62, 'cache_time', '86400'),
-(63, 'counters', ''),
+(63, 'counters', 'a:1:{i:0;O:8:\"stdClass\":3:{s:4:\"name\";s:0:\"\";s:8:\"position\";s:4:\"head\";s:4:\"code\";s:0:\"\";}}'),
 (64, 'watermark_enable', '1'),
 (65, 'admin_theme', 'default'),
 (66, 'sidebar', 'default'),

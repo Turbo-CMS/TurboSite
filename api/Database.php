@@ -67,7 +67,7 @@ class Database extends Turbo
 	 */
 	public function disconnect()
 	{
-		if ($this->mysqli->close()) {
+		if (!@$this->mysqli->close()) {
 			return true;
 		} else {
 			return false;
@@ -84,6 +84,7 @@ class Database extends Turbo
 		}
 
 		$query = call_user_func_array(array($this, 'placehold'), func_get_args());
+
 		$this->res = $this->mysqli->query($query);
 
 		return $this->res;
@@ -112,6 +113,7 @@ class Database extends Turbo
 			if ($result === false) {
 				$error = "Placeholder substitution error. Diagnostics: \"$error\"";
 				trigger_error($error, E_USER_WARNING);
+
 				return false;
 			}
 
@@ -286,7 +288,7 @@ class Database extends Turbo
 		list($compiled, $tmpl, $has_named) = $compiled;
 
 		if ($has_named) {
-			$args = $args[0] ?? null;
+			$args = @$args[0] ?? null;
 		}
 
 		$p = 0;
@@ -305,7 +307,7 @@ class Database extends Turbo
 
 			do {
 				if ($type === '#') {
-					$repl = constant($key);
+					$repl = @constant($key);
 					if ($repl === null) {
 						$error = $errmsg = "UNKNOWN_CONSTANT_$key";
 					}

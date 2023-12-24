@@ -70,7 +70,7 @@ class Subscribes extends Turbo
 		}
 
 		if (isset($filter['processed'])) {
-			$processedFilter = $this->db->placehold('AND c.processed = ?', (int) $filter['processed']);
+			$processedFilter = $this->db->placehold('AND c.processed=?', (int) $filter['processed']);
 		}
 
 		$query = $this->db->placehold("SELECT COUNT(DISTINCT c.id) AS count FROM __subscribes c WHERE 1 $processedFilter $keywordFilter");
@@ -84,7 +84,7 @@ class Subscribes extends Turbo
 	 */
 	public function addSubscribe($subscribe)
 	{
-		$query = $this->db->placehold('INSERT INTO __subscribes SET ?%, date = NOW()', $subscribe);
+		$query = $this->db->placehold("INSERT INTO __subscribes SET ?%, date=NOW()", $subscribe);
 
 		if (!$this->db->query($query)) {
 			return false;

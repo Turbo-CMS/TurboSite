@@ -1,8 +1,11 @@
 <?php
+
 session_start();
+
 require_once '../../api/Turbo.php';
 
 $turbo = new Turbo();
+
 $limit = 30;
 
 $langId  = $turbo->languages->langId();

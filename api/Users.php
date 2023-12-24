@@ -56,8 +56,7 @@ class Users extends Turbo
 				u.enabled, 
 				u.last_ip, 
 				u.created 
-			FROM 
-				__users u
+			FROM __users u
 			WHERE 1 
 				$keywordFilter 
 			ORDER BY 
@@ -66,6 +65,7 @@ class Users extends Turbo
 		);
 
 		$this->db->query($query);
+
 		return $this->db->results();
 	}
 
@@ -82,13 +82,11 @@ class Users extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT count(*) AS count 
-			FROM 
-				__users u
-			WHERE 1 
-				$keywordFilter"
+			FROM __users u WHERE 1 $keywordFilter"
 		);
 
 		$this->db->query($query);
+
 		return $this->db->result('count');
 	}
 
@@ -98,9 +96,9 @@ class Users extends Turbo
 	public function getUser($id)
 	{
 		if (gettype($id) == 'string') {
-			$where = $this->db->placehold(' WHERE u.email=? ', $id);
+			$where = $this->db->placehold('WHERE u.email=?', $id);
 		} else {
-			$where = $this->db->placehold(' WHERE u.id=? ', (int) $id);
+			$where = $this->db->placehold('WHERE u.id=?', (int) $id);
 		}
 
 		$query = $this->db->placehold(
@@ -113,14 +111,14 @@ class Users extends Turbo
 				u.enabled, 
 				u.last_ip, 
 				u.created 
-			FROM 
-				__users u 
+			FROM __users u 
 				$where 
 			LIMIT 1",
 			$id
 		);
 
 		$this->db->query($query);
+
 		$user = $this->db->result();
 
 		if (empty($user)) {
@@ -141,7 +139,8 @@ class Users extends Turbo
 			$user['password'] = md5($this->salt . $user['password'] . md5($user['password']));
 		}
 
-		$query = $this->db->placehold('SELECT COUNT(*) AS count FROM __users WHERE email=?', $user['email']);
+		$query = $this->db->placehold("SELECT COUNT(*) AS count FROM __users WHERE email=?", $user['email']);
+
 		$this->db->query($query);
 
 		if ($this->db->result('count') > 0) {
@@ -149,6 +148,7 @@ class Users extends Turbo
 		}
 
 		$query = $this->db->placehold("INSERT INTO __users SET ?%", $user);
+
 		$this->db->query($query);
 
 		return $this->db->insertId();
@@ -181,6 +181,7 @@ class Users extends Turbo
 			$this->db->query($query);
 
 			$query = $this->db->placehold("DELETE FROM __users WHERE id=? LIMIT 1", (int) $id);
+
 			if ($this->db->query($query)) {
 				return true;
 			}

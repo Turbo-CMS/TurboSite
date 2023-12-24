@@ -39,12 +39,14 @@ class Files extends Turbo
                 f.type, 
                 f.position, 
                 $langSql->fields
-             FROM __files AS f 
-             $langSql->join 
+             FROM __files f 
+                $langSql->join 
              WHERE 1 
-                 $objectIdFilter 
-                 $typeFilter 
-             ORDER BY f.object_id, f.position"
+                $objectIdFilter 
+                $typeFilter 
+             ORDER BY 
+                f.object_id, 
+                f.position"
         );
 
         $this->db->query($query);
@@ -80,6 +82,7 @@ class Files extends Turbo
     public function updateFile($id, $file)
     {
         $file = (object) $file;
+
         $result = $this->languages->getDescription($file, 'file');
 
         $query = $this->db->placehold("UPDATE __files SET ?% WHERE id=?", $file, $id);
@@ -109,12 +112,11 @@ class Files extends Turbo
         $this->db->query($query);
 
         $count = $this->db->result('count');
-        $this->db->query($query);
 
         $this->db->query("DELETE FROM __lang_files WHERE file_id=?", (int) $id);
 
         if ($count == 0) {
-            unlink($this->config->root_dir . $this->config->cms_files_dir . $filename);
+            @unlink($this->config->root_dir . $this->config->cms_files_dir . $filename);
         }
     }
 
