@@ -7,7 +7,7 @@ class Config
 
 	private $vars = [];
 
-	public $version = '4.4.5';
+	public $version = '4.4.7';
 	public $configFile = 'config/config.php';
 
 	public function __construct()

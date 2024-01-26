@@ -2,6 +2,8 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `t_articles`
 --
@@ -565,7 +567,7 @@ INSERT INTO `t_lang_pages` (`lang_id`, `lang_label`, `page_id`, `name`, `meta_ti
 (2, '', 13, 'Blog', 'Blog', '', 'Blog', '', 'Blog'),
 (3, '', 13, 'Блог', 'Блог', '', 'Блог', '', 'Блог'),
 (1, '', 14, 'Контакты', 'Контакты', 'Контакты', 'Контакты', '<p><span class=\"JLqJ4b ChMk0b\" data-language-for-alternatives=\"ru\" data-language-to-translate-into=\"uk\" data-phrase-index=\"0\" data-number-of-phrases=\"2\"><span class=\"Q4iAWc\">Киев, ул.</span></span> <span class=\"JLqJ4b ChMk0b\" data-language-for-alternatives=\"ru\" data-language-to-translate-into=\"uk\" data-phrase-index=\"1\" data-number-of-phrases=\"2\"><span class=\"Q4iAWc\">Глубочицкая, </span></span>32б, 02000</p>\r\n<p>Телефон: (095) 545-54-54</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1269.9307677918514!2d30.49195294945491!3d50.46230305803582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x84a28f327eb7dc52!2z0JDRgNC10L3QtNCwINC-0YTQuNGB!5e0!3m2!1sru!2sua!4v1609513285692!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Контакты'),
-(2, '', 14, 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, NY</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Contacts'),
+(2, '', 14, 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, USA</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Contacts'),
 (3, '', 14, 'Контакти', 'Контакти', 'Контакти', 'Контакти', '<p>Київ, вул. Глибочицька, 32б, 02000</p>\r\n<p>Телефон: (095) 545-54-54</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1269.9307677918514!2d30.49195294945491!3d50.46230305803582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x84a28f327eb7dc52!2z0JDRgNC10L3QtNCwINC-0YTQuNGB!5e0!3m2!1sru!2sua!4v1609513285692!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Контакти'),
 (1, '', 16, 'Статьи', 'Статьи', '', 'Статьи', '', 'Статьи'),
 (2, '', 16, 'Articles', 'Articles', '', 'Articles', '', 'Articles'),
@@ -704,7 +706,7 @@ INSERT INTO `t_pages` (`id`, `parent_id`, `url`, `name`, `meta_title`, `meta_des
 (3, 0, '404', '404', 'Page not found', 'Page not found', 'Page not found', '<p>Page not found</p>', 2, 3, 1, 'Page not found', '2022-08-25 23:25:06'),
 (4, 0, 'sitemap', 'Sitemap', 'Sitemap', 'Sitemap', 'Sitemap', '', 2, 27, 1, 'Sitemap', '2022-08-31 20:56:33'),
 (13, 0, 'blog', 'Blog', 'Blog', '', 'Blog', '', 1, 25, 1, 'Blog', '2022-08-31 20:49:15'),
-(14, 0, 'contact', 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, NY</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 1, 26, 1, 'Contacts', '2022-08-31 20:49:15'),
+(14, 0, 'contact', 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, USA</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 1, 26, 1, 'Contacts', '2022-08-31 20:49:15'),
 (16, 0, 'articles', 'Articles', 'Articles', '', 'Articles', '', 3, 14, 1, 'Articles', '2022-08-31 20:55:55'),
 (18, 0, 'search', 'Search', 'Search', '', 'Search', '', 3, 17, 1, 'Search', '2022-08-31 20:55:55'),
 (27, 0, 'projects', 'Projects', 'Projects', '', 'Projects', '', 3, 16, 1, 'Projects', '2023-11-16 19:50:10'),
@@ -983,11 +985,10 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (2, 'date_format', 'd.m.Y'),
 (3, 'admin_email', 'me@example.com'),
 (4, 'site_work', 'on'),
-(78, 'category_count', '0'),
-(77, 'captcha_callback', ''),
-(76, 'captcha_feedback', ''),
-(75, 'captcha_register', ''),
-(74, 'captcha_article', ''),
+(77, 'captcha_callback', '1'),
+(76, 'captcha_feedback', '1'),
+(75, 'captcha_register', '1'),
+(74, 'captcha_article', '1'),
 (14, 'comment_email', 'me@example.com'),
 (15, 'notify_from_email', 'me@example.com'),
 (16, 'email_lang', 'en'),
@@ -1003,20 +1004,16 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (32, 'watermark_transparency', '50'),
 (33, 'images_sharpen', '50'),
 (42, 'image_sizes', '55x55|110x110|90x90|240x240|570x570|800x800w|300x300|95x95|330x300|500x500|100x100|900x350|35x35|400x300|300x120|130x130|150x150|170x170|116x116|75x23|40x40|700x700|750x750|750x300|750x467|700x467|250x120|50x50|700x300|120x120|700x400|800x800|750x500|800x600|500x300|400x400|966x378|45x45|90x60|800x285|170x100|180x100|550x440|200x100|800x400|1000x1000w'),
-(43, 'comments_tree_blog', 'on'),
-(44, 'comments_tree_articles', 'on'),
 (45, 'lastModifyPosts', '2023-11-19 01:52:01'),
 (46, 'projects_num', '15'),
 (47, 'projects_num_admin', '15'),
-(48, 'captcha_project', ''),
+(48, 'captcha_project', '1'),
 (50, 'chat_viber', '123456789'),
 (51, 'chat_whats_app', '123456789'),
 (52, 'chat_telegram', 'usename'),
 (53, 'chat_facebook', 'usename'),
 (54, 'captcha_review', ''),
-(55, 'comments_tree_projects', 'on'),
 (57, 'lastModifyReviews', '2022-08-29 01:23:49'),
-(58, 'comments_tree_reviews', 'on'),
 (59, 'lastModifyFAQ', '2022-08-29 00:55:00'),
 (60, 'cached', '0'),
 (61, 'cache_type', '0'),
@@ -1027,10 +1024,14 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (66, 'sidebar', 'default'),
 (67, 'layout', 'fluid'),
 (68, 'position', 'left'),
-(69, 'captcha_cart', ''),
 (70, 'comments_num', '15'),
 (71, 'comments_num_admin', '15'),
-(73, 'captcha_post', '');
+(73, 'captcha_post', '1'),
+(79, 'smtp_server', 'smtp.gmail.com'),
+(80, 'smtp_port', '465'),
+(81, 'smtp_user', ''),
+(82, 'smtp_pass', ''),
+(83, 'use_smtp', '');
 
 -- --------------------------------------------------------
 
@@ -1116,7 +1117,7 @@ CREATE TABLE `t_translations` (
 
 INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VALUES
 (39, 'callback', 'Заказать звонок', 'Request a call', 'Замовити дзвінок'),
-(40, 'contact_details', 'Киев, ул. Глубочицкая, 32б', '41 West 40th Street New York, NY', 'Київ, вул. Глибочицька, 32б'),
+(40, 'contact_details', 'Киев, ул. Глубочицкая, 32б', '41 West 40th Street New York, USA', 'Київ, вул. Глибочицька, 32б'),
 (6, 'bloge', 'Блоге', 'entries', 'Блогу'),
 (41, 'phone_number', '(903) 782-82-82', '(210) 876-5432', '(095) 545-54-54'),
 (42, 'close', 'Закрыть', 'Close', 'Закрити'),
@@ -1643,7 +1644,7 @@ ALTER TABLE `t_seo`
 -- AUTO_INCREMENT for table `t_settings`
 --
 ALTER TABLE `t_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `t_subscribes`
@@ -1669,4 +1670,3 @@ ALTER TABLE `t_translations`
 ALTER TABLE `t_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
-

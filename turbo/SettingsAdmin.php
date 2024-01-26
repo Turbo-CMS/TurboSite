@@ -36,6 +36,11 @@ class SettingsAdmin extends Turbo
 				$this->settings->comment_email = $this->request->post('comment_email');
 				$this->settings->notify_from_email = $this->request->post('notify_from_email');
 				$this->settings->update('notify_from_name', $this->request->post('notify_from_name'));
+				$this->settings->use_smtp = $this->request->post('use_smtp');
+				$this->settings->smtp_server = $this->request->post('smtp_server');
+				$this->settings->smtp_port = $this->request->post('smtp_port');
+				$this->settings->smtp_user = $this->request->post('smtp_user');
+				$this->settings->smtp_pass = $this->request->post('smtp_pass');
 				$this->settings->email_lang = $this->request->post('email_lang');
 				$this->settings->lang = $this->request->post('manager_lang');
 				$this->settings->projects_num = $this->request->post('projects_num');

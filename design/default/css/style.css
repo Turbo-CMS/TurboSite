@@ -375,6 +375,18 @@ iframe {
 	border: none;
 }
 
+.media-body {
+	-ms-flex: 1;
+	flex: 1;
+}
+
+.media {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: start;
+	align-items: flex-start;
+}
+
 /* Social Colors */
 
 .bs-facebook:hover {

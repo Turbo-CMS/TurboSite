@@ -2,8 +2,55 @@
 
 require_once 'Turbo.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+
+require_once 'phpmailer/src/Exception.php';
+require_once 'phpmailer/src/PHPMailer.php';
+require_once 'phpmailer/src/SMTP.php';
+
 class Notify extends Turbo
 {
+	/**
+	 * Send Email SMTP
+	 */
+	public function SMTP($to, $subject, $message)
+	{
+		$mail = new PHPMailer();
+		$mail->IsSMTP();
+		$mail->Host = $this->settings->smtp_server;
+		$mail->SMTPDebug  = 0;
+		$mail->SMTPAuth = true;
+		$mail->CharSet = 'utf-8';
+		$mail->Port = $this->settings->smtp_port;
+
+		if ($mail->Port == 465) {
+			$mail->SMTPSecure = "ssl";
+			$mail->Host = (strpos($mail->Host, "ssl://") === false) ? "ssl://" . $mail->Host : $mail->Host;
+		}
+
+		$mail->Username = $this->settings->smtp_user;
+		$mail->Password = $this->settings->smtp_pass;
+		$mail->SetFrom($this->settings->smtp_user, $this->settings->notify_from_name);
+		$mail->AddReplyTo($this->settings->smtp_user, $this->settings->notify_from_name);
+		$mail->Subject = $subject;
+		$mail->MsgHTML($message);
+		$mail->addCustomHeader("MIME-Version: 1.0\n");
+
+		$recipients = explode(',', $to);
+
+		if (!empty($recipients)) {
+			foreach ($recipients as $i => $r) {
+				$mail->AddAddress($r);
+			}
+		} else {
+			$mail->AddAddress($to);
+		}
+
+		if (!$mail->Send()) {
+			file_put_contents('error_log.txt', $mail->ErrorInfo);
+		}
+	}
+
 	/**
 	 * Send Email
 	 */
@@ -22,7 +69,11 @@ class Notify extends Turbo
 
 		$subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
 
-		return mail($to, $subject, $message, $headers);
+		if ($this->settings->use_smtp) {
+			$this->SMTP($to, $subject, $message);
+		} else {
+			mail($to, $subject, $message, $headers);
+		}
 	}
 
 	/**
@@ -73,9 +124,7 @@ class Notify extends Turbo
 	 */
 	public function emailPasswordRemind($userId, $code)
 	{
-		$user = $this->users->getUser($userId);
-
-		if (!$user) {
+		if (!($user = $this->users->getUser((int) $userId))) {
 			return false;
 		}
 
@@ -83,16 +132,14 @@ class Notify extends Turbo
 		$this->design->assign('code', $code);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_password_remind.tpl');
-
 		$subject = $this->design->getVar('subject');
 
-		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
+		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . "<" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
 
 		$this->email($user->email, $subject, $emailTemplate, $from);
+
 		$this->design->smarty->clearAssign('user');
 		$this->design->smarty->clearAssign('code');
-
-		return true;
 	}
 
 	/**

@@ -20,9 +20,7 @@ class IndexView extends View
 		if ($this->request->isMethod('post') && $this->request->post('subscribe')) {
 			$email = $this->request->post('subscribe_email');
 			$this->design->assign('email', $email);
-
-			$this->db->query("SELECT count(id) AS cnt FROM __subscribes WHERE email=?", $email);
-
+			$this->db->query("select count(id) as cnt from __subscribes where email=?", $email);
 			$cnt = $this->db->result('cnt');
 
 			if (empty($email)) {
@@ -30,7 +28,7 @@ class IndexView extends View
 			} elseif ($cnt > 0) {
 				$this->design->assign('subscribe_error', 'email_exist');
 			} else {
-				$this->db->query("INSERT INTO __subscribes SET email=?, date=NOW()", $email);
+				$this->db->query("insert into __subscribes set email=?, date = NOW()", $email);
 				$this->design->assign('subscribe_success', '1');
 			}
 		}
