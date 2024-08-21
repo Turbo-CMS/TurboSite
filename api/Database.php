@@ -113,7 +113,6 @@ class Database extends Turbo
 			if ($result === false) {
 				$error = "Placeholder substitution error. Diagnostics: \"$error\"";
 				trigger_error($error, E_USER_WARNING);
-
 				return false;
 			}
 
@@ -234,7 +233,6 @@ class Database extends Turbo
 		$hasNamed = false;
 
 		while (false !== ($start = $p = strpos($tmpl, '?', $p))) {
-
 			switch ($c = substr($tmpl, ++$p, 1)) {
 				case '%':
 				case '@':
@@ -446,6 +444,7 @@ class Database extends Turbo
 				$line = fgets($h);
 				if (substr($line, 0, 2) != '--' && $line != '') {
 					$templine .= $line;
+
 					if (substr(trim($line), -1, 1) == ';') {
 						$this->mysqli->query($templine) or print('Error performing query \'<b>' . $templine . '</b>\': ' . $this->mysqli->error . '<br/><br/>');
 						$templine = '';

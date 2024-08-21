@@ -1,8 +1,9 @@
 {* Subscribe *}
 <div class="container-fluid bg-dark mt-auto">
 	<div class="row">
+		<hr class="text-black-50">
 		<div class="col-md-4 offset-md-4">
-			<form class="form-group needs-validation my-5" method="post" novalidate>
+			<form class="form-group needs-validation pb-2 pt-3" method="post" novalidate>
 				{if isset($subscribe_error)}
 					<label class="error text-danger">
 						{if $subscribe_error == 'email_exist'}
@@ -18,7 +19,7 @@
 						{$lang->success_subscribe}
 					</label>
 				{/if}
-				<div class="input-group mb-2">
+				<div class="input-group mb-4">
 					<input type="email" class="form-control {if isset($subscribe_error)}border-danger{/if} {if isset($subscribe_success)}border-success{/if}" name="subscribe_email" value="{if isset($email)}{$email|escape}{/if}" placeholder="{$lang->enter_your_email}" size="20" required>
 					<button type="submit" class="btn btn-warning" name="subscribe" value="{$lang->subscribe}"><i class="fa fa-envelope"></i></button>
 				</div>
@@ -39,9 +40,9 @@
 			<hr class="text-black-50 w-100 clearfix d-md-none">
 			{* Footer Links *}
 			<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-				<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->about_company}</h6> 
+				<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->information}</h6> 
 				{foreach $pages as $p}
-					{if $p->menu_id == 1}
+					{if $p->menu_id == $theme_settings->id_menu_footer_1}
 						<div class="mb-3 {if $page && $page->id == $p->id}selected{/if}">
 							<a data-page="{$p->id}" class="text-decoration-none" href="{$lang_link}{$p->url}">{$p->header|escape}</a>
 						</div>
@@ -51,9 +52,9 @@
 			<hr class="text-black-50 w-100 clearfix d-md-none">
 			{* Footer Links *}
 			<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-				<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->information}</h6>
+				<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->help}</h6>
 				{foreach $pages as $p}
-					{if $p->menu_id == 3}
+					{if $p->menu_id == $theme_settings->id_menu_footer_2}
 						<div class="mb-3 {if $page && $page->id == $p->id}selected{/if}">
 							<a data-page="{$p->id}" class="text-decoration-none" href="{$lang_link}{$p->url}">{$p->header|escape}</a>
 						</div>
@@ -65,9 +66,9 @@
 				{* Footer Contacts *}
 				<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->contacts}</h6>
 				<div class="mb-3"><i class="fal fa-map-marker-alt text-white-50 me-2"></i>{$lang->contact_details}</div>
-				<div class="mb-3"><i class="fal fa-envelope text-white-50 me-2"></i>info@gmail.com</div>
-				<div class="mb-3"><i class="fal fa-phone text-white-50 me-2"></i>(123) 456-78-90</div>
-				<div class="mb-3"><i class="fal fa-print text-white-50 me-2"></i>(987) 654-32-10</div>
+				<div class="mb-3"><i class="fal fa-envelope text-white-50 me-2"></i>{$theme_settings->email|escape}</div>
+				<div class="mb-3"><i class="fal fa-phone text-white-50 me-2"></i>{$theme_settings->phone_1|escape}</div>
+				<div class="mb-3"><i class="fal fa-print text-white-50 me-2"></i>{$theme_settings->phone_2|escape}</div>
 			</div>
 		</div>
 		<hr class="text-black-50">
@@ -81,28 +82,33 @@
 				<div class="text-center text-md-end">
 					<ul class="list-unstyled list-inline">
 						<li class="list-inline-item">
-							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
+							<a href="{$theme_settings->facebook|escape}" class="btn-floating btn-sm rgba-white-slight mx-1">
 								<i class="fab fa-facebook-f bs-facebook"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
+							<a href="{$theme_settings->instagram|escape}" class="btn-floating btn-sm rgba-white-slight mx-1">
 								<i class="fab fa-instagram bs-instagram"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
+							<a href="{$theme_settings->twitterx|escape}" class="btn-floating btn-sm rgba-white-slight mx-1">
 								<i class="fab fa-x-twitter"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
+							<a href="{$theme_settings->youtube|escape}" class="btn-floating btn-sm rgba-white-slight mx-1">
 								<i class="fab fa-youtube bs-youtube"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
+							<a href="{$theme_settings->linkedin|escape}" class="btn-floating btn-sm rgba-white-slight mx-1">
 								<i class="fab fa-linkedin-in bs-linkedin"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a class="btn-floating btn-sm rgba-white-slight mx-1" href="{$config->root_url}/{$lang_link}feeds/rss.xml" target="_blank">
+								<i class="fa fa-rss"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">

@@ -121,6 +121,9 @@ class FAQ extends Turbo
 		$visibleFilter = '';
 		$keywordFilter = '';
 
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'f');
+
 		if (!empty($filter['id'])) {
 			$faqIdFilter = $this->db->placehold('AND f.id IN(?@)', (array) $filter['id']);
 		}
@@ -132,7 +135,7 @@ class FAQ extends Turbo
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND (f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 			}
 		}
 
@@ -169,6 +172,7 @@ class FAQ extends Turbo
 	public function addFaq($faq)
 	{
 		$faq = (object) $faq;
+
 		$result = $this->languages->getDescription($faq, 'faq');
 
 		if (!empty($result->data)) {

@@ -76,14 +76,14 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{$category->name|escape}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{$category->name|escape}">
 								<input name="id" type="hidden" value="{$category->id|escape}">
 							</div>
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_h1|escape}</div>
-								<input name="name_h1" class="form-control" type="text" value="{$category->name_h1|escape}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_h1|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input name="name_h1" class="form-control translate-input" type="text" value="{$category->name_h1|escape}">
 							</div>
 							<div class="row">
 								<div class="col-12 col-lg-6 col-md-12">
@@ -157,7 +157,12 @@
 									<div class="js-parent-image">
 										<div class="category-image image-wrapper js-image-wrapper text-xs-center">
 											<a href="javascript:;" class="js-delete-item remove-image"></a>
-											<img src="{$category->image|resize_catalog:180:100}" alt="">
+											{assign var="image" value="{$category->image}"}
+											{if $image|is_svg}
+												<img src="../{$config->categories_images_dir}{$image}" alt="">
+											{else} 
+												<img src="{$image|resize_catalog:180:100}" alt="">
+											{/if} 
 										</div>
 									</div>
 								{else}
@@ -193,18 +198,18 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<div class="mb-3">
-									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{$category->meta_title|escape}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{$category->meta_title|escape}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">Meta-keywords</div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{$category->meta_keywords|escape}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{$category->meta_keywords|escape}">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{$category->meta_description|escape}</textarea>
+							<div class="translate-container col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{$category->meta_description|escape}</textarea>
 							</div>
 						</div>
 					</div>

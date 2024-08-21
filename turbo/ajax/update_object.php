@@ -44,11 +44,6 @@ switch ($object) {
 			$result = $turbo->articlesCategories->updateArticlesCategory($id, $values);
 		}
 		break;
-	case 'articles':
-		if ($turbo->managers->access('blog')) {
-			$result = $turbo->articles->updateArticle($id, $values);
-		}
-		break;
 	case 'comment':
 		if ($turbo->managers->access('comments')) {
 			$result = $turbo->comments->updateComment($id, $values);

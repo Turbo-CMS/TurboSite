@@ -150,6 +150,7 @@ class ArticlesCategories extends Turbo
 				$this->initArticlesCategories();
 
 				$this->db->query("DELETE FROM __lang_articles_categories WHERE article_category_id=?", $childId);
+				$this->db->query($query);
 			}
 		}
 
@@ -162,7 +163,6 @@ class ArticlesCategories extends Turbo
 	public function deleteImage($categoriesIds)
 	{
 		$categoriesIds = (array) $categoriesIds;
-
 		$query = $this->db->placehold("SELECT image FROM __articles_categories WHERE id IN(?@)", $categoriesIds);
 
 		if ($this->db->query($query)) {
@@ -213,7 +213,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Initializes Article Categories
+	 * Initializes Articles Categories
 	 */
 	private function initArticlesCategories()
 	{
@@ -243,9 +243,7 @@ class ArticlesCategories extends Turbo
 				$langSql->fields 
 			FROM __articles_categories c 
 				$langSql->join 
-			ORDER BY 
-				c.parent_id, 
-				c.position"
+			ORDER BY c.parent_id, c.position"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -254,6 +252,7 @@ class ArticlesCategories extends Turbo
 			} else {
 				$this->db->query($query);
 				$result = $this->db->results();
+
 				$this->cache->set($query, $result);
 				$articlesCategories = $result;
 			}
@@ -271,7 +270,7 @@ class ArticlesCategories extends Turbo
 				if (isset($pointers[$category->parent_id])) {
 					$pointers[$category->id] = $pointers[$category->parent_id]->subcategories[] = $category;
 					$curr = $pointers[$category->id];
-					$pointers[$category->id]->path = array_merge((array)$pointers[$category->parent_id]->path, array($curr));
+					$pointers[$category->id]->path = array_merge((array) $pointers[$category->parent_id]->path, array($curr));
 					unset($articlesCategories[$k]);
 					$flag = true;
 				}

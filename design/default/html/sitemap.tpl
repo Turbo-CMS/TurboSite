@@ -53,126 +53,151 @@
 	{$page->body}
 {/if}
 
-{* Pages *}
-<h2 class="my-4">{$settings->site_name|escape}</h2>
-<ul>
-	{foreach $pages as $p1}
-		{if $p1->menu_id == 1}
-			{if $p1->visible}
-				<li>
-					<a class="text-decoration-none" href="{$lang_link}{$p1->url}">
-						{$p1->header}
-					</a>
-				</li>
-			{/if}
-		{/if}
-	{/foreach}
-</ul>
-<h2 class="my-4">{$lang->information}</h2>
-<ul>
-	{foreach $pages as $p3}
-		{if $p3->menu_id == 3}
-			{if $p3->visible}
-				<li>
-					<a class="text-decoration-none" href="{$lang_link}{$p3->url}">
-						{$p3->header}
-					</a>
-				</li>
-			{/if}
-		{/if}
-	{/foreach}
-</ul>
-
-{* Blog *}
-{if $posts}
-	<h2 class="my-4">{$lang->global_blog}</h2>
-	<ul>
-		{foreach $posts as $p}
-			<li>
-				<a class="text-decoration-none" href="{$lang_link}blog/{$p->url}">
-					{$p->name}
-				</a>
-			</li>
-		{/foreach}
-	</ul>
-{/if}
-
-{* Articles *}
-{if $articles_cats}
-	<h2 class="my-4">{$lang->global_articles}</h2>
-	{function name=cat_art}
-		{if $articles}
-			<ul>
-				{foreach $articles as $a}
-					{if $a->visible}
+<div class="row">
+	{* Pages *}
+	<div class="col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$settings->site_name|escape}</h2>
+		<ul>
+			{foreach $pages as $p1}
+				{if $p1->menu_id == 1}
+					{if $p1->visible}
 						<li>
-							<a class="text-decoration-none" href="{$lang_link}article/{$a->url}">
-								{$a->name}
+							<a class="text-decoration-none" href="{$lang_link}{$p1->url}">
+								{$p1->header}
 							</a>
 						</li>
 					{/if}
+				{/if}
+			{/foreach}
+		</ul>
+	</div>
+	<div class="col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->information}</h2>
+		<ul>
+			{foreach $pages as $p3}
+				{if $p3->menu_id == 3}
+					{if $p3->visible}
+						<li>
+							<a class="text-decoration-none" href="{$lang_link}{$p3->url}">
+								{$p3->header}
+							</a>
+						</li>
+					{/if}
+				{/if}
+			{/foreach}
+		</ul>
+	</div>
+	<div class="col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->help}</h2>
+		<ul>
+			{foreach $pages as $p4}
+				{if $p4->menu_id == 4}
+					{if $p4->visible}
+						<li>
+							<a class="text-decoration-none" href="{$lang_link}{$p4->url}">
+								{$p4->header}
+							</a>
+						</li>
+					{/if}
+				{/if}
+			{/foreach}
+		</ul>
+	</div>
+	{* Blog *}
+	{if $posts}
+		<div class="col-md-4 col-lg-4 mb-4">
+			<h2 class="my-4">{$lang->global_blog}</h2>
+			<ul>
+				{foreach $posts as $p}
+					<li>
+						<a class="text-decoration-none" href="{$lang_link}blog/{$p->url}">
+							{$p->name}
+						</a>
+					</li>
 				{/foreach}
 			</ul>
-		{/if}
-	{/function}
-	{function name=articles_cat_tree}
-		{if $articles_cats}
-			<ul>
-				{foreach $articles_cats as $c}
-					{if $c->visible}
-						<li>
-							<a class="text-decoration-none" href="{$lang_link}articles/{$c->url}">
-								<strong>{$c->name}</strong>
-							</a>
-							{if property_exists($c, 'subcategories')}
-								{articles_cat_tree articles_cats=$c->subcategories}
+		</div>
+	{/if}
+	{* Articles *}
+	{if $articles_cats}
+		<div class="col-md-4 col-lg-4 mb-4">
+			<h2 class="my-4">{$lang->global_articles}</h2>
+			{function name=cat_art}
+				{if $articles}
+					<ul>
+						{foreach $articles as $a}
+							{if $a->visible}
+								<li>
+									<a class="text-decoration-none" href="{$lang_link}article/{$a->url}">
+										{$a->name}
+									</a>
+								</li>
 							{/if}
-							{cat_art articles=$c->articles}
-						</li>
-					{/if}
-				{/foreach}
-			</ul>
-		{/if}
-	{/function}
-	{articles_cat_tree articles_cats=$articles_cats}
-{/if}
-
-{* Projects *}
-{if $projects_cats}
-	<h2 class="my-4">{$lang->global_projects}</h2>
-	{function name=cat_proj}
-		{if $proj}
-			<ul>
-				{foreach $proj as $p}
-					{if $p->visible}
-						<li>
-							<a class="text-decoration-none" href="{$lang_link}project/{$p->url}">
-								{$p->name}
-							</a>
-						</li>
-					{/if}
-				{/foreach}
-			</ul>
-		{/if}
-	{/function}
-	{function name=projects_cat_tree}
-		{if $projects_cats}
-			<ul>
-				{foreach $projects_cats as $c}
-					{if $c->visible}
-						<li>
-							<a class="text-decoration-none" href="{$lang_link}projects/{$c->url}">
-								<strong>{$c->name}</strong>
-							</a>
-							{if property_exists($c, 'subcategories')}
-								{projects_cat_tree projects_cats=$c->subcategories}
+						{/foreach}
+					</ul>
+				{/if}
+			{/function}
+			{function name=articles_cat_tree}
+				{if $articles_cats}
+					<ul>
+						{foreach $articles_cats as $c}
+							{if $c->visible}
+								<li>
+									<a class="text-decoration-none" href="{$lang_link}articles/{$c->url}">
+										<strong>{$c->name}</strong>
+									</a>
+									{if isset($c->subcategories)}
+										{articles_cat_tree articles_cats=$c->subcategories}
+									{/if}
+									{cat_art articles=$c->articles}
+								</li>
 							{/if}
-							{cat_proj proj=$c->projects}
-						</li>
-					{/if}
-				{/foreach}
-			</ul>
-		{/if}
-	{/function}
-	{projects_cat_tree projects_cats=$projects_cats}
-{/if}
+						{/foreach}
+					</ul>
+				{/if}
+			{/function}
+			{articles_cat_tree articles_cats=$articles_cats}
+		</div>
+	{/if}
+	{* Projects *}
+	{if $projects_cats}
+		<div class="col-md-4 col-lg-4 mb-4">
+			<h2 class="my-4">{$lang->global_projects}</h2>
+			{function name=cat_proj}
+				{if $proj}
+					<ul>
+						{foreach $proj as $p}
+							{if $p->visible}
+								<li>
+									<a class="text-decoration-none" href="{$lang_link}project/{$p->url}">
+										{$p->name}
+									</a>
+								</li>
+							{/if}
+						{/foreach}
+					</ul>
+				{/if}
+			{/function}
+			{function name=projects_cat_tree}
+				{if $projects_cats}
+					<ul>
+						{foreach $projects_cats as $c}
+							{if $c->visible}
+								<li>
+									<a class="text-decoration-none" href="{$lang_link}projects/{$c->url}">
+										<strong>{$c->name}</strong>
+									</a>
+									{if isset($c->subcategories)}
+										{projects_cat_tree projects_cats=$c->subcategories}
+									{/if}
+									{cat_proj proj=$c->projects}
+								</li>
+							{/if}
+						{/foreach}
+					</ul>
+				{/if}
+			{/function}
+			{projects_cat_tree projects_cats=$projects_cats}
+		</div>
+	{/if}
+</div>

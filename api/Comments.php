@@ -23,9 +23,9 @@ class Comments extends Turbo
 				c.admin, 
 				c.rate, 
 				c.rating 
-			 FROM __comments c 
-			 WHERE id=? 
-			 LIMIT 1",
+			FROM __comments c 
+			WHERE id=? 
+			LIMIT 1",
 			(int) $id
 		);
 
@@ -130,7 +130,6 @@ class Comments extends Turbo
 		);
 
 		$this->db->query($query);
-
 		return $this->db->results();
 	}
 
@@ -170,8 +169,8 @@ class Comments extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT c.id) AS count
-			 FROM __comments c 
-			 WHERE 1
+			FROM __comments c 
+			WHERE 1
 			   $objectIdFilter
 			   $typeFilter
 			   $hasParent
@@ -181,7 +180,6 @@ class Comments extends Turbo
 		);
 
 		$this->db->query($query);
-
 		$result = $this->db->result('count');
 
 		return $result;
@@ -227,6 +225,14 @@ class Comments extends Turbo
 	 */
 	public function updateComment($id, $comment)
 	{
+		$comment = (array) $comment;
+
+		switch ($comment['type']) {
+			case 'review':
+				$this->settings->lastModifyReviews = date('Y-m-d H:i:s');
+				break;
+		}
+
 		$query = $this->db->placehold("UPDATE __comments SET ?% WHERE id IN(?@) LIMIT 1", $comment, (array) $id);
 		$this->db->query($query);
 

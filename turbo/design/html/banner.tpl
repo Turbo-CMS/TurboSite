@@ -6,7 +6,7 @@
 
 <h1 class="mb-3">
 	{if !isset($banner->id)}
-		{$btr->banner_new_group|escape}
+		{$btr->banners_add|escape}
 	{else}
 		{$banner->name|escape}
 	{/if}
@@ -79,7 +79,7 @@
 								<div class="col-lg-10 col-sm-12">
 									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
 										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-											<input class="form-check-input ms-2" type="checkbox" id="show-all-pages" name="show_all_pages" value="1" type="checkbox" {if isset($banner->show_all_pages) && $banner->show_all_pages}checked=""{/if}>
+											<input class="form-check-input ms-2" type="checkbox" id="show-all-pages" name="show_all_pages" value="1" type="checkbox" {if isset($banner->show_all_pages) && $banner->show_all_pages}checked="" {/if}>
 											<label class="form-check-label ms-2" for="show-all-pages">{$btr->banner_show_group|escape}</label>
 										</div>
 									</div>
@@ -89,7 +89,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($banner->visible) && $banner->visible}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($banner->visible) && $banner->visible}checked="" {/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -119,12 +119,16 @@
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_pages|escape}</label>
 									<select name="pages[]" class="js-action-select selectpicker d-none" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
-										<option value="0" {if !isset($banner->page_selected) || 0|in_array:$banner->page_selected}selected{/if}>{$btr->banner_hide|escape}</option>
-										{foreach from=$pages item=page}
-											{if $page->name != ''}
-												<option value="{$page->id}" {if isset($banner->page_selected) && $page->id|in_array:$banner->page_selected}selected{/if}>{$page->name|escape}</option>
-											{/if}
-										{/foreach}
+										<option value='0' {if !isset($banner->page_selected) || 0|in_array:$banner->page_selected}selected{/if}>{$btr->banner_hide|escape}</option>
+										{function name=page_select level=0 selected=null}
+											{foreach from=$pages item=page}
+												<option value="{$page->id}" {if $selected && $page->id|in_array:$selected}selected{/if}>{section name=sp loop=$level}--{/section}{$page->header|escape}</option>
+												{if isset($page->subpages)}
+													{page_select pages=$page->subpages selected=$selected level=$level+1}
+												{/if}
+											{/foreach}
+										{/function}
+										{page_select pages=$pages selected=$banner->page_selected ?? null}
 									</select>
 								</div>
 							</div>
@@ -133,15 +137,15 @@
 									<label class="form-label">{$btr->project_categories|escape}</label>
 									<select name="projects_categories[]" class="js-action-select selectpicker d-none" multiple="multiple" data-selected-text-format="count">
 										<option value='0' {if !isset($banner->projects_category_selected) || 0|in_array:$banner->projects_category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
-										{function name=category_select level=0}
+										{function name=projects_category_select level=0 selected=null}
 											{foreach from=$projects_categories item=category}
 												<option value="{$category->id}" {if $selected && $category->id|in_array:$selected}selected{/if}>{section name=sp loop=$level}&nbsp;{/section}{$category->name|escape}</option>
 												{if isset($projects_category->subcategories)}
-													{category_select projects_categories=$category->subcategories selected=$banner->projects_category_selected level=$level+1}
+													{projects_category_select projects_categories=$category->subcategories selected=$banner->projects_category_selected level=$level+1}
 												{/if}
 											{/foreach}
 										{/function}
-										{category_select projects_categories=$projects_categories selected=$banner->projects_category_selected}
+										{projects_category_select projects_categories=$projects_categories selected=$banner->projects_category_selected ?? null}
 									</select>
 								</div>
 							</div>
@@ -150,15 +154,15 @@
 									<label class="form-label">{$btr->article_categories|escape}</label>
 									<select name="articles_categories[]" class="js-action-select selectpicker d-none" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value="0" {if !isset($banner->articles_category_selected) || 0|in_array:$banner->articles_category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
-										{function name=articles_category_selected level=0}
+										{function name=articles_category_select level=0 selected=null}
 											{foreach from=$articles_categories item=articles_category}
 												<option value="{$articles_category->id}" {if $selected && $articles_category->id|in_array:$selected}selected{/if}>{section name=sp loop=$level}&nbsp;{/section}{$articles_category->name|escape}</option>
 												{if isset($articles_category->subcategories)}
-													{articles_category_selected articles_categories=$articles_category->subcategories selected=$banner->articles_category_selected level=$level+1}
+													{articles_category_select articles_categories=$articles_category->subcategories selected=$banner->articles_category_selected level=$level+1}
 												{/if}
 											{/foreach}
 										{/function}
-										{articles_category_selected articles_categories=$articles_categories selected=$banner->articles_category_selected}
+										{articles_category_select articles_categories=$articles_categories selected=$banner->articles_category_selected ?? null}
 									</select>
 								</div>
 							</div>

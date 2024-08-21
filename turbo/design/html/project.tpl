@@ -79,9 +79,9 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{$project->name|escape}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{$project->name|escape}">
 								<input name="id" type="hidden" value="{$project->id|escape}">
 							</div>
 							<div class="row">
@@ -240,8 +240,10 @@
 												<a href="{url module=ProjectAdmin id=$related_project->id}" class="fw-bold text-body text-decoration-none">{$related_project->name|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_project|escape}">
-													<i class="align-middle" data-feather="trash-2"></i>
+												<button type="button" class="btn-delete js-remove-item">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</span>
 												</button>
 											</div>
 										</div>
@@ -260,8 +262,10 @@
 											<a href="" class="fw-bold text-body text-decoration-none related-project-name"></a>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">
-											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_project|escape}">
-												<i class="align-middle" data-feather="trash-2"></i>
+											<button type="button" class="btn-delete js-remove-item">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</span>
 											</button>
 										</div>
 									</div>
@@ -290,17 +294,17 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<div class="mb-3">
-							<div class="form-label">{$btr->global_customer|escape}</div>
-							<input name="client" class="form-control" type="text" value="{$project->client|escape}">
+						<div class="translate-container mb-3">
+							<div class="form-label">{$btr->global_customer|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+							<input name="client" class="form-control translate-input" type="text" value="{$project->client|escape}">
 						</div>
 						<div class="mb-3">
 							<div class="form-label">{$btr->url_site|escape}</div>
 							<input name="site" class="form-control" type="text" value="{$project->site|escape}">
 						</div>
-						<div class="mb-3">
-							<div class="form-label">{$btr->project_type|escape}</div>
-							<input name="type" class="form-control" type="text" value="{$project->type|escape}">
+						<div class="translate-container mb-3">
+							<div class="form-label">{$btr->project_type|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+							<input name="type" class="form-control translate-input" type="text" value="{$project->type|escape}">
 						</div>
 					</div>
 				</div>
@@ -324,18 +328,18 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<div class="mb-3">
-									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{$project->meta_title|escape}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{$project->meta_title|escape}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">Meta-keywords</div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{$project->meta_keywords|escape}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{$project->meta_keywords|escape}">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{$project->meta_description|escape}</textarea>
+							<div class="translate-container col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{$project->meta_description|escape}</textarea>
 							</div>
 						</div>
 					</div>
@@ -375,31 +379,25 @@
 {include file='tinymce_init.tpl'}
 
 {* Autocomplete *}
-{js id="autocomplete" priority=99 include=[
-	"turbo/design/js/autocomplete/jquery.autocomplete-min.js"
-]}{/js}
+{js id="autocomplete" priority=99 include=["turbo/design/js/autocomplete/jquery.autocomplete-min.js"]}{/js}
 {javascript minify=true}
-
-
 
 {literal}
 	<script>
 		$(window).on("load", function() {
 
-			// Images collapse
 			$(document).on("click", ".js-show-images", function() {
 				$(".js-toggle-hidden").toggleClass("d-none");
 				$('.js-icon-arrow').toggleClass('rotate-180');
 			});
 
-			// Flatpickr
 			flatpickr(".flatpickr", {
 				dateFormat: "d.m.Y",
 				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 			});
 
-			// Delete project
 			$(document).on("click", ".js-remove-item", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
 				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
 			});
@@ -409,7 +407,12 @@
 			var new_image_tem_clone = $(".js-new-spec-image-item").clone(true).removeClass('d-none');
 			$(".js-new-spec-image-item").remove();
 
-			// Drop
+			$(document).on("click", ".js-remove-item", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
+				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
+				return false;
+			});
+
 			if (window.File && window.FileReader && window.FileList) {
 				$(".js-dropzone").on('dragover', function(e) {
 					e.preventDefault();
@@ -421,6 +424,7 @@
 						{/if}
 					{literal}
 				});
+
 				$(".js-dropzone").on('dragleave', function() {
 					{/literal}
 						{if $settings->admin_theme == "dark"}
@@ -434,18 +438,14 @@
 				function handleFileSelect(evt) {
 					dropInput = $(this).closest(".js-droplist-wrap").find("input.dropinput:last").clone();
 					var parent = $(this).closest(".js-droplist-wrap");
-					var files = evt.target.files; // FileList object
-					// Loop through the FileList and render image files as thumbnails.
+					var files = evt.target.files; 
 					for (var i = 0, f; f = files[i]; i++) {
-						// Only process image files.
 						if (!f.type.match('image.*')) {
 							continue;
 						}
 						var reader = new FileReader();
-						// Closure to capture the file information.
 						reader.onload = (function(theFile) {
 							return function(e) {
-								// Render thumbnail.
 								if (parent.data('image') == "project") {
 									var clone_item = image_item_clone.clone(true);
 								} else if (parent.data('image') == "special") {
@@ -460,7 +460,6 @@
 								parent.find(".js-dropzone").append(temp_input);
 							};
 						})(f);
-						// Read in the image file as a data URL.
 						reader.readAsDataURL(f);
 					}
 					$(".js-dropzone").removeAttr("style");
@@ -472,7 +471,6 @@
 				$(this).closest("li").remove();
 			});
 
-			// New related project
 			var new_related_project = $('#new-related-project').clone(true);
 			$('#new-related-project').remove();
 			new_related_project.removeAttr('id');
@@ -487,6 +485,7 @@
 					new_item.find('a.related-project-name').html(suggestion.data.name);
 					new_item.find('a.related-project-name').attr('href', 'index.php?module=ProjectAdmin&id=' + suggestion.data.id);
 					new_item.find('input[name*="related_projects"]').val(suggestion.data.id);
+					new_item.find('[data-bs-toggle="tooltip"]').tooltip();
 					if (suggestion.data.image)
 						new_item.find('img.project-icon').attr("src", suggestion.data.image);
 					else

@@ -147,8 +147,8 @@ class Articles extends Turbo
 				$postIdFilter 
 				$categoryIdFilter 
 				$visibleFilter 
-				$keywordFilter 
-				$authorFilter
+				$keywordFilter
+				$authorFilter 
 			ORDER BY 
 				$order 
 				$sqlLimit"
@@ -180,6 +180,9 @@ class Articles extends Turbo
 		$keywordFilter = '';
 		$authorFilter = '';
 
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'a');
+
 		if (!empty($filter['id'])) {
 			$postIdFilter = $this->db->placehold('AND a.id IN(?@)', (array) $filter['id']);
 		}
@@ -195,7 +198,7 @@ class Articles extends Turbo
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND (a.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR a.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 			}
 		}
 
@@ -206,9 +209,13 @@ class Articles extends Turbo
 			}
 		}
 
+		$langSql = $this->languages->getQuery(['object' => 'article']);
+
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT a.id) AS count
-            FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
+            FROM __articles a
+			$langSql->join 
+			WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -290,6 +297,7 @@ class Articles extends Turbo
 			if (!empty($result->description)) {
 				$this->languages->actionDescription($id, $result->description, 'article', $this->languages->langId());
 			}
+
 			return $id;
 		} else {
 			return false;
@@ -302,7 +310,6 @@ class Articles extends Turbo
 	public function updateViews($id)
 	{
 		$this->db->query("UPDATE __articles SET views=views+1 WHERE id=?", $id);
-
 		return true;
 	}
 

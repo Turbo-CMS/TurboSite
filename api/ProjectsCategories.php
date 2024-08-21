@@ -32,25 +32,26 @@ class ProjectsCategories extends Turbo
 	}
 
 	/**
-	 * Get Projects Category
+	 * Get Project Category
 	 */
 	public function getProjectsCategory($id)
 	{
 		if (!isset($this->allProjectsCategories)) {
+
 			$this->initProjectsCategories();
 		}
 
-		if (is_int($id) && array_key_exists((int) $id, $this->allProjectsCategories)) {
-			return $category = $this->allProjectsCategories[intval($id)];
-		} elseif (is_string($id)) {
-			foreach ($this->allProjectsCategories as $category) {
-				if ($category->url == $id) {
-					return $this->getProjectsCategory((int) $category->id);
-				}
+		foreach ($this->allProjectsCategories as $category) {
+			if (is_int($id) && (int) $category->id == (int) $id) {
+				return $category;
+			}
+
+			if (is_string($id) && $category->url == $id) {
+				return $category;
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
@@ -67,7 +68,7 @@ class ProjectsCategories extends Turbo
 			$category['url'] = strtolower(preg_replace("/[^0-9a-zа-я_]+/ui", '', $category['url']));
 		}
 
-		while ($this->getProjectsCategory((string)$category['url'])) {
+		while ($this->getProjectsCategory((string) $category['url'])) {
 			if (preg_match('/(.+)_([0-9]+)$/', $category['url'], $parts)) {
 				$category['url'] = $parts[1] . '_' . ($parts[2] + 1);
 			} else {
@@ -75,7 +76,7 @@ class ProjectsCategories extends Turbo
 			}
 		}
 
-		$category = (object)$category;
+		$category = (object) $category;
 
 		$result = $this->languages->getDescription($category, 'project_category');
 
@@ -149,7 +150,7 @@ class ProjectsCategories extends Turbo
 
 				$this->initProjectsCategories();
 
-				$this->db->query("DELETE FROM __lang_projects_categories WHERE project_category_id IN(?@)", $category->children);
+				$this->db->query("DELETE FROM __lang_projects_categories WHERE project_category_id=?", $childId);
 				$this->db->query($query);
 			}
 		}
@@ -163,7 +164,6 @@ class ProjectsCategories extends Turbo
 	public function deleteImage($categoriesIds)
 	{
 		$categoriesIds = (array) $categoriesIds;
-
 		$query = $this->db->placehold("SELECT image FROM __projects_categories WHERE id IN(?@)", $categoriesIds);
 
 		if ($this->db->query($query)) {
@@ -209,7 +209,7 @@ class ProjectsCategories extends Turbo
 				}
 			}
 
-			unset($this->initArticlesCategories);
+			unset($this->initProjectsCategories);
 		}
 	}
 
@@ -220,7 +220,6 @@ class ProjectsCategories extends Turbo
 	{
 		$tree = new stdClass();
 		$tree->subcategories = [];
-
 		$pointers = [];
 		$pointers[0] = &$tree;
 		$pointers[0]->path = [];
@@ -245,9 +244,7 @@ class ProjectsCategories extends Turbo
 				$langSql->fields 
 			FROM __projects_categories c 
 				$langSql->join 
-			ORDER BY 
-				c.parent_id, 
-				c.position"
+			ORDER BY c.parent_id, c.position"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -256,6 +253,7 @@ class ProjectsCategories extends Turbo
 			} else {
 				$this->db->query($query);
 				$result = $this->db->results();
+
 				$this->cache->set($query, $result);
 				$projectsCategories = $result;
 			}
@@ -266,16 +264,14 @@ class ProjectsCategories extends Turbo
 
 		$finish = false;
 
-		while (!empty($projectsCategories)  && !$finish) {
+		while (!empty($projectsCategories) && !$finish) {
 			$flag = false;
 
 			foreach ($projectsCategories as $k => $category) {
 				if (isset($pointers[$category->parent_id])) {
 					$pointers[$category->id] = $pointers[$category->parent_id]->subcategories[] = $category;
-
 					$curr = $pointers[$category->id];
 					$pointers[$category->id]->path = array_merge((array) $pointers[$category->parent_id]->path, array($curr));
-
 					unset($projectsCategories[$k]);
 					$flag = true;
 				}

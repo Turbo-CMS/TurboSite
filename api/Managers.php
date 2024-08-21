@@ -6,7 +6,7 @@ class Managers extends Turbo
 {
 	public $permissionsList = [
 		'callbacks', 'users', 'pages', 'menus', 'blog', 'comments', 'feedbacks', 'clear', 'articles', 'projects',
-		'backup', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'managers', 'languages'
+		'backup', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'managers', 'languages', 'rss'
 	];
 
 	public $passwdFile = "turbo/.passwd";
@@ -25,7 +25,7 @@ class Managers extends Turbo
 	 */
 	public function getManagers()
 	{
-		$lines = explode("\n", file_get_contents(dirname(dirname(__FILE__)) . '/' . $this->passwdFile));
+		$lines = explode("\n", @file_get_contents(dirname(dirname(__FILE__)) . '/' . $this->passwdFile));
 
 		$managers = [];
 
@@ -40,8 +40,9 @@ class Managers extends Turbo
 				if (isset($fields[2])) {
 					$manager->permissions = explode(",", $fields[2]);
 
-					foreach ($manager->permissions as &$permission)
+					foreach ($manager->permissions as &$permission) {
 						$permission = trim($permission);
+					}
 				} else {
 					$manager->permissions = $this->permissionsList;
 				}
@@ -114,7 +115,7 @@ class Managers extends Turbo
 
 		$line = implode(":", $m);
 
-		file_put_contents($this->passwdFile, file_get_contents($this->passwdFile) . "\n" . $line);
+		file_put_contents($this->passwdFile, @file_get_contents($this->passwdFile) . "\n" . $line);
 
 		if ($m = $this->getManager($manager->login)) {
 			return $m->login;
@@ -134,7 +135,7 @@ class Managers extends Turbo
 			$manager->login = str_replace(":", "", $manager->login);
 		}
 
-		$lines = explode("\n", file_get_contents($this->passwdFile));
+		$lines = explode("\n", @file_get_contents($this->passwdFile));
 
 		$updatedFlag = false;
 
@@ -181,11 +182,11 @@ class Managers extends Turbo
 	 */
 	public function deleteManager($login)
 	{
-		$lines = explode("\n", file_get_contents($this->passwdFile));
+		$lines = explode("\n", @file_get_contents($this->passwdFile));
 
 		foreach ($lines as $i => $line) {
 			$m = explode(":", $line);
-			
+
 			if ($m[0] == $login) {
 				unset($lines[$i]);
 			}

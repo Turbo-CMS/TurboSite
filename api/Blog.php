@@ -118,7 +118,8 @@ class Blog extends Turbo
 				$langSql->fields
 			FROM __blog b 
 				$langSql->join
-			WHERE 1
+			WHERE
+				1
 				$postIdFilter
 				$visibleFilter
 				$keywordFilter
@@ -151,6 +152,9 @@ class Blog extends Turbo
 		$visibleFilter = '';
 		$keywordFilter = '';
 
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'b');
+
 		if (!empty($filter['id'])) {
 			$postIdFilter = $this->db->placehold('AND b.id IN(?@)', (array) $filter['id']);
 		}
@@ -162,13 +166,16 @@ class Blog extends Turbo
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 			}
 		}
+
+		$langSql = $this->languages->getQuery(['object' => 'blog']);
 
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT b.id) AS count
 			FROM __blog b
+			$langSql->join
 			WHERE 1 $postIdFilter $visibleFilter $keywordFilter"
 		);
 
@@ -205,7 +212,6 @@ class Blog extends Turbo
 		}
 
 		$post = (object) $post;
-
 		$result = $this->languages->getDescription($post, 'blog');
 
 		if (!empty($result->data)) {

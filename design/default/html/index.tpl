@@ -27,7 +27,7 @@
 	<meta name="generator" content="Turbo CMS">
 
 	{if $project}
-		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 		<meta property="og:type" content="website">
 		<meta property="og:title" content="{$project->name|escape}">
 		<meta property="og:description" content='{$project->annotation|strip_tags|escape}'>
@@ -42,7 +42,7 @@
 		<meta name="twitter:image" content="{if isset($project->image)}{$project->image->filename|resize:330:300}{/if}">
 		<meta name="twitter:label2" content="{$settings->site_name|escape}">
 	{elseif $module == 'BlogView' && isset($post)}
-		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 		<meta property="og:type" content="article">
 		<meta property="og:title" content="{$post->name|escape}">
 		{if $post->image}
@@ -59,7 +59,7 @@
 		<meta name="twitter:description" content="{$post->annotation|strip_tags|escape}">
 		<meta name="twitter:image" content="{if isset($post->image)}{$post->image|resize_posts:400:300}{{/if}}">
 	{elseif $module=='ArticlesView' && isset($post)}
-		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 		<meta property="og:type" content="article">
 		<meta property="og:title" content="{$post->name|escape}">
 		{if $post->image}
@@ -112,13 +112,13 @@
 
 	{* Canonical *}
 	{if isset($canonical)}
-		<link rel="canonical" href="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<link rel="canonical" href="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 	{/if}
 
 	{* Language Attribute *}
 	{foreach $languages as $lang}
 		{if $lang->enabled}
-			<link rel="alternate" hreflang="{if $lang@first}x-default{else}{$lang->label}{/if}" href="{$config->root_url}{if !$lang@first}/{/if}{preg_replace('/^(.+)\/$/', '$1', $lang->url)}">
+			<link rel="alternate" hreflang="{if $lang@first}x-default{else}{$lang->label}{/if}" href="{$config->root_url}{if !$lang@first}/{/if}{$lang->url|replace:'/':''}">
 		{/if}
 	{/foreach}
 
@@ -192,10 +192,10 @@
 
 	{* Header *}
 	<header>
-		{if $theme_settings->header_type == "1"}
-			{include file='headers/header_1.tpl'}
-		{elseif $theme_settings->header_type == "2"}
-			{include file='headers/header_2.tpl'}
+		{if $theme_settings->header_type == '1'}
+			{include file='header/header_1.tpl'}
+		{elseif $theme_settings->header_type == '2'}
+			{include file='header/header_2.tpl'}
 		{/if}
 	</header>
 
@@ -225,10 +225,10 @@
 	<div class="my-3"></div>
 
 	{* Footer *}
-	{if $theme_settings->footer_type == "1"}
-		{include file="footer/footer_1.tpl"}
-	{elseif $theme_settings->footer_type == "2"}
-		{include file="footer/footer_2.tpl"}
+	{if $theme_settings->footer_type == '1'}
+		{include file='footer/footer_1.tpl'}
+	{elseif $theme_settings->footer_type == '2'}
+		{include file='footer/footer_2.tpl'}
 	{/if}
 
 	{* Toolbar mobile *}
@@ -250,16 +250,16 @@
 	<a href="#" id="back-to-top" title="Back to top"><i class="fal fa-angle-double-up"></i></a>
 
 	{* Callback Modal *}
-	{include file="modals/callback.tpl"}
+	{include file='modals/callback.tpl'}
 
 	{* Toast Callback *}
-	{include file="modals/toast_callback.tpl"}
+	{include file='modals/toast_callback.tpl'}
 
 	{* Subscribe Modal *}
-	{include file="modals/subscribe.tpl"}
+	{include file='modals/subscribe.tpl'}
 
 	{* Toast Rate *}
-	{include file="modals/toast_rate.tpl"}
+	{include file='modals/toast_rate.tpl'}
 
 	{* JS *}
 	{js id="main" priority=99 include=[
@@ -349,11 +349,21 @@
 		</script>
 	{/if}
 
-	{* Tooltip init *}
+	{* Tooltip Init *}
 	<script>
 		$(function() {
 			$('[data-bs-toggle="tooltip"]').tooltip();
 		});
+	</script>
+	
+	{* Phone Mask *}
+	<script>
+		$(function () {
+		$('#call-mask').mask('{$theme_settings->phone_mask|escape}');
+		$('#cart-phone').mask('{$theme_settings->phone_mask|escape}');
+		$('#fastorder-mask').mask('{$theme_settings->phone_mask|escape}');
+		$('#phone').mask('{$theme_settings->phone_mask|escape}');
+	});
 	</script>
 
 	{* Online Chat *}
@@ -364,7 +374,7 @@
 		{js id="chat" priority=99 include=["design/{$settings->theme|escape}/js/online-chat.js"]}{/js}
 		{javascript minify=true}
 
-		{include file="service/online_chat.tpl"}
+		{include file='service/online_chat.tpl'}
 	{/if}
 
 	{* Admintooltip *}

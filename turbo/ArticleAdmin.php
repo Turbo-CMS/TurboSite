@@ -34,10 +34,10 @@ class ArticleAdmin extends Turbo
 
 					$post->id = $this->articles->addArticle($post);
 					$post = $this->articles->getArticle($post->id);
-
 					$this->design->assign('message_success', 'added');
 				} else {
 					$this->db->query("SELECT category_id FROM __articles WHERE id=?", $post->id);
+
 					$cIds = $this->db->results('category_id');
 
 					if (!empty($cIds)) {
@@ -46,7 +46,6 @@ class ArticleAdmin extends Turbo
 
 					$this->articles->updateArticle($post->id, $post);
 					$post = $this->articles->getArticle($post->id);
-
 					$this->design->assign('message_success', 'updated');
 				}
 

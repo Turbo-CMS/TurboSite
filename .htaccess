@@ -39,7 +39,7 @@ RewriteEngine on
 
 #RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteRule ^cache/minify/(.+).gz([1-9])$ minify/gzip.php [L,END]
+#RewriteRule ^cache/minify/(.+).gz([1-9])$ gzip/gzip.php [L,END]
 
 # Cache
 <IfModule mod_expires.c>
@@ -170,9 +170,7 @@ RewriteRule ^([a-z]{2}/)?sitemap.xml?$ sitemap.php?lang_label=$1 [L,QSA]
 RewriteRule ^([a-z]{2}/)?sitemap/?$ index.php?module=SitemapView&lang_label=$1 [L,QSA]
 
 # RSS
-RewriteRule ^rss/rss?$ rss/rss.php [L,QSA]
-RewriteRule ^([a-z]{2}/)?rss/turbo_articles.xml?$ rss/turbo_articles.php?lang_label=$1 [L,QSA]
-RewriteRule ^([a-z]{2}/)?rss/turbo_blog.xml?$ rss/turbo_blog.php?lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?rss.xml?$ rss.php?lang_label=$1 [L,QSA]
 
 # Feedback
 RewriteRule ^([a-z]{2}/)?contact/?$ index.php?module=FeedbackView&lang_label=$1 [L,QSA]
@@ -197,6 +195,11 @@ RewriteRule ^files/articles/preview/(.+) resize/resize.php?file=$1&is_article=1&
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^files/posts/preview/(.+) resize/resize.php?file=$1&is_post=1&token=%{QUERY_STRING}
+
+# Image resizing brands
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^files/brands/preview/(.+) resize/resize.php?file=$1&is_brands=1&token=%{QUERY_STRING}
 
 # Image resizing slider
 RewriteCond %{REQUEST_FILENAME} !-f

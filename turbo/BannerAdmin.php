@@ -2,14 +2,13 @@
 
 require_once 'api/Turbo.php';
 
-class BannerAdmin extends Turbo 
+class BannerAdmin extends Turbo
 {
 	public function fetch()
 	{
 		$pages = $this->pages->getPages();
 		$articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
 		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
-
 		$banner = new stdClass();
 
 		if ($this->request->isMethod('post')) {
@@ -18,10 +17,9 @@ class BannerAdmin extends Turbo
 			$banner->name = $this->request->post('name');
 			$banner->visible = $this->request->post('visible', 'boolean');
 			$banner->show_all_pages = (int) $this->request->post('show_all_pages');
-			$banner->categories = implode(',', $this->request->post('categories'));
-			$banner->brands = implode(',', $this->request->post('brands'));
 			$banner->pages = implode(',', $this->request->post('pages'));
 			$banner->articles_categories = implode(',', $this->request->post('articles_categories'));
+			$banner->projects_categories = implode(',', $this->request->post('projects_categories'));
 			$banner->group_id = preg_replace('/[\s]+/ui', '', $banner->group_id);
 			$banner->group_id = strtolower(preg_replace('/[^0-9a-z_]+/ui', '', $banner->group_id));
 
@@ -43,6 +41,7 @@ class BannerAdmin extends Turbo
 
 			$banner->articles_category_selected = $this->request->post('articles_categories');
 			$banner->projects_category_selected = $this->request->post('projects_categories');
+			$banner->brand_selected = $this->request->post('brands');
 			$banner->page_selected = $this->request->post('pages');
 		} else {
 			$id = $this->request->get('id', 'integer');

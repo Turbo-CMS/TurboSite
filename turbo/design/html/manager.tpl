@@ -1,11 +1,11 @@
-{if $m->login}
+{if isset($m->login)}
 	{$meta_title = $m->login scope=global}
 {else}
 	{$meta_title = $btr->manager_new scope=global}
 {/if}
 
 <h1 class="mb-3">
-	{if $m->login}
+	{if isset($m->login)}
 		{$m->login|escape}
 	{else}
 		{$btr->manager_add|escape}
@@ -23,6 +23,12 @@
 						{$btr->manager_updated|escape}
 					{else}
 						{$message_success|escape}
+					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
 					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
@@ -71,9 +77,9 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<div class="form-label">{$btr->manager_login|escape}</div>
-							<input class="form-control" name="login" autocomplete="off" type="text" value="{$m->login|escape}">
-							<input name="old_login" type="hidden" value="{$m->login|escape}">
-							<input name="id" type="hidden" value="{$m->id|escape}">
+							<input class="form-control" name="login" autocomplete="off" type="text" value="{if isset($m->login)}{$m->login|escape}{/if}">
+							<input name="old_login" type="hidden" value="{if isset($m->login)}{$m->login|escape}{/if}">
+							<input name="id" type="hidden" value="{if isset($m->id)}{$m->id|escape}{/if}">
 						</div>
 						<div class="mb-3">
 							<div class="form-label">{$btr->manager_pass|escape}</div>
@@ -105,9 +111,7 @@
 								<label class="form-check-label" for="all-perms">{$btr->manager_all_access|escape}</label>
 							</div>
 						</div>
-						{$projects = [
-							'projects' => $btr->global_projects
-						]}
+						{$projects = ['projects' => $btr->global_projects]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_portfolio|escape}</h5>
@@ -125,9 +129,7 @@
 								</div>
 							</div>
 						</div>
-						{$users = [
-							'users' => $btr->global_users
-						]}
+						{$users = ['users' => $btr->global_users]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_users|escape}</h5>
@@ -135,8 +137,8 @@
 									{foreach $users as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -156,8 +158,8 @@
 									{foreach $pages as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -177,8 +179,8 @@
 									{foreach $blog as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -200,8 +202,8 @@
 									{foreach $feedbacks as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -210,9 +212,7 @@
 								</div>
 							</div>
 						</div>
-						{$faq = [
-							'faq' => $btr->global_faq
-						]}
+						{$faq = ['faq' => $btr->global_faq]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_faq|escape}</h5>
@@ -220,8 +220,8 @@
 									{foreach $faq as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -241,8 +241,8 @@
 									{foreach $automation as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -251,9 +251,7 @@
 								</div>
 							</div>
 						</div>
-						{$design = [
-							'design' => $btr->global_design
-						]}
+						{$design = ['design' => $btr->global_design]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_design|escape}</h5>
@@ -261,8 +259,8 @@
 									{foreach $design as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -271,9 +269,7 @@
 								</div>
 							</div>
 						</div>
-						{$banners = [
-							'banners' => $btr->global_banners
-						]}
+						{$banners = ['banners' => $btr->global_banners]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_banners|escape}</h5>
@@ -281,8 +277,8 @@
 									{foreach $banners as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -302,8 +298,8 @@
 									{foreach $seo as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -324,8 +320,26 @@
 									{foreach $settings as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
-												<div class="form-check form-switch form-check-reverse form-check-inline {if $m->login==$manager->login}text-muted{/if}">
-													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if $m->permissions && in_array($title, $m->permissions)}checked{/if} {if $m->login==$manager->login}disabled{/if}>
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
+													<label class="form-check-label" for="{$title}">{$item|escape}</label>
+												</div>
+											{/foreach}
+										</div>
+									{/foreach}
+								</div>
+							</div>
+						</div>
+						{$rss = ['rss' => $btr->global_rss]}
+						<div class="bg-light rounded mb-3">
+							<div class="p-3">
+								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_rss|escape}</h5>
+								<div class="row">
+									{foreach $rss as $title=>$items}
+										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+											{foreach $items as $key=>$item}
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
 													<label class="form-check-label" for="{$title}">{$item|escape}</label>
 												</div>
 											{/foreach}
@@ -350,6 +364,7 @@
 		</div>
 	</div>
 </form>
+
 <script>
 	$(document).on("change", ".js-all-perms", function() {
 		if ($(this).is(":checked")) {

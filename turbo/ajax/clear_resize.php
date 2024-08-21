@@ -6,7 +6,7 @@ require_once '../../api/Turbo.php';
 
 class ClearResizeAjax extends Turbo
 {
-    public function fetch()
+	public function fetch()
     {
         $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/articles/preview/');
         $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/categories/preview/');
@@ -15,26 +15,27 @@ class ClearResizeAjax extends Turbo
         $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/slides/preview/');
     }
 
-    private function cleanResize($path)
-    {
-        $path = rtrim($path, '/') . '/';
-        $handle = opendir($path);
+	private function cleanResize($path)
+	{
+		$path = rtrim($path, '/') . '/';
 
-        for (; false !== ($file = readdir($handle));) {
-            if ($file != "." && $file != "..") {
-                $fullpath = $path . $file;
+		$handle = opendir($path);
 
-                if (is_dir($fullpath)) {
-                    $this->cleanResize($fullpath);
-                    rmdir($fullpath);
-                } else {
-                    @unlink($fullpath);
-                }
-            }
-        }
+		for (; false !== ($file = readdir($handle));) {
+			if ($file != "." && $file != "..") {
+				$fullpath = $path . $file;
 
-        closedir($handle);
-    }
+				if (is_dir($fullpath)) {
+					$this->cleanResize($fullpath);
+					rmdir($fullpath);
+				} else {
+					@unlink($fullpath);
+				}
+			}
+		}
+
+		closedir($handle);
+	}
 }
 
 $clearResizeAjax = new ClearResizeAjax();

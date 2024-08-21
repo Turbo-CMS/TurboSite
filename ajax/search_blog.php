@@ -28,7 +28,7 @@ $keyword = $turbo->request->get('query', 'string');
 $sk = $turbo->db->escape($keyword);
 
 $turbo->db->query(
-    "SELECT
+	"SELECT
         b.id,
         b.url,
         b.image,
@@ -36,21 +36,20 @@ $turbo->db->query(
         $langSql->fields
     FROM __blog b
         $langSql->join
-    WHERE ($px.name LIKE '%$sk%' OR b.meta_keywords LIKE '%$sk%')
-    AND visible=1
+    WHERE ($px.name LIKE '%$sk%' OR $px.meta_keywords LIKE '%$sk%')
+    AND visible = 1
     ORDER BY b.name
     LIMIT ?",
-    $limit
+	$limit
 );
 
 $posts = $turbo->db->results();
 
 $suggestions = [];
-
 foreach ($posts as $post) {
 	$suggestion = new stdClass();
-	
-    if (!empty($post->image)) {
+
+	if (!empty($post->image)) {
 		$post->image = $turbo->design->resizePostsModifier($post->image, 35, 35);
 	}
 

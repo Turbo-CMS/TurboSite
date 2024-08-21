@@ -4,7 +4,7 @@ require_once 'api/Turbo.php';
 
 class ProjectsCategoryAdmin extends Turbo
 {
-	private	$allowedImageExtentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
+	private	$allowedImageExtentions = array('png', 'gif', 'jpg', 'jpeg', 'ico', 'svg');
 
 	function fetch()
 	{

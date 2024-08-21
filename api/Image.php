@@ -68,7 +68,6 @@ class Image extends Turbo
 		$watermarkOffsetY = $this->settings->watermark_offset_y;
 
 		$sharpen = min(100, $this->settings->images_sharpen) / 100;
-
 		$watermarkTransparency = 1 - min(100, $this->settings->watermark_transparency) / 100;
 
 		$watermarkFile = null;
@@ -150,6 +149,7 @@ class Image extends Turbo
 
 		while (file_exists($this->config->root_dir . $this->config->original_images_dir . $newName)) {
 			$newBase = pathinfo($newName, PATHINFO_FILENAME);
+
 			if (preg_match('/_([0-9]+)$/', $newBase, $parts)) {
 				$newName = $base . '_' . ($parts[1] + 1) . '.' . $ext;
 			} else {
@@ -178,6 +178,7 @@ class Image extends Turbo
 		if (in_array(strtolower($ext), $this->allowedExtensions)) {
 			while (file_exists($this->config->root_dir . $this->config->original_images_dir . $newName)) {
 				$newBase = pathinfo($newName, PATHINFO_FILENAME);
+
 				if (preg_match('/_([0-9]+)$/', $newBase, $parts))
 					$newName = $base . '_' . ($parts[1] + 1) . '.' . $ext;
 				else

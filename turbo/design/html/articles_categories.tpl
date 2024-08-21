@@ -54,10 +54,15 @@
 														<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$category->id}">
 													</label>
 												</div>
-												<div class="turbo-list-boding turbo-list-photo hidden-sm-down small-photo boding-small">
+												<div class="turbo-list-boding turbo-list-photo turbo-list-category-photo hidden-sm-down small-photo boding-small">
 													{if $category->image}
 														<a href="{url module=ArticlesCategoryAdmin id=$category->id return=$smarty.server.REQUEST_URI}">
-															<img src="{$category->image|resize_catalog:30:30}" alt="">
+															{assign var="image" value="{$category->image}"}
+															{if $image|is_svg}
+																<img src="../{$config->categories_images_dir}{$image}" alt="">
+															{else} 
+																<img src="{$image|resize_catalog:30:30}" alt="">
+															{/if} 
 														</a>
 													{else}
 														<a href="{url module=ArticlesCategoryAdmin id=$category->id return=$smarty.server.REQUEST_URI}">
@@ -72,7 +77,7 @@
 												</div>
 												<div class="turbo-list-boding turbo-list-status">
 													<div class="form-check form-switch">
-														<input class="form-check-input js-ajax-action {if $category->visible}js-active-class{/if}" id="id-{$category->id}" data-module="articles_category" data-action="visible" data-id="{$category->id}" name="visible" value="1" type="checkbox" {if $category->visible}checked="" {/if}>
+														<input class="form-check-input js-ajax-action {if $category->visible}js-active-class{/if}" id="id-{$category->id}" data-module="articles_category" data-action="visible" data-id="{$category->id}" name="visible" value="1" type="checkbox" {if $category->visible}checked=""{/if}>
 														<label class="form-check-label" for="id-{$category->id}"></label>
 													</div>
 												</div>
@@ -82,11 +87,11 @@
 													</a>
 												</div>
 												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->categories_delete|escape}">
-														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+														<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 															<i class="align-middle" data-feather="trash-2"></i>
-														</button>
-													</div>
+														</span>
+													</button>
 												</div>
 											</div>
 											{if isset($category->subcategories)}

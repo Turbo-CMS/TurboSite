@@ -57,7 +57,8 @@ class ProjectsView extends View
 
 		// Comment Form
 		if ($this->request->isMethod('post') && $this->request->post('comment')) {
-			$comment = new stdClass;
+			$comment = new stdClass();
+
 			$comment->name = $this->request->post('name');
 			$comment->text = $this->request->post('text');
 			$comment->parent_id = $this->request->post('parent_id');
@@ -69,7 +70,7 @@ class ProjectsView extends View
 			$this->design->assign('comment_name', $comment->name);
 			$this->design->assign('parent_id', $comment->parent_id);
 
-			if ($this->settings->captcha_project && ($_SESSION['captcha_project'] != $captchaCode || empty($captcha_code))) {
+			if ($this->settings->captcha_project && ($_SESSION['captcha_project'] != $captchaCode || empty($captchaCode))) {
 				$this->design->assign('error', 'captcha');
 			} elseif (empty($comment->name)) {
 				$this->design->assign('error', 'empty_name');
@@ -77,8 +78,8 @@ class ProjectsView extends View
 				$this->design->assign('error', 'empty_comment');
 			} else {
 				$comment->object_id = $project->id;
-				$comment->type      = 'project';
-				$comment->ip        = $_SERVER['REMOTE_ADDR'];
+				$comment->type = 'project';
+				$comment->ip = $_SERVER['REMOTE_ADDR'];
 
 				$approveComment = $this->db->query("SELECT 1 FROM __comments WHERE approved=1 AND ip=? LIMIT 1", $comment->ip);
 
@@ -91,15 +92,17 @@ class ProjectsView extends View
 				$this->notify->emailCommentAdmin($commentId);
 
 				unset($_SESSION['captcha_code']);
-				header('location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $commentId);
+
+				header('Location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $commentId);
 			}
 		}
 
 		// Comments List
 		$filter = [
-			'type' => 'project',
-			'object_id' => $project->id,
 			'approved' => 1,
+			'type' => 'project',
+			'has_parent' => false,
+			'object_id' => $project->id,
 			'ip' => $_SERVER['REMOTE_ADDR']
 		];
 

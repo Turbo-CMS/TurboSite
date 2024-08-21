@@ -40,7 +40,7 @@ class Languages extends Turbo
 	{
 		$fields['files'] = ['name'];
 		$fields['faq'] = ['name', 'answer'];
-		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'url', 'button'];
+		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'button'];
 		$fields['pages'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'header', 'body'];
 		$fields['blog'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text'];
 		$fields['projects'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text', 'client', 'type'];
@@ -61,7 +61,6 @@ class Languages extends Turbo
 	public function getQuery($params = [])
 	{
 		$lang   = (isset($params['lang']) && $params['lang'] ? $params['lang'] : $this->langId());
-
 		$object = $params['object'];
 
 		if (!empty($params['px'])) {
@@ -71,12 +70,11 @@ class Languages extends Turbo
 		}
 
 		$this->db->query("SHOW TABLES LIKE '%__languages%'");
-
 		$exist = $this->db->result();
 
 		if (isset($lang)  && $exist && !empty($this->languages)) {
-			$f = 'l';
-			$langJoin = 'LEFT JOIN __lang_' . $this->tables[$object] . ' l ON l.' . $object . '_id=' . $px . '.id AND l.lang_id = ' . (int) $lang;
+			$f = (isset($params['px_lang']) && $params['px_lang'] ? $params['px_lang'] : 'l');
+			$langJoin = 'LEFT JOIN __lang_' . $this->tables[$object] . ' ' . $f . ' ON ' . $f . '.' . $object . '_id=' . $px . '.id AND ' . $f . '.lang_id = ' . (int) $lang;
 		} else {
 			$f = $px;
 			$langJoin = '';
@@ -199,7 +197,7 @@ class Languages extends Turbo
 	/**
 	 * Get Languages
 	 */
-	public function getLanguages($filter = [])
+	public function getLanguages()
 	{
 		$this->db->query("SHOW TABLES LIKE '%__languages%'");
 
@@ -314,8 +312,6 @@ class Languages extends Turbo
 	public function deleteLanguage($id)
 	{
 		if (!empty($id)) {
-			$lang = $this->getLanguage($id);
-
 			$query = $this->db->placehold("DELETE FROM __languages WHERE id=? LIMIT 1", (int) $id);
 			$this->db->query($query);
 
@@ -326,10 +322,6 @@ class Languages extends Turbo
 			$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", (int)  $id);
 			$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", (int)  $id);
 
-			if (isset($lang->label) && $this->db->query("SHOW COLUMNS FROM __translations LIKE 'lang_$lang->label'")->num_rows > 0) {
-				$this->db->query("ALTER TABLE __translations DROP COLUMN lang_$lang->label");
-			}
-
 			$this->dumpTranslation();
 		}
 	}
@@ -339,19 +331,21 @@ class Languages extends Turbo
 	 */
 	public function actionData($objectId, $data, $object)
 	{
-		if (!in_array($object, array_keys($this->tables)))
+		if (!in_array($object, array_keys($this->tables))) {
 			return false;
+		}
 
 		$this->db->query("SELECT COUNT(*) AS count FROM __lang_" . $this->tables[$object] . " WHERE lang_id=? AND " . $object . "_id=? LIMIT 1", $data->lang_id, $objectId);
 
 		$dataLang = $this->db->result('count');
 
 		if ($dataLang == 0) {
-			$objectFild = $object . '_id';
-			$data->$objectFild = $objectId;
+			$object_fild = $object . '_id';
+			$data->$object_fild = $objectId;
 
-			$query = $this->db->placehold("INSERT INTO __lang_' . $this->tables[$object] . ' SET ?%", $data);
+			$query = $this->db->placehold('INSERT INTO __lang_' . $this->tables[$object] . ' SET ?%', $data);
 			$this->db->query($query);
+
 			$result = 'add';
 		} elseif ($dataLang == 1) {
 			$this->db->query("UPDATE __lang_" . $this->tables[$object] . " SET ?% WHERE lang_id=? AND " . $object . "_id=?", $data, $data->lang_id, $objectId);
@@ -372,7 +366,9 @@ class Languages extends Turbo
 
 		$languages = $this->languages();
 		$languag = reset($languages);
+
 		$fields = $this->getFields($this->tables[$object]);
+
 		$intersect = array_intersect($fields, array_keys((array) $data));
 
 		if (!empty($languages) && !empty($intersect)) {
@@ -411,7 +407,6 @@ class Languages extends Turbo
 		}
 
 		$fields = $this->getFields($this->tables[$object]);
-
 		if (!empty($fields)) {
 			if ($updateLang) {
 				$updLanguages[] = $languages[$updateLang];
@@ -444,11 +439,11 @@ class Languages extends Turbo
 	 */
 	public function getTranslations($filter = [])
 	{
-		$limit = 0;
 		$page = 1;
-		$keywordFilter = '';
+		$limit = 0;
 		$lang = '*';
 		$order = 'label';
+		$keywordFilter = '';
 
 		$langId = $this->langId();
 		$setLang = $this->languages(['id' => $langId]);
@@ -519,6 +514,7 @@ class Languages extends Turbo
 	public function countTranslations($filter = [])
 	{
 		$keywordFilter = '';
+
 		$langId = $this->langId();
 		$setLang = $this->languages(['id' => $langId]);
 		$lg = 'lang_' . ($setLang instanceof stdClass ? $setLang->label : '');
@@ -590,8 +586,8 @@ class Languages extends Turbo
 	{
 		if (!empty($id)) {
 			$query = $this->db->placehold("DELETE FROM __translations WHERE id=? LIMIT 1", (int) $id);
-
 			$this->db->query($query);
+
 			$this->dumpTranslation();
 		}
 	}
@@ -604,7 +600,6 @@ class Languages extends Turbo
 		$this->db->query("TRUNCATE TABLE __translations");
 
 		$themeDir = 'design/' . $this->settings->theme;
-
 		$filename = $themeDir . '/translation.sql';
 
 		if (file_exists($filename)) {

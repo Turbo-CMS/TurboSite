@@ -4,10 +4,7 @@ require_once 'api/Turbo.php';
 
 class View extends Turbo
 {
-	public $currency;
-	public $currencies;
 	public $user;
-	public $group;
 	public $page;
 	public $language;
 	public $langLink;
@@ -19,10 +16,7 @@ class View extends Turbo
 		parent::__construct();
 
 		if (self::$viewInstance) {
-			$this->currency = &self::$viewInstance->currency;
-			$this->currencies = &self::$viewInstance->currencies;
 			$this->user = &self::$viewInstance->user;
-			$this->group = &self::$viewInstance->group;
 			$this->page = &self::$viewInstance->page;
 			$this->language = &self::$viewInstance->language;
 			$this->langLink = &self::$viewInstance->langLink;
@@ -129,15 +123,15 @@ class View extends Turbo
 			// Plugins
 			$this->design->smarty->registerPlugin('block', 'js', [$this, 'addJavascriptBlock']);
 			$this->design->smarty->registerPlugin('block', 'css', [$this, 'addStylesheetBlock']);
-			$this->design->smarty->registerPlugin("function", "get_faqs", [$this, 'getFaqsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_posts", [$this, 'getPostsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_banner", [$this, 'getBannerPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_faqs', [$this, 'getFaqsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_posts', [$this, 'getPostsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_banner', [$this, 'getBannerPlugin']);
 			$this->design->smarty->registerPlugin('function', 'javascript', [$this, 'printJavascript']);
 			$this->design->smarty->registerPlugin('function', 'stylesheet', [$this, 'printStylesheet']);
-			$this->design->smarty->registerPlugin("function", "get_captcha", [$this, 'getCaptchaPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_articles", [$this, 'getArticlesPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_captcha', [$this, 'getCaptchaPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_articles', [$this, 'getArticlesPlugin']);
 			$this->design->smarty->registerPlugin("function", "get_projects", [$this, 'getProjectsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_comments", [$this, 'getCommentsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_comments', [$this, 'getCommentsPlugin']);
 			$this->design->smarty->registerPlugin('function', 'unset_js', [$this, 'unsetJavascriptFunction']);
 			$this->design->smarty->registerPlugin('function', 'unset_css', [$this, 'unsetStylesheetFunction']);
 		}
@@ -152,7 +146,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Captcha plugin
+	 * Get Captcha Plugin
 	 */
 	public function getCaptchaPlugin($params, $smarty)
 	{
@@ -175,7 +169,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Banner plugin
+	 * Get Banner Plugin
 	 */
 	public function getBannerPlugin($params, $smarty)
 	{
@@ -204,7 +198,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Post plugin
+	 * Get Post Plugin
 	 */
 	public function getPostsPlugin($params, $smarty)
 	{
@@ -228,7 +222,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get FAQ plugin
+	 * Get FAQ Plugin
 	 */
 	public function getFaqsPlugin($params, $smarty)
 	{
@@ -237,7 +231,7 @@ class View extends Turbo
 		}
 
 		if (!empty($params['var'])) {
-			$faqs = $this->faq->get_faqs($params);
+			$faqs = $this->faq->getFaqs($params);
 		}
 
 		if (empty($faqs)) {
@@ -248,7 +242,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Articles plugin
+	 * Get Articles Plugin
 	 */
 	public function getArticlesPlugin($params, $smarty)
 	{
@@ -273,7 +267,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Comments plugin
+	 * Get Comments Plugin
 	 */
 	public function getCommentsPlugin($params, $smarty)
 	{
@@ -334,7 +328,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Projects plugin
+	 * Get Projects Plugin
 	 */
 	public function getProjectsPlugin($params, $smarty)
 	{
@@ -373,7 +367,7 @@ class View extends Turbo
 
 
 	/**
-	 * Add JavaScript file
+	 * Add JavaScript File
 	 */
 	public function addJavascriptBlock($params, $content, $smarty, &$repeat)
 	{
@@ -407,7 +401,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Unregister JavaScript file
+	 * Unregister JavaScript File
 	 */
 	public function unsetJavascriptFunction($params, $smarty)
 	{
@@ -419,7 +413,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Render packed JavaScript file
+	 * Render Packed JavaScript File
 	 */
 	public function printJavascript($params)
 	{
@@ -439,7 +433,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Register CSS file
+	 * Register CSS File
 	 */
 	public function addStylesheetBlock($params, $content, $smarty, &$repeat)
 	{
@@ -477,7 +471,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Unregisters CSS file
+	 * Unregisters CSS File
 	 */
 	public function unsetStylesheetFunction($params, $smarty)
 	{
@@ -491,7 +485,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Print packed CSS file
+	 * Print packed CSS File
 	 */
 	public function printStylesheet($params)
 	{

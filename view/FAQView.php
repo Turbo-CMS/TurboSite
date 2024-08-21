@@ -16,17 +16,30 @@ class FaqView extends View
 			$filter['keyword'] = $keyword;
 		}
 
-		// Pagination
-		$itemsPerPage = '20';
+		// Sort
+		if ($sort = $this->request->get('sort', 'string')) {
+			$_SESSION['sort'] = $sort;
+		}
+
+		if (!empty($_SESSION['sort'])) {
+			$filter['sort'] = $_SESSION['sort'];
+		} else {
+			$filter['sort'] = 'date';
+		}
+
+		$this->design->assign('sort', $filter['sort']);
+
+		// Pagination FAQ
+		$itemsPerPage = $this->settings->faq_num;
 
 		$filter['visible'] = 1;
 
-		$currentpage = $this->request->get('page', 'integer');
-		$currentpage = max(1, $currentpage);
+		$currentPage = $this->request->get('page', 'integer');
+		$currentPage = max(1, $currentPage);
 
-		$this->design->assign('current_page_num', $currentpage);
+		$this->design->assign('current_page_num', $currentPage);
 
-		$faqCount = $this->blog->countPosts($filter);
+		$faqCount = $this->faq->countFaqs($filter);
 
 		if ($this->request->get('page') == 'all') {
 			$itemsPerPage = $faqCount;
@@ -36,7 +49,7 @@ class FaqView extends View
 
 		$this->design->assign('total_pages_num', $pagesNum);
 
-		$filter['page'] = $currentpage;
+		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
 		// Get Faq

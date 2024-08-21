@@ -1,5 +1,5 @@
 AddType application/octet-stream csv
 AuthName "Turbo CMS"
 AuthType Basic
-AuthUserFile D:\OpenServer2\OSPanel\domains\turbosite-test/turbo/.passwd
+AuthUserFile turbosite/turbo/.passwd
 require valid-user

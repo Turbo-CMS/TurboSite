@@ -97,7 +97,6 @@ class seo extends Turbo
 			}
 		} else {
 			$query = $this->db->placehold("REPLACE INTO __seo_lang SET name=?, value=?", $name, $value);
-
 			if (!$this->db->query($query)) {
 				return false;
 			}
@@ -116,8 +115,8 @@ class seo extends Turbo
 		}
 
 		$this->varsLang[$name] = $value;
-
 		$value = is_array($value) ? serialize($value) : (string) $value;
+
 		$langId = $this->languages->langId();
 		$intoLang = '';
 
@@ -145,7 +144,7 @@ class seo extends Turbo
 			return false;
 		}
 
-		$langId = !is_null($langId) ? $langId : $this->languages->langId();
+		$langId  = !is_null($langId) ? $langId : $this->languages->langId();
 
 		$langIdFilter = '';
 

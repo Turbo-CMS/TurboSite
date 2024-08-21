@@ -49,6 +49,7 @@ class Settings extends Turbo
 		}
 
 		$this->db->query("SELECT COUNT(*) AS count FROM __settings WHERE name=?", $name);
+
 		if ($this->db->result('count') > 0) {
 			$this->db->query("UPDATE __settings SET value=? WHERE name=?", $value, $name);
 		} else {
@@ -71,7 +72,6 @@ class Settings extends Turbo
 		}
 
 		$this->varsLang = [];
-
 		$multi = $this->getSettings();
 
 		if (is_array($multi)) {
@@ -112,14 +112,13 @@ class Settings extends Turbo
 		}
 
 		$this->varsLang[$name] = $value;
-
 		$value = is_array($value) ? serialize($value) : (string) $value;
-		$langId = $this->languages->langId();
 
+		$langId = $this->languages->langId();
 		$intoLang = '';
 
 		if ($langId) {
-			$intoLang = $this->db->placehold("lang_id=?, ", $langId);
+			$intoLang = $this->db->placehold('lang_id=?, ', $langId);
 		}
 
 		$this->db->query("SELECT 1 FROM __settings_lang WHERE name=? LIMIT 1", $name);
@@ -128,7 +127,6 @@ class Settings extends Turbo
 			return $this->add($name, $value);
 		} else {
 			$q = $this->db->placehold("REPLACE INTO __settings_lang SET $intoLang name=?, value=?", $name, $value);
-
 			return (bool) $this->db->query($q);
 		}
 	}

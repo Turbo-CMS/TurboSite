@@ -99,7 +99,7 @@ class BlogView extends View
 			}
 		}
 
-		// Comments list
+		// Comments List
 		$filter = [
 			'approved' => 1,
 			'type' => 'blog',
@@ -160,6 +160,26 @@ class BlogView extends View
 		// Tags
 		$tags = explode(',', $post->meta_keywords);
 		$this->design->assign('tags', array_map("trim", $tags));
+
+		// Get All Posts
+		$allPosts = $this->blog->getPosts();
+
+		$allTags = [];
+
+		foreach ($allPosts as $post) {
+			// Get Tags
+			$tags = explode(',', $post->meta_keywords);
+			$tags = array_map("trim", $tags);
+
+			// Merge Tags
+			$allTags = array_merge($allTags, $tags);
+		}
+
+		// Remove Duplicates
+		$allTags = array_unique($allTags);
+
+		// Design
+		$this->design->assign('all_tags', $allTags);
 
 		// Next Prev
 		$this->design->assign('next_post', $this->blog->getNextPost($post->id));
@@ -262,6 +282,26 @@ class BlogView extends View
 
 		// Design
 		$this->design->assign('posts', $posts);
+
+		// Get All Posts
+		$allPosts = $this->blog->getPosts();
+
+		$allTags = [];
+
+		foreach ($allPosts as $post) {
+			// Get Tags
+			$tags = explode(',', $post->meta_keywords);
+			$tags = array_map("trim", $tags);
+
+			// Merge Tags
+			$allTags = array_merge($allTags, $tags);
+		}
+
+		// Remove duplicates
+		$allTags = array_unique($allTags);
+
+		// Assign
+		$this->design->assign('all_tags', $allTags);
 
 		// Meta Tags
 		if ($this->page) {

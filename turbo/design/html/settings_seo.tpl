@@ -121,7 +121,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="mb-3">
-											<div class="form-label">{$btr->projects_categories|escape}</div>
+											<div class="form-label">{$btr->categories_projects|escape}</div>
 											<input name="category_meta_title" class="form-control mb-h" type="text" value="{$seo->category_meta_title|escape}">
 										</div>
 									</div>
@@ -168,7 +168,7 @@
 											</div>
 											<div class="mb-1"><strong>{$btr->seo_patterns_message4|escape}</strong> </div>
 											<ul class="mb-0 ps-3">
-												<li class="mb-1"><strong>{$btr->projects_categories|escape}</strong> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+												<li class="mb-1"><strong>{$btr->categories_projects|escape}</strong> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->seo_projects|escape}</strong> - {ldelim}project{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->global_pages|escape}</strong> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->global_blogs|escape}</strong> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
@@ -211,7 +211,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="mb-3">
-											<div class="form-label">{$btr->projects_categories|escape}</div>
+											<div class="form-label">{$btr->categories_projects|escape}</div>
 											<input name="category_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_meta_keywords|escape}">
 										</div>
 									</div>
@@ -230,7 +230,7 @@
 									<div class="col-md-12">
 										<div class="mb-3">
 											<div class="form-label">{$btr->global_blogs|escape}</div>
-											<input name="post_meta_title_keywords" class="form-control mb-h" type="text" value="{$seo->post_meta__keywords|escape}">
+											<input name="post_meta_keywords" class="form-control mb-h" type="text" value="{$seo->post_meta_keywords|escape}">
 										</div>
 									</div>
 									<div class="col-md-12">
@@ -258,7 +258,7 @@
 											</div>
 											<div class="mb-1"><strong>{$btr->seo_patterns_message4|escape}</strong> </div>
 											<ul class="mb-0 ps-3">
-												<li class="mb-1"><strong>{$btr->projects_categories|escape}</strong> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+												<li class="mb-1"><strong>{$btr->categories_projects|escape}</strong> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->seo_projects|escape}</strong> - {ldelim}project{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->global_pages|escape}</strong> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->global_blogs|escape}</strong> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
@@ -301,7 +301,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="mb-3">
-											<div class="form-label">{$btr->projects_categories|escape}</div>
+											<div class="form-label">{$btr->categories_projects|escape}</div>
 											<textarea name="category_meta_description" class="form-control turbo-textarea">{$seo->category_meta_description|escape}</textarea>
 										</div>
 									</div>
@@ -348,7 +348,7 @@
 											</div>
 											<div class="mb-1"><strong>{$btr->seo_patterns_message4|escape}</strong> </div>
 											<ul class="mb-0 ps-3">
-												<li class="mb-1"><strong>{$btr->projects_categories|escape}</strong> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+												<li class="mb-1"><strong>{$btr->categories_projects|escape}</strong> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->seo_projects|escape}</strong> - {ldelim}project{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->global_pages|escape}</strong> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 												<li class="mb-1"><strong>{$btr->global_blogs|escape}</strong> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>

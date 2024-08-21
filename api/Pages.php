@@ -40,7 +40,6 @@ class Pages extends Turbo
 		);
 
 		$this->db->query($query);
-
 		return $this->db->result();
 	}
 
@@ -51,6 +50,7 @@ class Pages extends Turbo
 	{
 		$limit = 1000;
 		$page = 1;
+
 		$menuFilter = '';
 		$visibleFilter = '';
 		$keywordFilter = '';
@@ -108,7 +108,7 @@ class Pages extends Turbo
 				$keywordFilter 
 				$visibleFilter 
 			ORDER BY 
-				p.position 
+				p.position
 				$sqlLimit"
 		);
 
@@ -222,10 +222,10 @@ class Pages extends Turbo
 		$this->menus = [];
 
 		$query = $this->db->placehold("SELECT id, name, position FROM __menu ORDER BY position");
+
 		$this->db->query($query);
 
 		$results = $this->db->results();
-
 		foreach ($results as $c) {
 			$this->menus[$c->id] = $c;
 		}
@@ -306,7 +306,6 @@ class Pages extends Turbo
 	public function getPagesTree($filter = [])
 	{
 		unset($this->initPages, $this->allPages);
-
 		$this->initPages($filter);
 
 		return $this->pagesTree;
@@ -330,11 +329,11 @@ class Pages extends Turbo
 		}
 
 		if (isset($filter['menu_id'])) {
-			$menuId = $this->db->placehold("AND menu_id=? ", (int) $filter['menu_id']);
+			$menuId = $this->db->placehold("AND menu_id=?", (int) $filter['menu_id']);
 		}
 
 		if (isset($filter['visible'])) {
-			$isVisible = "AND visible=1";
+			$isVisible = ' AND visible =1 ';
 		}
 
 		$tree = new stdClass();
@@ -369,12 +368,9 @@ class Pages extends Turbo
 			foreach ($pages as $k => $page) {
 				if (isset($pointers[$page->parent_id])) {
 					$pointers[$page->id] = $pointers[$page->parent_id]->subpages[] = $page;
-
 					$curr = $pointers[$page->id];
 					$pointers[$page->id]->path = array_merge((array) $pointers[$page->parent_id]->path, [$curr]);
-
 					$pointers[$page->id]->level = 1 + $pointers[$page->parent_id]->level;
-
 					unset($pages[$k]);
 					$flag = true;
 				}

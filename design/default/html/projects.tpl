@@ -103,9 +103,9 @@
 	{/if}
 
 	{* Category description *}
-	{if $current_page_num == 1}
+	{if isset($projects_category) && $current_page_num == 1}
 		{$projects_category->description}
-	{/if}
+	{/if}	
 {else}
 	{$lang->nothing_found}
 {/if}

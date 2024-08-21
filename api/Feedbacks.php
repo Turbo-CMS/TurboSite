@@ -144,7 +144,6 @@ class Feedbacks extends Turbo
 	public function updateFeedback($id, $feedback)
 	{
 		$dateQuery = '';
-
 		$feedback = (object) $feedback;
 
 		if (isset($feedback->date)) {

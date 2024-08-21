@@ -137,11 +137,11 @@
 												</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->delete_project|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button> 
 											</div>
 										</div>
 									</div>
@@ -156,7 +156,7 @@
 										</label>
 									</div>
 									<div class="turbo-list-option">
-										<select name="action" class="selectpicker products-action">
+										<select name="action" class="selectpicker projects-action">
 											<option value="enable">{$btr->global_do_enable|escape}</option>
 											<option value="disable">{$btr->global_do_disable|escape}</option>
 											<option value="delete">{$btr->global_delete|escape}</option>

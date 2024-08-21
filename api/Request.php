@@ -136,7 +136,6 @@ class Request extends Turbo
 	public function url($params = [])
 	{
 		$url = @parse_url($_SERVER["REQUEST_URI"]);
-
 		$query = [];
 
 		if (isset($url['query']) && !empty($url['query'])) {
@@ -156,7 +155,6 @@ class Request extends Turbo
 		}
 
 		$queryIsEmpty = true;
-
 		foreach ($query as $name => $value) {
 			if ($value !== '' && $value !== null) {
 				$queryIsEmpty = false;

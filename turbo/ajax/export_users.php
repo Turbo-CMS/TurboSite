@@ -1,75 +1,79 @@
 <?php
-
 session_start();
 
 require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
 {
-    private $columnsNames = [
-        'name' => 'Name',
-        'email' => 'Email',
-        'phone' => 'Phone',
-        'enabled' => 'Enabled',
-        'created' => 'Created',
-        'last_ip' => 'IP',
-    ];
+	private $columnsNames = [
+		'name' => 'Name',
+		'email' => 'Email',
+		'phone' => 'Phone',
+		'enabled' => 'Enabled',
+		'created' => 'Created',
+		'last_ip' => 'IP',
+	];
 
-    private $columnDelimiter = ';';
-    private $usersCount = 10;
-    private $exportFilesDir = '../files/export_users/';
-    private $filename = 'users.csv';
+	private $columnDelimiter = ';';
+	private $usersCount = 10;
+	private $exportFilesDir = '../files/export_users/';
+	private $filename = 'users.csv';
 
-    public function fetch()
-    {
-        if (!$this->managers->access('users')) {
-            return false;
-        }
+	public function fetch()
+	{
+		if (!$this->managers->access('users')) {
+			return false;
+		}
 
-        $this->db->query('SET NAMES cp1251');
+		$this->db->query('SET NAMES cp1251');
 
-        $page = $this->request->get('page');
-        if (empty($page) || $page == 1) {
-            $page = 1;
+		$page = $this->request->get('page');
 
-            if (is_writable($this->exportFilesDir . $this->filename)) {
-                @unlink($this->exportFilesDir . $this->filename);
-            }
-        }
+		if (empty($page) || $page == 1) {
+			$page = 1;
 
-        $f = fopen($this->exportFilesDir . $this->filename, 'ab');
+			if (is_writable($this->exportFilesDir . $this->filename)) {
+				@unlink($this->exportFilesDir . $this->filename);
+			}
+		}
 
-        if ($page == 1) {
-            fputcsv($f, $this->columnsNames, $this->columnDelimiter);
-        }
+		$f = fopen($this->exportFilesDir . $this->filename, 'ab');
 
-        $filter = ['page' => $page, 'limit' => $this->usersCount,];
+		if ($page == 1) {
+			fputcsv($f, $this->columnsNames, $this->columnDelimiter);
+		}
 
-        $filter['sort'] = $this->request->get('sort');
-        $filter['keyword'] = $this->request->get('keyword');
+		$filter = ['page' => $page, 'limit' => $this->usersCount,];
 
-        $users = [];
+		if ($this->request->get('group_id')) {
+			$filter['group_id'] = (int) $this->request->get('group_id');
+		}
 
-        foreach ($this->users->getUsers($filter) as $u) {
-            $data = [];
+		$filter['sort'] = $this->request->get('sort');
+		$filter['keyword'] = $this->request->get('keyword');
 
-            foreach ($this->columnsNames as $n => $c) {
-                $data[] = $u->$n;
-            }
+		$users = [];
 
-            fputcsv($f, $data, $this->columnDelimiter);
-        }
+		foreach ($this->users->getUsers($filter) as $u) {
+			$data = [];
 
-        $totalUsers = $this->users->countUsers();
+			foreach ($this->columnsNames as $n => $c) {
+				$data[] = $u->$n;
+			}
 
-        if ($this->usersCount * $page < $totalUsers) {
-            return ['end' => false, 'page' => $page, 'totalpages' => $totalUsers / $this->usersCount,];
-        } else {
-            return ['end' => true, 'page' => $page, 'totalpages' => $totalUsers / $this->usersCount,];
-        }
+			fputcsv($f, $data, $this->columnDelimiter);
+		}
 
-        fclose($f);
-    }
+		$totalUsers = $this->users->countUsers();
+
+		if ($this->usersCount * $page < $totalUsers) {
+			return ['end' => false, 'page' => $page, 'totalpages' => $totalUsers / $this->usersCount,];
+		} else {
+			return ['end' => true, 'page' => $page, 'totalpages' => $totalUsers / $this->usersCount,];
+		}
+
+		fclose($f);
+	}
 }
 
 $export_ajax = new ExportAjax();

@@ -177,9 +177,6 @@ class Users extends Turbo
 	public function deleteUser($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("UPDATE __orders SET user_id=NULL WHERE id=? LIMIT 1", (int) $id);
-			$this->db->query($query);
-
 			$query = $this->db->placehold("DELETE FROM __users WHERE id=? LIMIT 1", (int) $id);
 
 			if ($this->db->query($query)) {

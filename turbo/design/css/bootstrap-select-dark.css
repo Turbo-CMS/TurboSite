@@ -8,7 +8,7 @@
 	background-position: right 0.85rem center;
 	background-repeat: no-repeat;
 	background-size: 18px 18px;
-	border: 1px solid #7a828a;
+	border: 1px solid #4e5863;
 	border-radius: 0.2rem;
 	color: #bdc0c5;
 	display: block;
@@ -35,7 +35,7 @@
 	background-position: right 0.85rem center;
 	background-repeat: no-repeat;
 	background-size: 18px 18px;
-	border: 1px solid #7a828a;
+	border: 1px solid #4e5863;
 	border-radius: 0.2rem;
 	color: #bdc0c5;
 	display: block;
@@ -73,6 +73,11 @@
 	cursor: pointer;
 }
 
+.bootstrap-select.disabled.btn-group:not(.input-group-btn),
+.bootstrap-select.disabled.btn-group[class*="col-"] {
+	cursor: not-allowed;
+}
+
 .bootstrap-select>select {
 	position: absolute !important;
 	bottom: 0;
@@ -87,7 +92,7 @@
 
 .bootstrap-select.btn-group .no-results {
 	padding: 3px;
-	background: #f5f5f5;
+	background: #222e3c;
 	margin: 0 5px;
 	white-space: nowrap;
 }
@@ -264,10 +269,9 @@
 .turbo-list-coupon-sale .bootstrap-select>.dropdown-toggle {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
-	border-left: 0;
 }
 
-.project-cats .bootstrap-select>.dropdown-toggle {
+.product-cats .bootstrap-select>.dropdown-toggle {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }

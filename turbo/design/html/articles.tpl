@@ -17,7 +17,7 @@
 				{/if}
 			</h1>
 			<div class="d-grid d-sm-block mt-2 mt-md-0">
-				<a class="btn btn-primary" href="{url module=ArticleAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->blog_add|escape}</a>
+				<a class="btn btn-primary" href="{url module=ArticleAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->add_article|escape}</a>
 			</div>
 		</div>
 	</div>
@@ -25,7 +25,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="ArticlesAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->blog_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -128,7 +128,7 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $post->visible}js-active-class{/if}" id="id-{$post->id}" data-module="articles" data-action="visible" data-id="{$post->id}" name="visible" value="1" type="checkbox" {if $post->visible}checked="" {/if}>
+													<input class="form-check-input js-ajax-action {if $post->visible}js-active-class{/if}" id="id-{$post->id}" data-module="articles" data-action="visible" data-id="{$post->id}" name="visible" value="1" type="checkbox" {if $post->visible}checked=""{/if}>
 													<label class="form-check-label" for="id-{$post->id}"></label>
 												</div>
 											</div>
@@ -138,11 +138,11 @@
 												</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->delete_article|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button>
 											</div>
 										</div>
 									</div>
@@ -157,7 +157,7 @@
 										</label>
 									</div>
 									<div class="turbo-list-option">
-										<select name="action" class="selectpicker products-action">
+										<select name="action" class="selectpicker articles-action">
 											<option value="enable">{$btr->global_do_enable|escape}</option>
 											<option value="disable">{$btr->global_do_disable|escape}</option>
 											<option value="delete">{$btr->global_delete|escape}</option>

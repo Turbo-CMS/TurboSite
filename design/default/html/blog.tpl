@@ -117,7 +117,7 @@
 
 							{* Rating *}
 							<div class="float-end btn-group vote">
-								<a class="btn vote-button-plus" href="ajax/blog.rate.php?id={$post->id}&rate=up">
+								<a class="btn vote-button-plus" href="ajax/blog_rate.php?id={$post->id}&rate=up">
 									<i class="fa fa-chevron-up" aria-hidden="true"></i>
 								</a>
 								{if $post->rate>0}
@@ -127,7 +127,7 @@
 								{else}
 									<div class="btn vote-value neg">{$post->rate}</div>
 								{/if}
-								<a class="btn vote-button-minus" href="ajax/blog.rate.php?id={$post->id}&rate=down">
+								<a class="btn vote-button-minus" href="ajax/blog_rate.php?id={$post->id}&rate=down">
 									<i class="fa fa-chevron-down" aria-hidden="true"></i>
 								</a>
 							</div>

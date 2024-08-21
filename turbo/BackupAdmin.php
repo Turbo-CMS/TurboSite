@@ -3,7 +3,6 @@
 define('PCLZIP_TEMPORARY_DIR', 'turbo/files/backup/');
 
 require_once 'api/Turbo.php';
-require_once 'turbo/pclzip/pclzip.lib.php';
 
 class BackupAdmin extends Turbo
 {
@@ -124,9 +123,8 @@ function myCallBack($event, &$header)
 	$fname = $header['stored_filename'];
 
 	if (
-		preg_match('/^files\/products\/.+/i', $fname) ||
+		preg_match('/^files\/projects\/.+/i', $fname) ||
 		preg_match('/^files\/articles\/preview\/.+/i', $fname) ||
-		preg_match('/^files\/brands\/preview\/.+/i', $fname) ||
 		preg_match('/^files\/categories\/preview\/.+/i', $fname) ||
 		preg_match('/^files\/posts\/preview\/.+/i', $fname) ||
 		preg_match('/^files\/slides\/preview\/.+/i', $fname)

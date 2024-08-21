@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @author Turbo CMS
+ * @link https://github.com/Turbo-CMS
+ */
+
 require_once 'api/Turbo.php';
 
 class IndexAdmin extends Turbo
@@ -29,6 +34,7 @@ class IndexAdmin extends Turbo
 		'ClearAdmin'                => 'clear',
 		'ThemeAdmin'                => 'design',
 		'StylesAdmin'               => 'design',
+		'ScriptsAdmin'              => 'design',
 		'TemplatesAdmin'            => 'design',
 		'ImagesAdmin'               => 'design',
 		'ThemeSettingsAdmin'        => 'design',
@@ -105,6 +111,7 @@ class IndexAdmin extends Turbo
 			$langLink = $langLabel . '/';
 		}
 
+		$this->design->assign('first_lang', $firstLang->id);
 		$this->design->assign('lang_label', $langLabel);
 		$this->design->assign('lang_link', $langLink);
 
@@ -124,7 +131,7 @@ class IndexAdmin extends Turbo
 		}
 
 		if (empty($module)) {
-			$module = 'ProductsAdmin';
+			$module = 'PagesAdmin';
 		}
 
 		require_once('turbo/' . $module . '.php');
@@ -143,6 +150,7 @@ class IndexAdmin extends Turbo
 
 	function fetch()
 	{
+	
 		if (isset($this->modulesPermissions[get_class($this->module)]) && $this->managers->access($this->modulesPermissions[get_class($this->module)])) {
 			$content = $this->module->fetch();
 			$this->design->assign("content", $content);

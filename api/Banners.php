@@ -131,7 +131,6 @@ class Banners extends Turbo
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
 					$this->cache->set($query, $result);
-
 					return $result;
 				} else {
 					return false;
@@ -156,7 +155,6 @@ class Banners extends Turbo
 		}
 
 		$bannerIdFilter = $this->db->placehold('AND bi.id=?', (int) $id);
-
 		$languageFields = $this->languages->getQuery(['object' => 'banner_image', 'px' => 'bi']);
 
 		$query = $this->db->placehold(
@@ -177,11 +175,11 @@ class Banners extends Turbo
 				bi.position,
 				bi.visible,
 				$languageFields->fields
-			 FROM __banners_images bi
+			FROM __banners_images bi
 				$languageFields->join
-			 WHERE 1 
+			WHERE 1 
 				$bannerIdFilter
-			 LIMIT 1",
+			LIMIT 1",
 			$id
 		);
 
@@ -324,7 +322,6 @@ class Banners extends Turbo
 
 		if (!empty($filenames)) {
 			$query = $this->db->placehold("UPDATE __banners_images SET background=NULL WHERE id=?", $id);
-
 			$this->db->query($query);
 
 			foreach ($filenames as $filename) {
@@ -416,7 +413,7 @@ class Banners extends Turbo
 					continue;
 				}
 
-				$showFilterArray[$k] = $this->db->placehold($k . " regexp '[[:<:]](?)[[:>:]]'", (int) $showFilterArray[$k]);
+				$showFilterArray[$k] = $this->db->placehold("`$k` LIKE ?", '%' . $showFilterArray[$k] . '%');
 			}
 
 			$showFilterArray[] = "show_all_pages=1";
@@ -454,9 +451,7 @@ class Banners extends Turbo
 
 		if ($this->db->query("INSERT INTO __banners SET ?%", $banner)) {
 			$id = $this->db->insertId();
-
 			$this->db->query("UPDATE __banners SET position=id WHERE id=?", $id);
-
 			return $id;
 		} else {
 			return false;

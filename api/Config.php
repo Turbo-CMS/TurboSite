@@ -7,7 +7,7 @@ class Config
 
 	private $vars = [];
 
-	public $version = '4.4.7';
+	public $version = '5.0.0';
 	public $configFile = 'config/config.php';
 
 	public function __construct()
@@ -86,7 +86,6 @@ class Config
 			$cf = fopen(dirname(dirname(__FILE__)) . '/' . $this->configFile, 'w');
 			fwrite($cf, $conf);
 			fclose($cf);
-
 			$this->vars[$name] = $value;
 		}
 	}

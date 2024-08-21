@@ -4,15 +4,15 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $keyword && $users_count>0}
+				{if $keyword && $users_count > 0}
 					{$btr->global_users|escape} - {$users_count}
-				{elseif $users_count>0}
+				{elseif $users_count > 0}
 					{$btr->global_users|escape} - {$users_count}
 				{else}
 					{$btr->users_no|escape}
 				{/if}
 			</h1>
-			{if $users_count>0}
+			{if $users_count > 0}
 				<div class="d-inline-block heading-block text-dark me-3 mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_export|escape}">
 					<i class="align-middle cursor-pointer" data-feather="file-text"></i>
 				</div>
@@ -42,29 +42,15 @@
 		<h5 class="card-title mb-0">{$btr->global_filter|escape}</h5>
 	</div>
 	<div class="card-body">
-		<div class="row">
-			{if $users_count>0}
+		{if $users_count > 0}
+			<div class="row">
 				<div class="col-12">
 					<div class="progress mb-1" style="display: none;">
 						<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
 					</div>
 				</div>
-			{/if}
-			<div class="col-12">
-				<div class="collapse-card boxed-sorting">
-					<div class="row">
-						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
-							<select class="selectpicker" onchange="location = this.value;">
-								<option value="{url group_id=null}">{$btr->global_filter|escape}</option>
-								{foreach $groups as $g}
-									<option value="{url group_id=$g->id}" {if $group->id == $g->id}selected{/if}>{$g->name|escape}</option>
-								{/foreach}
-							</select>
-						</div>
-					</div>
-				</div>
 			</div>
-		</div>
+		{/if}
 		{if $users}
 			<div class="row">
 				<div class="col-12">
@@ -116,7 +102,7 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id-{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
+													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id-{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked=""{/if}>
 													<label class="form-check-label" for="id-{$user->id}"></label>
 												</div>
 											</div>
@@ -143,17 +129,7 @@
 											<option value="0">{$btr->global_select_action|escape}</option>
 											<option value="enable">{$btr->global_do_enable|escape}</option>
 											<option value="disable">{$btr->global_do_disable|escape}</option>
-											<option value="move_to">{$btr->users_move|escape}</option>
 											<option value="delete">{$btr->global_delete|escape}</option>
-										</select>
-									</div>
-									<div id="move_to" class="turbo-list-option hidden js-hide-block">
-										<select name="move_group" class="selectpicker">
-											{if $groups}
-												{foreach $groups as $group}
-													<option value="{$group->id}">{$group->name|escape}</option>
-												{/foreach}
-											{/if}
 										</select>
 									</div>
 								</div>
@@ -176,13 +152,10 @@
 </div>
 
 {* Piecon *}
-{js id="piecon" priority=99 include=[
-	"turbo/design/js/piecon/piecon.min.js"
-]}{/js}
+{js id="piecon" priority=99 include=["turbo/design/js/piecon/piecon.min.js"]}{/js}
 {javascript minify=true}
 
 <script>
-	var group_id='{$group_id|escape}';
 	var keyword='{$keyword|escape}';
 	var sort='{$sort|escape}';
 </script>
@@ -190,19 +163,11 @@
 {literal}
 	<script>
 		$(function() {
-			$(document).on('change', 'select.js-user-select', function() {
-				var elem = $(this).find('option:selected').val();
-				$('.js-hide-block').addClass('hidden');
-				if ($('#' + elem).size() > 0) {
-					$('#' + elem).removeClass('hidden');
-				}
-			});
-
 			// On document load
 			$(document).on('click', '.feather-file-text', function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
-				var progress_item = $("#progressbar"); //specify an element selector with animation
+				var progress_item = $("#progressbar");
 				$(".progress").show();
 				do_export('', progress_item);
 			});
@@ -211,7 +176,7 @@
 				page = typeof(page) != 'undefined' ? page : 1;
 				$.ajax({
 					url: "ajax/export_users.php",
-					data: {page:page, group_id:group_id, keyword:keyword, sort:sort},
+					data: {page:page, keyword:keyword, sort:sort},
 					dataType: 'json',
 					success: function(data) {
 						if (data && !data.end) {

@@ -1,7 +1,7 @@
-{$meta_title = $btr->global_settings_site scope=global}
+{$meta_title = $btr->global_settings_title scope=global}
 
 <h1 class="mb-3">
-	{$btr->global_settings_site|escape}
+	{$btr->global_settings_title|escape}
 </h1>
 
 {if isset($message_success)}
@@ -39,7 +39,7 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-12">
+							<div class="col-md-6">
 								<div class="mb-3">
 									<div class="form-label">{$btr->settings_general_sitename|escape}</div>
 									<input name="site_name" class="form-control" type="text" value="{$settings->site_name|escape}">
@@ -58,6 +58,14 @@
 								</div>
 							</div>
 							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_general_admintooltip|escape}</div>
+									<select name="admintooltip" class="selectpicker">
+										<option value="on" {if $settings->admintooltip == "on"}selected{/if}>{$btr->global_do_enable|escape}</option>
+										<option value="off" {if $settings->admintooltip == "off"}selected{/if}>{$btr->global_do_disable|escape}</option>
+									</select>
+								</div>
+							</div><div class="col-md-6">
 								<div class="mb-3">
 									<div class="form-label">{$btr->settings_general_shutdown|escape}</div>
 									<select name="site_work" class="selectpicker">
@@ -96,16 +104,16 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-12">
+							<div class="col-md-12">
 								<div class="mb-3">
-									<div class="form-label">{$btr->settings_notify_comments|escape}</div>
-									<input name="comment_email" class="form-control" type="text" value="{$settings->comment_email|escape}">
+									<div class="form-label">{$btr->settings_notify_reverce|escape}</div>
+									<input name="notify_from_email" class="form-control" type="text" value="{$settings->notify_from_email|escape}">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="mb-3">
-									<div class="form-label">{$btr->settings_notify_reverce|escape}</div>
-									<input name="notify_from_email" class="form-control" type="text" value="{$settings->notify_from_email|escape}">
+									<div class="form-label">{$btr->settings_notify_comments|escape}</div>
+									<input name="comment_email" class="form-control" type="text" value="{$settings->comment_email|escape}">
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -147,6 +155,66 @@
 							</a>
 						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->global_customize|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_color_mode|escape}</div>
+									<select name="admin_theme" class="selectpicker">
+										<option value="default" {if $settings->admin_theme == "default"}selected{/if}>{$btr->global_default|escape}</option>
+										<option value="dark" {if $settings->admin_theme == "dark"}selected{/if}>{$btr->global_dark|escape}</option>
+										<option value="light" {if $settings->admin_theme == "light"}selected{/if}>{$btr->global_light|escape}</option>
+										<option value="colored" {if $settings->admin_theme == "colored"}selected{/if}>{$btr->global_colored|escape}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_sidebar|escape}</div>
+									<select name="sidebar" class="selectpicker">
+										<option value="default" {if $settings->sidebar == "default"}selected{/if}>{$btr->global_default|escape}</option>
+										<option value="compact" {if $settings->sidebar == "compact"}selected{/if}>{$btr->global_compact|escape}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_layout|escape}</div>
+									<select name="layout" class="selectpicker">
+										<option value="fluid" {if $settings->layout == "fluid"}selected{/if}>{$btr->global_fluid|escape}</option>
+										<option value="boxed" {if $settings->layout == "boxed"}selected{/if}>{$btr->global_boxed|escape}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_sidebar_position|escape}</div>
+									<select name="position" class="selectpicker">
+										<option value="left" {if $settings->position == "left"}selected{/if}>{$btr->global_left|escape}</option>
+										<option value="right" {if $settings->position == "right"}selected{/if}>{$btr->global_right|escape}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
 					<h5 class="card-title mb-0">{$btr->settings_notify_smtp|escape}</h5>
 				</div>
 				<div class="collapse-card">
@@ -156,7 +224,7 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="smtp-notify" name="use_smtp" value="1" type="checkbox" {if $settings->use_smtp}checked=""{/if}>
+											<input class="form-check-input ms-2" id="smtp-notify" name="use_smtp" value="1" type="checkbox" {if $settings->use_smtp}checked="" {/if}>
 											<label class="form-check-label" for="smtp-notify">{$btr->settings_notify_use_smtp|escape}</label>
 										</div>
 									</div>
@@ -226,66 +294,6 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->global_customize|escape}</h5>
-				</div>
-				<div class="collapse-card">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-3">
-								<div class="mb-3">
-									<div class="form-label">{$btr->global_color_mode|escape}</div>
-									<select name="admin_theme" class="selectpicker">
-										<option value="default" {if $settings->admin_theme == "default"}selected{/if}>{$btr->global_default|escape}</option>
-										<option value="dark" {if $settings->admin_theme == "dark"}selected{/if}>{$btr->global_dark|escape}</option>
-										<option value="light" {if $settings->admin_theme == "light"}selected{/if}>{$btr->global_light|escape}</option>
-										<option value="colored" {if $settings->admin_theme == "colored"}selected{/if}>{$btr->global_colored|escape}</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="mb-3">
-									<div class="form-label">{$btr->settings_sidebar|escape}</div>
-									<select name="sidebar" class="selectpicker">
-										<option value="default" {if $settings->sidebar == "default"}selected{/if}>{$btr->global_default|escape}</option>
-										<option value="compact" {if $settings->sidebar == "compact"}selected{/if}>{$btr->global_compact|escape}</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="mb-3">
-									<div class="form-label">{$btr->global_layout|escape}</div>
-									<select name="layout" class="selectpicker">
-										<option value="fluid" {if $settings->layout == "fluid"}selected{/if}>{$btr->global_default|escape}</option>
-										<option value="boxed" {if $settings->layout == "boxed"}selected{/if}>{$btr->global_boxed|escape}</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="mb-3">
-									<div class="form-label">{$btr->settings_sidebar_position|escape}</div>
-									<select name="position" class="selectpicker">
-										<option value="left" {if $settings->position == "left"}selected{/if}>{$btr->global_default|escape}</option>
-										<option value="right" {if $settings->position == "right"}selected{/if}>{$btr->global_right|escape}</option>
-									</select>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
-					<div class="card-actions float-end">
-						<div class="d-block d-lg-none position-relative collapse-icon">
-							<a href="javascript:;" class="collapse-chevron">
-								<i class="align-middle" data-feather="chevron-up"></i>
-							</a>
-						</div>
-					</div>
 					<h5 class="card-title mb-0">{$btr->global_messengers_settings|escape}</h5>
 				</div>
 				<div class="collapse-card">
@@ -332,7 +340,110 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->settings_display|escape}</h5>
+					<h5 class="card-title mb-0">{$btr->notifications_telegram|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="bg-light rounded mb-3">
+							<div class="p-3">
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
+										<div class="form-check form-switch form-check-reverse form-check-inline">
+											<input class="form-check-input ms-2" id="tg-notify" name="tg_notify" value="1" type="checkbox" {if $settings->tg_notify}checked="" {/if}>
+											<label class="form-check-label" for="tg-notify">{$btr->enable_notifications|escape}</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="mb-3">
+									<div class="form-label">Token</div>
+									<input name="tg_token" class="form-control" type="text" value="{$settings->tg_token|escape}">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="mb-3">
+									<div class="form-label">API URL</div>
+									<input name="tg_apiurl" class="form-control" type="text" value="{$settings->tg_apiurl|escape}">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="mb-3">
+									<div class="form-label">Chat ID</div>
+									<input name="tg_channel" class="form-control" type="text" value="{$settings->tg_channel|escape}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->gpt_settings|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="alert alert-primary" role="alert">
+							<div class="alert-message">
+								{$btr->gpt_get_key|escape} <a href="https://platform.openai.com/api-keys" class="alert-link" target="_blank">{$btr->gpt_account|escape}</a>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">Key</div>
+									<input name="gpt_key" class="form-control" type="text" value="{$settings->gpt_key|escape}">
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">Model</div>
+									<input name="model" class="form-control" type="text" value="{$settings->model|escape}">
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">Max Tokens</div>
+									<input name="max_tokens" class="form-control" type="text" value="{$settings->max_tokens|escape}">
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">Temperature</div>
+									<input name="temperature" class="form-control" type="text" value="{$settings->temperature|escape}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->settings_general_project|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
@@ -349,6 +460,62 @@
 									<input name="projects_num_admin" class="form-control" type="text" value="{$settings->projects_num_admin|escape}">
 								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_faq|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xl-3 col-lg-4 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_faq_on_site|escape}</div>
+									<input name="faq_num" class="form-control" type="text" value="{$settings->faq_num|escape}">
+								</div>
+							</div>
+							<div class="col-xl-3 col-lg-4 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_faq_on_admin|escape}</div>
+									<input name="faq_num_admin" class="form-control" type="text" value="{$settings->faq_num_admin|escape}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->settings_blog_articles|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
 									<div class="form-label">{$btr->settings_blog_posts_site|escape}</div>
@@ -439,37 +606,37 @@
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-post" name="captcha_post" value="1" type="checkbox" {if $settings->captcha_post}checked=""{/if}>
+											<input class="form-check-input ms-2" id="captcha-post" name="captcha_post" value="1" type="checkbox" {if $settings->captcha_post}checked="" {/if}>
 											<label class="form-check-label" for="captcha-post">{$btr->settings_general_blog|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-article" name="captcha_article" value="1" type="checkbox" {if $settings->captcha_article}checked=""{/if}>
+											<input class="form-check-input ms-2" id="captcha-article" name="captcha_article" value="1" type="checkbox" {if $settings->captcha_article}checked="" {/if}>
 											<label class="form-check-label" for="captcha-article">{$btr->settings_general_article|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-register" name="captcha_register" value="1" type="checkbox" {if $settings->captcha_register}checked=""{/if}>
+											<input class="form-check-input ms-2" id="captcha-register" name="captcha_register" value="1" type="checkbox" {if $settings->captcha_register}checked="" {/if}>
 											<label class="form-check-label" for="captcha-register">{$btr->settings_general_register|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-feedback" name="captcha_feedback" value="1" type="checkbox" {if $settings->captcha_feedback}checked=""{/if}>
+											<input class="form-check-input ms-2" id="captcha-feedback" name="captcha_feedback" value="1" type="checkbox" {if $settings->captcha_feedback}checked="" {/if}>
 											<label class="form-check-label" for="captcha-feedback">{$btr->settings_general_contact_form|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-callback" name="captcha_callback" value="1" type="checkbox" {if $settings->captcha_callback}checked=""{/if}>
+											<input class="form-check-input ms-2" id="captcha-callback" name="captcha_callback" value="1" type="checkbox" {if $settings->captcha_callback}checked="" {/if}>
 											<label class="form-check-label" for="captcha-callback">{$btr->settings_general_callback|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-review" name="captcha_review" value="1" type="checkbox" {if $settings->captcha_review}checked=""{/if}>
+											<input class="form-check-input ms-2" id="captcha-review" name="captcha_review" value="1" type="checkbox" {if $settings->captcha_review}checked="" {/if}>
 											<label class="form-check-label" for="captcha-review">{$btr->settings_general_review|escape}</label>
 										</div>
 									</div>
@@ -525,7 +692,7 @@
 								<div class="mb-3">
 									<div class="form-label">&nbsp;</div>
 									<button name="clear_cache" type="submit" value="{$btr->clear_cache|escape}" class="btn btn-danger rotate-icon">
-										<i class="align-middle" data-feather="refresh-cw"></i>
+										<i class="align-middle me-1" data-feather="refresh-cw"></i>
 										{$btr->clear_cache|escape}
 									</button>
 								</div>
@@ -556,19 +723,19 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="smart-resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked=""{/if}>
+											<input class="form-check-input ms-2" id="smart-resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked="" {/if}>
 											<label class="form-check-label" for="smart-resize">{$btr->settings_precise_resizing_images|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="webp-support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked=""{/if}>
+											<input class="form-check-input ms-2" id="webp-support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked="" {/if}>
 											<label class="form-check-label" for="webp-support">{$btr->settings_enable_webp|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="watermark-enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked=""{/if}>
+											<input class="form-check-input ms-2" id="watermark-enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked="" {/if}>
 											<label class="form-check-label" for="watermark-enable">{$btr->settings_watermark_enable|escape}</label>
 										</div>
 									</div>
@@ -592,7 +759,7 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->settings_watermark|escape}</h5>
+					<h5 class="card-title mb-0">{$btr->settings_catalog_watermark|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
@@ -628,7 +795,7 @@
 								<div class="row">
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_watermark_position|escape}
+											{$btr->settings_catalog_watermark_position|escape}
 											<span class="js-show-range">{$settings->watermark_offset_x|escape}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
@@ -642,7 +809,7 @@
 									</div>
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_watermark_position_y|escape}
+											{$btr->settings_catalog_watermark_position_y|escape}
 											<span class="font-weight-bold js-show-range">{$settings->watermark_offset_y|escape}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
@@ -656,7 +823,7 @@
 									</div>
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_watermark_transparency|escape}
+											{$btr->settings_catalog_watermark_transparency|escape}
 											<span class="font-weight-bold js-show-range">{$settings->watermark_transparency}</span>
 										</div>
 										<div class="raiting-boxed mb-4">
@@ -670,7 +837,7 @@
 									</div>
 									<div class="col-xs-12 js-range-wrap">
 										<div class="form-label">
-											{$btr->settings_watermark_sharpness|escape}
+											{$btr->settings_catalog_watermark_sharpness|escape}
 											<span class="font-weight-bold js-show-range">{$settings->images_sharpen}</span>
 										</div>
 										<div class="raiting-boxed mb-4">

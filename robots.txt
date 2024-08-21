@@ -2,7 +2,6 @@ User-agent: *
 Disallow: /404
 Disallow: /turbo/
 Disallow: */user/
-Disallow: /smarty/
 Disallow: /api/
 Disallow: /compiled/
 Disallow: /resize/
@@ -17,7 +16,6 @@ Allow: *.js
 Disallow: /404
 Disallow: /turbo/
 Disallow: */user/
-Disallow: /smarty/
 Disallow: /api/
 Disallow: /compiled/
 Disallow: /resize/

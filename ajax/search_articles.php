@@ -15,7 +15,6 @@ $firstLang = $turbo->languages->languages();
 
 if (!empty($firstLang)) {
 	$firstLang = reset($firstLang);
-
 	if ($firstLang->id !== $language->id) {
 		$langLink = $language->label . '/';
 	}
@@ -36,7 +35,7 @@ $turbo->db->query(
         $langSql->fields
     FROM __articles a
     	$langSql->join
-    WHERE ($px.name LIKE '%$sk%' OR a.meta_keywords LIKE '%$sk%') 
+    WHERE ($px.name LIKE '%$sk%' OR $px.meta_keywords LIKE '%$sk%') 
     AND visible=1 
     ORDER BY a.name 
     LIMIT ?",

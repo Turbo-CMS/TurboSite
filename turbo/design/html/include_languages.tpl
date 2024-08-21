@@ -1,6 +1,6 @@
 {if isset($project->id)}
 	{$id = $project->id}
-{elseif isset($category->id)} 
+{elseif isset($category->id)}
 	{$id = $category->id}
 {elseif isset($user->id)}
 	{$id = $user->id}
@@ -20,8 +20,6 @@
 	{$id = $language->id}
 {elseif isset($translation->id)}
 	{$id = $translation->id}
-{elseif isset($menu->id)}
-	{$id = $menu->id}
 {/if}
 
 {if $languages}
@@ -32,7 +30,7 @@
 		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
 			{foreach $languages as $lang}
 				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{if isset($id)}{url lang_id=$lang->id id=$id}{else}{url lang_id=$lang->id}{/if}">
-					<img src="design/flags/4x3/{$lang->label}.svg" alt="{$lang->name|escape}" width="20" class="align-middle me-1">
+					<img src="design/flags/4x3/{$lang->label}.svg" alt="{$lang->name|escape}" width="23" class="nav-flag-icon align-middle me-1" />
 					<span class="align-middle">{$lang->name|escape}</span>
 				</a>
 			{/foreach}

@@ -215,17 +215,6 @@
 	}();
 
 	/*
-	// Phone Mask 
-	*/
-
-	$(function () {
-		$('#call-mask').mask('+**(999) 999-99-99');
-		$('#cart-phone').mask('+**(999) 999-99-99');
-		$('#fastorder-mask').mask('+**(999) 999-99-99');
-		$('#phone').mask('+**(999) 999-99-99');
-	});
-
-	/*
 	// Empty ul
 	*/
 

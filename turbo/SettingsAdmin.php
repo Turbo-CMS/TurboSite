@@ -20,31 +20,34 @@ class SettingsAdmin extends Turbo
 				$this->settings->update('company_name', $this->request->post('company_name'));
 				$this->settings->date_format = $this->request->post('date_format');
 				$this->settings->admin_email = $this->request->post('admin_email');
+				$this->settings->admintooltip = $this->request->post('admintooltip');
 				$this->settings->site_work = $this->request->post('site_work');
 				$this->settings->admin_theme = $this->request->post('admin_theme');
 				$this->settings->sidebar = $this->request->post('sidebar');
 				$this->settings->layout = $this->request->post('layout');
 				$this->settings->position = $this->request->post('position');
-				$this->settings->captcha_project = $this->request->post('captcha_project', 'boolean');
-				$this->settings->captcha_post = $this->request->post('captcha_post', 'boolean');
-				$this->settings->captcha_cart = $this->request->post('captcha_cart', 'boolean');
-				$this->settings->captcha_article = $this->request->post('captcha_article', 'boolean');
-				$this->settings->captcha_register  = $this->request->post('captcha_register', 'boolean');
-				$this->settings->captcha_feedback  = $this->request->post('captcha_feedback', 'boolean');
-				$this->settings->captcha_callback  = $this->request->post('captcha_callback', 'boolean');
-				$this->settings->captcha_review = $this->request->post('captcha_review', 'boolean');
 				$this->settings->comment_email = $this->request->post('comment_email');
 				$this->settings->notify_from_email = $this->request->post('notify_from_email');
 				$this->settings->update('notify_from_name', $this->request->post('notify_from_name'));
+				$this->settings->email_lang = $this->request->post('email_lang');
 				$this->settings->use_smtp = $this->request->post('use_smtp');
 				$this->settings->smtp_server = $this->request->post('smtp_server');
 				$this->settings->smtp_port = $this->request->post('smtp_port');
 				$this->settings->smtp_user = $this->request->post('smtp_user');
 				$this->settings->smtp_pass = $this->request->post('smtp_pass');
-				$this->settings->email_lang = $this->request->post('email_lang');
+				$this->settings->tg_notify = $this->request->post('tg_notify', 'boolean');
+				$this->settings->tg_token = $this->request->post('tg_token');
+				$this->settings->tg_apiurl = $this->request->post('tg_apiurl');
+				$this->settings->tg_channel = $this->request->post('tg_channel');
+				$this->settings->gpt_key = $this->request->post('gpt_key');
+				$this->settings->model = $this->request->post('model');
+				$this->settings->max_tokens = $this->request->post('max_tokens');
+				$this->settings->temperature = $this->request->post('temperature');
+				$this->settings->decimals_point = $this->request->post('decimals_point');
+				$this->settings->thousands_separator = $this->request->post('thousands_separator');
+				$this->settings->faq_num = $this->request->post('faq_num');
+				$this->settings->faq_num_admin = $this->request->post('faq_num_admin');
 				$this->settings->lang = $this->request->post('manager_lang');
-				$this->settings->projects_num = $this->request->post('projects_num');
-				$this->settings->projects_num_admin = $this->request->post('projects_num_admin');
 				$this->settings->articles_num = $this->request->post('articles_num');
 				$this->settings->articles_num_admin = $this->request->post('articles_num_admin');
 				$this->settings->blog_num = $this->request->post('blog_num');
@@ -60,6 +63,16 @@ class SettingsAdmin extends Turbo
 				$this->settings->cached = $this->request->post('cached');
 				$this->settings->cache_type = $this->request->post('cache_type');
 				$this->settings->cache_time = $this->request->post('cache_time');
+				$this->settings->captcha_project = $this->request->post('captcha_project', 'boolean');
+				$this->settings->captcha_post = $this->request->post('captcha_post', 'boolean');
+				$this->settings->captcha_cart = $this->request->post('captcha_cart', 'boolean');
+				$this->settings->captcha_article = $this->request->post('captcha_article', 'boolean');
+				$this->settings->captcha_register = $this->request->post('captcha_register', 'boolean');
+				$this->settings->captcha_feedback = $this->request->post('captcha_feedback', 'boolean');
+				$this->settings->captcha_callback = $this->request->post('captcha_callback', 'boolean');
+				$this->settings->captcha_review = $this->request->post('captcha_review', 'boolean');
+				$this->settings->projects_num = $this->request->post('projects_num');
+				$this->settings->projects_num_admin = $this->request->post('projects_num_admin');
 
 				if ($this->request->post('category_count') == 1) {
 					$this->settings->category_count = 1;
@@ -119,6 +132,18 @@ class SettingsAdmin extends Turbo
 			}
 		}
 
+		$backendTranslations = $this->backendTranslations;
+		$file = "turbo/lang/" . $this->settings->lang . ".php";
+
+		if (!file_exists($file)) {
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+				break;
+			}
+		}
+
+		require_once($file);
+
 		$btrLanguages = [];
 
 		foreach ($this->languages->langList() as $label => $l) {
@@ -128,6 +153,7 @@ class SettingsAdmin extends Turbo
 		}
 
 		$this->design->assign('btr_languages', $btrLanguages);
+		$this->design->assign('btr', $backendTranslations);
 
 		return $this->design->fetch('settings.tpl');
 	}

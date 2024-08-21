@@ -146,5 +146,6 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('256','subscribe','Подписаться','Subscribe','Підписатися'),
 ('257','faq','FAQ','FAQ','FAQ'),
 ('258','account','Аккаунт','Account','Аккаунт'),
-('259','author','Автор','Author','Автор');
+('259','author','Автор','Author','Автор'),
+('260','help','Помощь','Help','Довідка');
 

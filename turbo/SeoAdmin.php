@@ -21,7 +21,7 @@ class SeoAdmin extends Turbo
             $this->seo->update('project_meta_keywords', $this->request->post('project_meta_keywords'));
             $this->seo->update('page_meta_keywords', $this->request->post('page_meta_keywords'));
             $this->seo->update('post_meta_keywords', $this->request->post('post_meta_keywords'));
-            $this->seo->update('category_article_meta_keywords', $this->request->post('category_article_meta__keywords'));
+            $this->seo->update('category_article_meta_keywords', $this->request->post('category_article_meta_keywords'));
             $this->seo->update('article_meta_keywords', $this->request->post('article_meta_keywords'));
             $this->seo->update('category_meta_description', $this->request->post('category_meta_description'));
             $this->seo->update('project_meta_description', $this->request->post('project_meta_description'));
