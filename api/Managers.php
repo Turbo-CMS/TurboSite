@@ -6,7 +6,7 @@ class Managers extends Turbo
 {
 	public $permissionsList = [
 		'callbacks', 'users', 'pages', 'menus', 'blog', 'comments', 'feedbacks', 'clear', 'articles', 'projects',
-		'backup', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'managers', 'languages', 'rss'
+		'backup', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'robots', 'managers', 'languages', 'rss'
 	];
 
 	public $passwdFile = "turbo/.passwd";

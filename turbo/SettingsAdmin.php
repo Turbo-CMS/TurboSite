@@ -43,8 +43,8 @@ class SettingsAdmin extends Turbo
 				$this->settings->model = $this->request->post('model');
 				$this->settings->max_tokens = $this->request->post('max_tokens');
 				$this->settings->temperature = $this->request->post('temperature');
-				$this->settings->decimals_point = $this->request->post('decimals_point');
-				$this->settings->thousands_separator = $this->request->post('thousands_separator');
+				$this->settings->projects_num = $this->request->post('projects_num');
+				$this->settings->projects_num_admin = $this->request->post('projects_num_admin');
 				$this->settings->faq_num = $this->request->post('faq_num');
 				$this->settings->faq_num_admin = $this->request->post('faq_num_admin');
 				$this->settings->lang = $this->request->post('manager_lang');
@@ -65,21 +65,12 @@ class SettingsAdmin extends Turbo
 				$this->settings->cache_time = $this->request->post('cache_time');
 				$this->settings->captcha_project = $this->request->post('captcha_project', 'boolean');
 				$this->settings->captcha_post = $this->request->post('captcha_post', 'boolean');
-				$this->settings->captcha_cart = $this->request->post('captcha_cart', 'boolean');
 				$this->settings->captcha_article = $this->request->post('captcha_article', 'boolean');
 				$this->settings->captcha_register = $this->request->post('captcha_register', 'boolean');
 				$this->settings->captcha_feedback = $this->request->post('captcha_feedback', 'boolean');
 				$this->settings->captcha_callback = $this->request->post('captcha_callback', 'boolean');
 				$this->settings->captcha_review = $this->request->post('captcha_review', 'boolean');
-				$this->settings->projects_num = $this->request->post('projects_num');
-				$this->settings->projects_num_admin = $this->request->post('projects_num_admin');
-
-				if ($this->request->post('category_count') == 1) {
-					$this->settings->category_count = 1;
-				} else {
-					$this->settings->category_count = 0;
-				}
-
+				
 				$clearImageCache = false;
 				$this->settings->watermark_enable = $this->request->post('watermark_enable', 'boolean');
 				$watermark = $this->request->files('watermark_file', 'tmp_name');

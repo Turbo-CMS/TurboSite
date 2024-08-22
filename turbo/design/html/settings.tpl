@@ -443,7 +443,7 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->settings_general_project|escape}</h5>
+					<h5 class="card-title mb-0">{$btr->global_projects|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">

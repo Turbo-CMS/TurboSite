@@ -42,6 +42,7 @@ class IndexAdmin extends Turbo
 		'TranslationsAdmin'         => 'languages',
 		'SeoAdmin'                  => 'seo',
 		'SettingsCounterAdmin'      => 'scripts',
+		'RobotsAdmin'               => 'robots',
 		'BannersAdmin'              => 'banners',
 		'BannerAdmin'               => 'banners',
 		'BannersImagesAdmin'        => 'banners',

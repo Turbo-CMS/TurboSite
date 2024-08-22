@@ -320,22 +320,22 @@ CREATE TABLE `t_images_project` (
 --
 
 INSERT INTO `t_images_project` (`id`, `project_id`, `filename`, `name`, `position`) VALUES
-(9, 6, 'cbb06d98e902a13963583a33a97b0fd8.jpg', '', 0),
-(7, 6, '4a059d8a702b12fbd8e9aef2ffb8b24f.jpg', '', 1),
-(10, 6, '1694cd00473ee77bf5d4a9007f14020a.jpg', '', 2),
-(11, 6, '292243489234c2a1453c24d52976bf93.jpg', '', 3),
-(15, 7, '4340a1736f1bfa9ec7bea901ff836f62_1.jpg', '', 1),
-(20, 8, '231ae378b3322d6d30e251f882c86ee3.jpg', '', 1),
-(18, 7, '5285403a2b4cb0acdc28c533560905d2.jpg', '', 3),
-(16, 7, 'dce57b9019ddd1abbbf3d8de2ab54e1a.jpg', '', 2),
-(17, 7, '2e6298c6bfffc15d1bc601eb8c41f8e9.jpg', '', 0),
-(19, 7, 'ebb4edd571d07fa67c31e763601d436f.jpg', '', 4),
-(21, 8, '942f472a15f74265e7a5f15a3ca569ec.jpg', '', 2),
-(22, 8, '4ed3a83dbf94683c5d8fb15698d24fd3-1.jpg', '', 3),
-(23, 8, '4412fd3dcd2a2157ee000177b9a7b185.jpg', '', 0),
-(25, 9, '72a1894ac5a08dcdc713bf559e71757f6b62040beea8247095aae9a0b525bd46_1200_1200.jpeg', '', 0),
-(24, 8, 'edbef440f13c0cdff3a1b6b1944c8305-3.jpg', '', 4),
-(26, 9, 'ff1c8d55c74ffb3b6a227b7d5eec62b6cfa1d7736e8b40ef457aa46728035677_1200_1200.jpeg', '', 1);
+(40, 6, 'twitter_2.jpg', '', 1),
+(41, 6, 'twitter_1.jpg', '', 0),
+(42, 6, 'twitter_3.jpg', '', 2),
+(43, 6, 'twitter_4.jpg', '', 3),
+(38, 7, 'google_4.jpg', '', 3),
+(39, 7, 'google_3.jpg', '', 2),
+(35, 7, 'google_2.jpg', '', 1),
+(36, 7, 'google_5.jpg', '', 4),
+(37, 7, 'google_1.jpg', '', 0),
+(31, 8, 'alibaba_4.jpg', '', 3),
+(32, 8, 'alibaba_5.jpg', '', 4),
+(33, 8, 'alibaba_2.jpg', '', 1),
+(34, 8, 'alibaba_1.jpg', '', 0),
+(30, 8, 'alibaba_3.jpg', '', 2),
+(28, 9, 'nike_2.jpeg', '', 1),
+(29, 9, 'nike_1.jpeg', '', 0);
 
 -- --------------------------------------------------------
 
@@ -880,10 +880,10 @@ CREATE TABLE `t_projects` (
 --
 
 INSERT INTO `t_projects` (`id`, `category_id`, `name`, `url`, `meta_title`, `meta_keywords`, `meta_description`, `annotation`, `text`, `visible`, `date`, `last_modified`, `position`, `image`, `client`, `site`, `type`) VALUES
-(6, 2, 'Twitter office', 'twitter-office', 'Twitter office', 'Twitter office', 'Twitter is a public short messaging service using a web interface, SMS, instant messaging or third-party client programs', '<p>Twitter is a public short messaging service using a web interface, SMS, instant messaging or third-party client programs. The publication of short notes in blog format is called \"microblogging\". The service is free of charge. The use of SMS is charged by the operator according to the user\'s tariff plan.</p>', '<p>Twitter is a public short messaging service using a web interface, SMS, instant messaging or third-party client programs. The publication of short notes in blog format is called \"microblogging\". The service is free of charge. The use of SMS is charged by the operator according to the user\'s tariff plan.</p>\r\n<p>&nbsp;Twitter is owned by Twitter Inc, headquartered in San Francisco, California. Twitter Inc also has servers and offices in San Antonio, Texas and Boston, Massachusetts. As of 2012, the company employs over 900 employees.</p>', 1, '2021-01-28 21:00:00', '2024-07-29 10:01:56', 6, '', 'Twitter, Inc', 'https://twitter.com', 'Design'),
-(7, 2, 'Google London office', 'google-london-office', 'Google London office', 'Google London office', 'Google is the largest search engine on the Internet, owned by Google Inc', '<p><span lang=\"en\">Google is the largest search engine on the Internet, owned by Google Inc. The first most popular system, processes 41 billion 345 million requests per month, indexes more than 25 billion web pages, can find information in 195 languages.</span></p>', '<p>Google is the largest search engine on the Internet, owned by Google Inc. The first most popular system, processes 41 billion 345 million requests per month, indexes more than 25 billion web pages, can find information in 195 languages.</p>\r\n<p>The current official Google logo was designed by Ruth Kedar and has been in effect since May 6, 2010. On the occasion of a holiday or a round date of some well-known personality, the standard Google logo can change to a festive one that has a certain theme, meaning, but in the style of Google.</p>', 1, '2021-01-28 21:00:00', '2023-11-18 19:46:30', 7, '', 'Google, Inc', 'https://www.google.com', 'Design'),
-(8, 2, 'Alibaba Group Office', 'alibaba-group-office', 'Alibaba Group Office', 'Alibaba Group Office', 'Alibaba Group is a Chinese privately held e-commerce company, the main owner of the public company Alibaba.com', '<p><span lang=\"en\">Alibaba Group is a Chinese privately held e-commerce company, the main owner of the public company Alibaba.com. The headquarters are located in Hangzhou. The main activities are trade operations between companies (B2B trade), online retail.</span></p>', '<p>Alibaba Group is a Chinese privately held e-commerce company, the main owner of the public company Alibaba.com. The headquarters are located in Hangzhou. The main activities are trade operations between companies (B2B trade), online retail.</p>\r\n<p>It has its own electronic payment system (Alipay, which is also used for payments and in its subsidiary - Taobao.com), uses a single enterprise management software for all structures, as well as databases of goods and enterprises sorted by regions and industries.</p>', 1, '2021-01-27 21:00:00', '2024-07-29 10:01:56', 8, '', 'Alibaba Group', 'http://www.alibaba.com/', 'Design'),
-(9, 2, 'Nike New York office design', 'nike-new-york-office-design', 'Nike New York office design', 'Nike New York office design', 'Nike is a well-known sports brand, but the design of the company\'s headquarters is devoid of bright sports style', '<p>Nike is a well-known sports brand, but the design of the company\'s headquarters is devoid of bright sports style.</p>', '<p>Nike is a well-known sports brand, but the design of the company\'s headquarters is devoid of bright sports style. The fact that this space belongs to a global manufacturer of sportswear, footwear and accessories is clearly indicated by, perhaps, only two things. The first is the company\'s logo on the roof of the building (the famous \"check mark\").</p>', 1, '2021-01-28 21:00:00', '2024-07-29 10:01:56', 9, '', 'Nike', 'https://www.nike.com/', 'Design');
+(6, 2, 'Twitter office', 'twitter-office', 'Twitter office', 'Twitter office', 'Twitter is a public short messaging service using a web interface, SMS, instant messaging or third-party client programs', '<p>Twitter is a public short messaging service using a web interface, SMS, instant messaging or third-party client programs. The publication of short notes in blog format is called \"microblogging\". The service is free of charge. The use of SMS is charged by the operator according to the user\'s tariff plan.</p>', '<p>Twitter is a public short messaging service using a web interface, SMS, instant messaging or third-party client programs. The publication of short notes in blog format is called \"microblogging\". The service is free of charge. The use of SMS is charged by the operator according to the user\'s tariff plan.</p>\r\n<p>&nbsp;Twitter is owned by Twitter Inc, headquartered in San Francisco, California. Twitter Inc also has servers and offices in San Antonio, Texas and Boston, Massachusetts. As of 2012, the company employs over 900 employees.</p>', 1, '2021-01-28 21:00:00', '2024-08-22 23:37:53', 6, '', 'Twitter, Inc', 'https://twitter.com', 'Design'),
+(7, 2, 'Google London office', 'google-london-office', 'Google London office', 'Google London office', 'Google is the largest search engine on the Internet, owned by Google Inc', '<p><span lang=\"en\">Google is the largest search engine on the Internet, owned by Google Inc. The first most popular system, processes 41 billion 345 million requests per month, indexes more than 25 billion web pages, can find information in 195 languages.</span></p>', '<p>Google is the largest search engine on the Internet, owned by Google Inc. The first most popular system, processes 41 billion 345 million requests per month, indexes more than 25 billion web pages, can find information in 195 languages.</p>\r\n<p>The current official Google logo was designed by Ruth Kedar and has been in effect since May 6, 2010. On the occasion of a holiday or a round date of some well-known personality, the standard Google logo can change to a festive one that has a certain theme, meaning, but in the style of Google.</p>', 1, '2021-01-28 21:00:00', '2024-08-22 23:37:16', 7, '', 'Google, Inc', 'https://www.google.com', 'Design'),
+(8, 2, 'Alibaba Group Office', 'alibaba-group-office', 'Alibaba Group Office', 'Alibaba Group Office', 'Alibaba Group is a Chinese privately held e-commerce company, the main owner of the public company Alibaba.com', '<p><span lang=\"en\">Alibaba Group is a Chinese privately held e-commerce company, the main owner of the public company Alibaba.com. The headquarters are located in Hangzhou. The main activities are trade operations between companies (B2B trade), online retail.</span></p>', '<p>Alibaba Group is a Chinese privately held e-commerce company, the main owner of the public company Alibaba.com. The headquarters are located in Hangzhou. The main activities are trade operations between companies (B2B trade), online retail.</p>\r\n<p>It has its own electronic payment system (Alipay, which is also used for payments and in its subsidiary - Taobao.com), uses a single enterprise management software for all structures, as well as databases of goods and enterprises sorted by regions and industries.</p>', 1, '2021-01-27 21:00:00', '2024-08-22 23:36:24', 8, '', 'Alibaba Group', 'http://www.alibaba.com/', 'Design'),
+(9, 2, 'Nike New York office design', 'nike-new-york-office-design', 'Nike New York office design', 'Nike New York office design', 'Nike is a well-known sports brand, but the design of the company\'s headquarters is devoid of bright sports style', '<p>Nike is a well-known sports brand, but the design of the company\'s headquarters is devoid of bright sports style.</p>', '<p>Nike is a well-known sports brand, but the design of the company\'s headquarters is devoid of bright sports style. The fact that this space belongs to a global manufacturer of sportswear, footwear and accessories is clearly indicated by, perhaps, only two things. The first is the company\'s logo on the roof of the building (the famous \"check mark\").</p>', 1, '2021-01-28 21:00:00', '2024-08-22 23:35:29', 9, '', 'Nike', 'https://www.nike.com/', 'Design');
 
 -- --------------------------------------------------------
 
@@ -914,7 +914,7 @@ CREATE TABLE `t_projects_categories` (
 --
 
 INSERT INTO `t_projects_categories` (`id`, `parent_id`, `name`, `name_h1`, `meta_title`, `meta_keywords`, `meta_description`, `description`, `url`, `image`, `position`, `visible`, `external_id`, `last_modified`) VALUES
-(2, 0, 'Interior design', '', 'Interior design', 'Interior design', '', '', 'interior-design', '', 2, 1, '', '2024-08-18 16:47:03');
+(2, 0, 'Interior design', '', 'Interior design', 'Interior design', '', '', 'interior-design', '', 2, 1, '', '2024-08-22 23:37:53');
 
 -- --------------------------------------------------------
 
@@ -934,18 +934,18 @@ CREATE TABLE `t_related_projects` (
 --
 
 INSERT INTO `t_related_projects` (`project_id`, `related_id`, `position`) VALUES
+(8, 6, 1),
 (8, 9, 2),
-(8, 7, 0),
 (6, 8, 1),
 (6, 9, 2),
+(7, 9, 2),
 (7, 8, 0),
-(7, 6, 1),
 (9, 8, 0),
 (9, 7, 1),
 (9, 6, 2),
-(8, 6, 1),
+(8, 7, 0),
 (6, 7, 0),
-(7, 9, 2);
+(7, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -1053,7 +1053,7 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (60, 'lastModifyPosts', '2024-08-22 00:05:35'),
 (61, 'lastModifyReviews', '2024-08-18 23:38:27'),
 (62, 'lastModifyFAQ', '2024-08-18 23:39:33'),
-(63, 'counters', 'a:1:{i:0;O:8:\"stdClass\":3:{s:4:\"name\";s:0:\"\";s:8:\"position\";s:4:\"head\";s:4:\"code\";s:0:\"\";}}');
+(63, 'counters', '');
 
 -- --------------------------------------------------------
 
@@ -1849,7 +1849,7 @@ ALTER TABLE `t_files`
 -- AUTO_INCREMENT for table `t_images_project`
 --
 ALTER TABLE `t_images_project`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `t_languages`

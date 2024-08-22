@@ -322,16 +322,6 @@
 	{assign var="hsl" value=$color|hsl}
 {/if}
 
-{if $theme_settings->more_colors_on}
-	{if $theme_settings->more_user_color}
-		{assign var="more_color" value=$theme_settings->more_custom_color}
-		{assign var="more_hsl" value=$more_color|hsl}
-	{else}
-		{assign var="more_color" value=$theme_settings->more_colors}
-		{assign var="more_hsl" value=$more_color|hsl}
-	{/if}
-{/if}
-
 {literal}
 	<style>
 		html {
@@ -339,16 +329,16 @@
 			--border-radius: {/literal}{$theme_settings->border_radius}{literal};
 			--theme-base-color: {/literal}{$color}{literal};
 			--theme-base-opacity-color: {/literal}{$color}{literal}1a;
-			--theme-more-color: {/literal}{if $theme_settings->more_colors_on}{$more_color}{else}{$color}{/if}{literal};
+			--theme-more-color: {/literal}{$color}{literal};
 			--theme-outer-border-radius: {/literal}{$theme_settings->border_radius}{literal};
 			--theme-text-transform: none;
 			--theme-letter-spacing: normal;
 			--theme-button-font-size: 0%;
 			--theme-button-padding-2px: 0%;
 			--theme-button-padding-1px: 0%;
-			--theme-more-color-hue: {/literal}{if $theme_settings->more_colors_on}{$more_hsl.hue}{else}{$hsl.hue}{/if}{literal};
-			--theme-more-color-saturation: {/literal}{if $theme_settings->more_colors_on}{$more_hsl.saturation}{else}{$hsl.saturation}{/if}{literal}%;
-			--theme-more-color-lightness: {/literal}{if $theme_settings->more_colors_on}{$more_hsl.lightness}{else}{$hsl.lightness}{/if}{literal}%;
+			--theme-more-color-hue: {/literal}{$hsl.hue}{literal};
+			--theme-more-color-saturation: {/literal}{$hsl.saturation}{literal}%;
+			--theme-more-color-lightness: {/literal}{$hsl.lightness}{literal}%;
 			--theme-base-color-hue: {/literal}{$hsl.hue}{literal};
 			--theme-base-color-saturation: {/literal}{$hsl.saturation}{literal}%;
 			--theme-base-color-lightness: {/literal}{$hsl.lightness}{literal}%;

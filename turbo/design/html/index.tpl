@@ -186,13 +186,13 @@
 							</ul>
 						</li>
 					{/if}
-					{if in_array('seo', $manager->permissions) || in_array('scripts', $manager->permissions)}
-						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin'))}active{/if}">
-							<a data-bs-target="#seo" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+					{if in_array('seo', $manager->permissions) || in_array('scripts', $manager->permissions) || in_array('robots', $manager->permissions)}
+						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin', 'RobotsAdmin'))}active{/if}">
+							<a data-bs-target="#seo" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin', 'RobotsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="target"></i>
 								<span class="align-middle">{$btr->global_seo|escape}</span>
 							</a>
-							<ul id="seo" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin'))}show{/if}" data-bs-parent="#sidebar">
+							<ul id="seo" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin', 'RobotsAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								{if in_array('seo', $manager->permissions)}
 									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin'))}active{/if}">
 										<a class="sidebar-link" href="index.php?module=SeoAdmin">{$btr->seo_automation|escape}</a>
@@ -201,6 +201,11 @@
 								{if in_array('scripts', $manager->permissions)}
 									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SettingsCounterAdmin'))}active{/if}">
 										<a class="sidebar-link" href="index.php?module=SettingsCounterAdmin">{$btr->global_scripts|escape}</a>
+									</li>
+								{/if}
+								{if in_array('robots', $manager->permissions)}
+									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('RobotsAdmin'))}active{/if}">
+										<a class="sidebar-link" href="index.php?module=RobotsAdmin">Robots.txt</a>
 									</li>
 								{/if}
 							</ul>
