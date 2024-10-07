@@ -166,9 +166,9 @@ class BlogView extends View
 
 		$allTags = [];
 
-		foreach ($allPosts as $post) {
+		foreach ($allPosts as $p) {
 			// Get Tags
-			$tags = explode(',', $post->meta_keywords);
+			$tags = explode(',', $p->meta_keywords);
 			$tags = array_map("trim", $tags);
 
 			// Merge Tags
@@ -288,9 +288,9 @@ class BlogView extends View
 
 		$allTags = [];
 
-		foreach ($allPosts as $post) {
+		foreach ($allPosts as $p) {
 			// Get Tags
-			$tags = explode(',', $post->meta_keywords);
+			$tags = explode(',', $p->meta_keywords);
 			$tags = array_map("trim", $tags);
 
 			// Merge Tags

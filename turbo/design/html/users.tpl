@@ -30,6 +30,14 @@
 	</div>
 </div>
 
+{if $users_count > 0}
+	<div class="position-relative pt-1 mb-4 mt-n4">
+		<div class="progress position-absolute w-100" style="display: none;">
+			<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+		</div>
+	</div>
+{/if}
+
 <div class="card">
 	<div class="card-header d-block d-lg-none">
 		<div class="card-actions float-end">
@@ -42,15 +50,6 @@
 		<h5 class="card-title mb-0">{$btr->global_filter|escape}</h5>
 	</div>
 	<div class="card-body">
-		{if $users_count > 0}
-			<div class="row">
-				<div class="col-12">
-					<div class="progress mb-1" style="display: none;">
-						<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-					</div>
-				</div>
-			</div>
-		{/if}
 		{if $users}
 			<div class="row">
 				<div class="col-12">
