@@ -1,40 +1,7 @@
-{* Project page *}
+{* Project Page *}
 
 {* Canonical *}
 {$canonical="/project/{$project->url}" scope=global}
-
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects">
-				<span itemprop="name">{$lang->global_projects}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{foreach from=$category->path item=cat}
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}" title="{$cat->name|escape}">
-					<span itemprop="name">{$cat->name|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/foreach}
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}">
-				<span itemprop="name">{$project->name|escape}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-	</ol>
-</nav>
 
 {* Project *}
 <div class="row mb-3">
@@ -44,7 +11,7 @@
 				{if $project->image}
 					{foreach $project->images as $i=>$image name=img}
 						<div class="carousel-item image {if $smarty.foreach.img.first}active{/if}">
-							<a data-fancybox="gallery" href="{if $settings->watermark_enable}{$image->filename|resize:1000:1000:w}{else}{$image->filename|resize:800:800}{/if}">
+							<a data-fancybox="gallery" href="{$image->filename|resize:1000:1000:$settings->watermark_enable}">
 								<img src="{$image->filename|resize:750:500}" class="rounded" alt="{$project->name|escape}">
 								<span class="icon-focus"><i class="fal fa-search-plus"></i></span>
 							</a>
@@ -77,12 +44,12 @@
 			{if $project->annotation}
 				<div class="my-3">{$project->annotation}</div>
 			{/if}
-			<h3 class="my-3">{$lang->project_details}</h3>
+			<h3 class="my-3">{$lang->project_details|escape}</h3>
 			<ul class="list-unstyled">
-				<li><strong>{$lang->date}:</strong> {$project->date|date}</li>
-				{if $category}<li><strong>{$lang->category}:</strong> {$category->name|escape}</li>{/if}
-				{if $project->site}<li><strong>{$lang->site}:</strong> {$project->site|escape}</li>{/if}
-				{if $project->client}<li><strong>{$lang->customer}:</strong> {$project->client|escape}</li>{/if}
+				<li><strong>{$lang->date|escape}:</strong> {$project->date|date}</li>
+				{if $category}<li><strong>{$lang->category|escape}:</strong> {$category->name|escape}</li>{/if}
+				{if $project->site}<li><strong>{$lang->site|escape}:</strong> {$project->site|escape}</li>{/if}
+				{if $project->client}<li><strong>{$lang->customer|escape}:</strong> {$project->client|escape}</li>{/if}
 			</ul>
 		</div>
 	</div>
@@ -91,10 +58,10 @@
 {* Tabs *}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 	<li class="nav-item">
-		<a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{$lang->description}</a>
+		<a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{$lang->description|escape}</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{$lang->comments_global} ({$comments|count})</a>
+		<a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{$lang->global_comments|escape} ({$comments|count})</a>
 	</li>
 </ul>
 
@@ -109,7 +76,7 @@
 
 {* Next & Prev *}
 {if $prev_project || $next_project}
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		<div class="col-lg-6 col-sm-6 col-6 text-start">
 			{if $prev_project}
@@ -122,12 +89,12 @@
 			{/if}
 		</div>
 	</div>
-	<hr class="text-black-50">
+	<hr>
 {/if}
 
 {* Related Projects *}
 {if $related_projects}
-	<h3 class="my-4">{$lang->related_projects}</h3>
+	<h3 class="my-4">{$lang->related_projects|escape}</h3>
 	<div class="row">
 		{foreach $related_projects as $related_project}
 			<div class="col-md-6 col-lg-4 mb-5">
@@ -144,7 +111,7 @@
 						<p class="card-text"><small class="text-muted">{$related_project->date|date}</small></p>
 					</div>
 					<div class="card-footer">
-						<a href="{$lang_link}project/{$related_project->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
+						<a href="{$lang_link}project/{$related_project->url}" class="btn btn-primary btn-sm">{$lang->more_details|escape}<i class="fal fa-arrow-right ms-2"></i></a>
 					</div>
 				</div>
 			</div>

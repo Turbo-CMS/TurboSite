@@ -1,12 +1,12 @@
-<div class="container mt-3">
+<div class="container-xxl mt-3">
 	{* Blog *}
 	{get_posts var=last_posts limit=3}
-	{if isset($last_posts)}
+	{if $last_posts}
 		<div class="section-heading">
-			<a href="{$lang_link}blog" class="btn btn-outline-primary float-end">{$lang->see_all}<i class="fal fa-chevron-right ms-2"></i></a>
-			<h2 class="section-title my-2">{$lang->global_blog}</h2>
+			<a href="{$lang_link}blog" class="btn btn-outline-primary float-end">{$lang->see_all|escape}<i class="fal fa-chevron-right ms-2"></i></a>
+			<h2 class="section-title my-2">{$lang->global_blog|escape}</h2>
 		</div>
-		<hr class="text-black-50">
+		<hr>
 		<div class="row">
 			{foreach $last_posts as $post}
 				<div class="col-md-6 col-lg-4 mb-3">
@@ -24,7 +24,7 @@
 							<div class="my-1">{$post->annotation|strip_tags|truncate:150}</div>
 						</div>
 						<div class="card-footer">
-							<a href="{$lang_link}blog/{$post->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
+							<a href="{$lang_link}blog/{$post->url}" class="btn btn-primary btn-sm">{$lang->more_details|escape}<i class="fal fa-arrow-right ms-2"></i></a>
 						</div>
 					</div>
 				</div>
@@ -34,12 +34,12 @@
 
 	{* Articles *}
 	{get_articles var=last_articles limit=3}
-	{if isset($last_articles)}
+	{if $last_articles}
 		<div class="section-heading">
-			<a href="{$lang_link}articles" class="btn btn-outline-primary float-end">{$lang->see_all}<i class="fal fa-chevron-right ms-2"></i></a>
-			<h2 class="section-title my-2">{$lang->global_articles}</h2>
+			<a href="{$lang_link}articles" class="btn btn-outline-primary float-end">{$lang->see_all|escape}<i class="fal fa-chevron-right ms-2"></i></a>
+			<h2 class="section-title my-2">{$lang->global_articles|escape}</h2>
 		</div>
-		<hr class="text-black-50">
+		<hr>
 		<div class="row">
 			{foreach $last_articles as $article}
 				<div class="col-md-6 col-lg-4 mb-3">
@@ -72,7 +72,7 @@
 							<div class="my-1">{$article->annotation|strip_tags|truncate:150}</div>
 						</div>
 						<div class="card-footer">
-							<a href="{$lang_link}article/{$article->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
+							<a href="{$lang_link}article/{$article->url}" class="btn btn-primary btn-sm">{$lang->more_details|escape}<i class="fal fa-arrow-right ms-2"></i></a>
 						</div>
 					</div>
 				</div>

@@ -56,7 +56,7 @@ class ProjectsView extends View
 		}
 
 		// Comment Form
-		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
 			$comment->name = $this->request->post('name');

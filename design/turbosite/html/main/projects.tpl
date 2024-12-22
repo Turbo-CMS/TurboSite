@@ -1,6 +1,6 @@
 {* Projects *}
 {get_projects var=projects sort=$theme_settings->projects_main_sort limit=$theme_settings->projects_main_limit}
-{if isset($projects)}
+{if $projects}
 	<div class="drag-block container PROJECTS" data-class="projects_drag" data-order="{$theme_settings->block_3}">
 		<div class="index-block index-block--padding-top-{$theme_settings->projects_main_padding_top} index-block--padding-bottom-{$theme_settings->projects_main_padding_bottom} {if $theme_settings->projects_main_delimiter}index-block--delimiter{/if} {if $theme_settings->projects_main_background}index-block--fon{/if}">
 			<div class="blog-list blog-list--items-offset blog-list-template">
@@ -9,8 +9,8 @@
 						<div class="index-block__title-wrapper index-block__title-wrapper--mb-35">
 							<div class="index-block__part--left">
 								<h3 class="index-block__title switcher-title">
-									<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}projects" title="{$lang->see_all}">
-										<span>{$lang->global_projects}</span>
+									<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}projects" title="{$lang->see_all|escape}">
+										<span>{$lang->global_projects|escape}</span>
 										<span class="index-block__link">
 											<span class="index-block__arrow">
 												<i class="svg inline" aria-hidden="true">
@@ -33,7 +33,7 @@
 								<div class="blog-list__item height-100 flexbox color-theme-parent-all">
 									<div class="blog-list__item-image-wrapper">
 										<a class="blog-list__item-link" href="{$lang_link}project/{$project->url}">
-											{if isset($project->image) && $project->image}
+											{if $project->image}
 												<span class="lazyload blog-list__item-image outer-rounded-x" style="background-image:url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==);" data-bg="{$project->image->filename|resize:700:464}"></span>
 											{else}
 												<span style="display: flex; justify-content: center; align-items: center;" class="blog-list__item-image outer-rounded-x">

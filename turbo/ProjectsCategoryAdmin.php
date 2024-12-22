@@ -10,7 +10,7 @@ class ProjectsCategoryAdmin extends Turbo
 	{
 		$category = new stdClass;
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$category->id = $this->request->post('id', 'integer');
 			$category->parent_id = $this->request->post('parent_id', 'integer');
 			$category->name = $this->request->post('name');
@@ -38,16 +38,33 @@ class ProjectsCategoryAdmin extends Turbo
 				}
 
 				$image = $this->request->files('image');
+
 				if (!empty($image['name']) && in_array(strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)), $this->allowedImageExtentions)) {
 					$this->projectsCategories->deleteImage($category->id);
 					move_uploaded_file($image['tmp_name'], $this->root_dir . $this->config->categories_images_dir . $image['name']);
 					$this->projectsCategories->updateProjectsCategory($category->id, ['image' => $image['name']]);
 				}
+
 				$category = $this->projectsCategories->getProjectsCategory((int) $category->id);
 			}
 		} else {
 			$category->id = $this->request->get('id', 'integer');
-			$category = $this->projectsCategories->getProjectsCategory($category->id);
+			
+			if (!empty($category->id)) {
+				$category = $this->projectsCategories->getProjectsCategory($category->id);
+			} else {
+				$category->id = null;
+				$category->name = '';
+				$category->name_h1 = '';
+				$category->url = '';
+				$category->visible = 1;
+				$category->parent_id = null;
+				$category->image = '';
+				$category->meta_title = '';
+				$category->meta_keywords = '';
+				$category->meta_description = '';
+				$category->description = '';
+			}
 		}
 
 		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();

@@ -1,6 +1,6 @@
-/* Data for table t_translations */
-TRUNCATE TABLE `t_translations`;
-INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VALUES
+/* Data for table __translations */
+TRUNCATE TABLE `__translations`;
+INSERT INTO `__translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VALUES
 ('39','callback','Заказать звонок','Request a call','Замовити дзвінок'),
 ('40','contact_details','Киев, ул. Глубочицкая, 32б','41 West 40th Street New York, NY','Київ, вул. Глибочицька, 32б'),
 ('6','bloge','Блоге','entries','Блогу'),
@@ -42,14 +42,14 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('74','short_description','Краткое описание','Short description','Короткий опис'),
 ('78','sku','Артикул','SKU','Артикул'),
 ('81','description','Описание','Description','Опис'),
-('83','comments_global','Комментарии','Comments','Коментарі'),
+('83','global_comments','Комментарии','Comments','Коментарі'),
 ('84','awaiting_moderation','ожидает модерации','awaiting moderation','очікує модерації'),
 ('85','comment_1','Комментарий','Comment','Коментар'),
 ('86','comment_on','Комментировать','Comment on','Коментувати'),
 ('87','no_comments','Пока нет комментариев','No comments','Поки немає коментарів'),
 ('111','reply','Ответить','Reply','Відповісти'),
-('96','files_global','Файлы','Files','Файли'),
-('97','videos_global','Видео','Video','Відео'),
+('96','global_files','Файлы','Files','Файли'),
+('97','global_videos','Видео','Video','Відео'),
 ('99','sort_by','Сортировать по','Sort by','Сортувати за'),
 ('100','default','Умолчанию','Default','Замовчуванням'),
 ('101','name_a_z','По имени от А до Я','By name from A to Z','На ім\'я від А до Я'),
@@ -99,17 +99,17 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('157','back','назад','back','назад'),
 ('158','all_at_once','все сразу','all at once','всі відразу'),
 ('160','accepted','принят','accepted','прийнятий'),
-('161','general_name','Название','Name','Назва'),
+('161','global_name','Название','Name','Назва'),
 ('163','number','Количество','Number','Кількість'),
 ('166','coupon','Купон','Coupon','Купон'),
 ('177','proceed_to_checkout','Перейти к оплате','Proceed to checkout','Перейти до оплати'),
 ('186','address_recipient','Адрес получателя','Address of the recipient','Адреса отримувача'),
-('187','general_full_name','ФИО','Full name','ПІБ'),
+('187','global_full_name','ФИО','Full name','ПІБ'),
 ('190','new_password','Новый пароль','New password','Новий пароль'),
 ('191','on_the_site','на сайте','on the site','на сайті'),
 ('192','email_password_reply','был сделан запрос на восстановление вашего пароля.','a request was made to recover your password.','був зроблений запит на відновлення вашого пароля.'),
 ('193','email_password_change','Вы можете изменить пароль, перейдя по следующей ссылке','You can change your password by following the link below','Ви можете змінити пароль, перейшовши за наступним посиланням'),
-('194','email_password_text','Эта ссылка действует в течение нескольких минут. <br> Если это письмо пришло вам по ошибке, проигнорируйте его.','This link is effective for a few minutes. <br> If you received this error in error, ignore it.','Це посилання діє протягом декількох хвилин. <br>  Якщо цей лист прийшло вам помилково, ігноруйте його.'),
+('194','email_password_text','Эта ссылка действует в течение нескольких минут. <br> Если это письмо пришло вам по ошибке, проигнорируйте его.','This link is effective for a few minutes. <br> If you received this error in error, ignore it.','Це посилання діє протягом декількох хвилин. <br> Якщо цей лист прийшло вам помилково, ігноруйте його.'),
 ('197','canceled','отменен','canceled','скасований'),
 ('200','status','Статус','Status','Статус'),
 ('202','compare','Сравнение','Compare','Порівняння'),
@@ -121,12 +121,12 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('219','email_from','от','of','від'),
 ('224','password_remind_title','Восстановление пароля','Password recovery','Відновлення пароля'),
 ('227','contact_us','Связаться с нами','To contact us','Зв\'язатися з нами'),
-('230','reviews_global','Отзывы','Reviews','Відгуки'),
+('230','global_reviews','Отзывы','Reviews','Відгуки'),
 ('231','voice','голос','voice','голос'),
 ('232','comment_3','Комментария','Comment','Коментаря'),
 ('233','heading','Рубрика','Heading','Рубрика'),
 ('234','comment','Комментарий','Comment','Коментар'),
-('236','general_all','Все','All','Всі'),
+('236','global_all','Все','All','Всі'),
 ('237','next','Вперёд','Next','Вперед'),
 ('238','previous','Назад','Prev','Назад'),
 ('239','features_support','Поддержка 24/7','24/7 support','Підтримка 24/7 '),
@@ -147,5 +147,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('257','faq','FAQ','FAQ','FAQ'),
 ('258','account','Аккаунт','Account','Аккаунт'),
 ('259','author','Автор','Author','Автор'),
-('260','help','Помощь','Help','Довідка');
+('260','help','Помощь','Help','Довідка'),
+('261','faq_name','Часто задаваемые вопросы','FAQ','Часті питання'),
+('262','no_faqs_found','Вопросы не найдены','No questions found','Запитання не знайдено');
 

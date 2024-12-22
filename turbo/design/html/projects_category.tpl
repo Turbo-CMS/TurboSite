@@ -22,7 +22,7 @@
 	{/if}
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -47,7 +47,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -110,7 +110,7 @@
 												{function name=category_select level=0}
 													{foreach $projects_categories as $cat}
 														{if $category->id != $cat->id}
-															<option value='{$cat->id}' {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
+															<option value="{$cat->id}" {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
 															{category_select projects_categories=$cat->subcategories level=$level+1}
 														{/if}
 													{/foreach}
@@ -125,7 +125,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $category->visible}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $category->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>

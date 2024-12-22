@@ -1,73 +1,41 @@
 {* List Projects *}
 
 {* Canonical *}
-{if isset($projects_category)}
+{if $projects_category}
 	{$canonical="/projects/{$projects_category->url}" scope=global}
-{elseif isset($keyword)}
+{elseif $keyword}
 	{$canonical="/projects/?keyword={$keyword|escape}" scope=global}
 {else}
 	{$canonical="/projects" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}" />
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects">
-				<span itemprop="name">{$lang->global_projects}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}" />
-		</li>
-		{if isset($projects_category)}
-			{foreach $projects_category->path as $cat}
-				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-					<a itemprop="item" class="text-decoration-none" href="{$lang_link}projects/{$cat->url}" title="{$cat->name|escape}">
-						<span itemprop="name">{$cat->name|escape}</span>
-					</a>
-					<meta itemprop="position" content="{$level++}" />
-				</li>
-			{/foreach}
-		{elseif isset($keyword)}
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles?keyword={$keyword|escape}">
-					<span itemprop="name">{$lang->search}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}" />
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {if $projects}
 	<div class="btn-toolbar justify-content-between mb-4" role="toolbar" aria-label="toolbarSort">
 		{* Page title *}
-		{if isset($keyword)}
-			<h1>{$lang->search} {$keyword|escape}</h1>
-		{elseif isset($page)}
+		{if $keyword}
+			<h1>{$lang->search|escape} {$keyword|escape}</h1>
+		{elseif $page}
 			<h1 data-page="{$page->id}">{$page->name|escape}</h1>
 		{else}
-			<h1 data-projects-category="{$projects_category->id}">
-				{if isset($projects_category->name_h1) && $projects_category->name_h1}
-					{$projects_category->name_h1|escape}
-				{elseif isset($projects_category->name) && $projects_category->name}
-					{$projects_category->name|escape}
+			<h1>
+				{if $projects_category && $projects_category->name_h1}
+					<span data-projects-category="{$projects_category->id}">{$projects_category->name_h1|escape}</span>
+				{elseif $projects_category && $projects_category->name}
+					<span data-projects-category="{$projects_category->id}">{$projects_category->name|escape}</span>
 				{/if}
 			</h1>
 		{/if}
-		<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="sortBy" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			{$lang->sort_by}
-		</a>
-		<div class="dropdown-menu" aria-labelledby="sortBy">
-			<a class="dropdown-item {if $sort=='position'}active{/if}" href="{url sort=position page=null}">{$lang->default}</a>
-			<a class="dropdown-item {if $sort=='name'}active{/if}" href="{url sort=name page=null}">{$lang->sort_name}</a>
-			<a class="dropdown-item {if $sort=='date'}active{/if}" href="{url sort=date page=null}">{$lang->sort_date}</a>
+		
+		{* Sort *}
+		<div class="align-self-center">
+			<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownSortLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{$lang->sort_by|escape}
+			</a>
+			<div class="dropdown-menu" aria-labelledby="dropdownSortLink">
+				<a class="dropdown-item {if $sort=='position'}active{/if}" href="{url sort=position page=null}">{$lang->default|escape}</a>
+				<a class="dropdown-item {if $sort=='date'}active{/if}" href="{url sort=date page=null}">{$lang->sort_date|escape}</a>
+				<a class="dropdown-item {if $sort=='rate'}active{/if}" href="{url sort=rate page=null}">{$lang->by_rating|escape}</a>
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -87,7 +55,7 @@
 						<div class="card-text">{$project->annotation|strip_tags|truncate:165}</div>
 					</div>
 					<div class="card-footer">
-						<a href="{$lang_link}project/{$project->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
+						<a href="{$lang_link}project/{$project->url}" class="btn btn-primary btn-sm">{$lang->more_details|escape}<i class="fal fa-arrow-right ms-2"></i></a>
 					</div>
 				</div>
 			</div>
@@ -97,15 +65,15 @@
 	{* Pagination *}
 	{include file='paginations/pagination.tpl'}
 
-	{* Page description *}
-	{if isset($page)}
+	{* Page Description *}
+	{if $page}
 		{$page->body}
 	{/if}
 
-	{* Category description *}
-	{if isset($projects_category) && $current_page_num == 1}
+	{* Category Description *}
+	{if $projects_category && $current_page_num == 1}
 		{$projects_category->description}
 	{/if}	
 {else}
-	{$lang->nothing_found}
+	{$lang->nothing_found|escape}
 {/if}

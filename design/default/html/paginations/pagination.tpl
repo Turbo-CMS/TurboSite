@@ -37,7 +37,7 @@
 			{if $current_page_num<$total_pages_num}<li class="page-item"><a class="page-link" href="{url page=$current_page_num+1}"><i class="fal fa-chevron-right"></i>
 						<< /a>
 			</li>{/if}
-			<li class="page-item"><a class="page-link" href="{url page=all}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->general_all}"><i class="fal fa-arrow-rotate-right"></i></a></li>
+			<li class="page-item"><a class="page-link" href="{url page=all}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->global_all|escape}"><i class="fal fa-arrow-rotate-right"></i></a></li>
 		</ul>
 	</nav>
 {/if}

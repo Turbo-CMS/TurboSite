@@ -59,7 +59,7 @@ class ArticlesView extends View
 		}
 
 		// Comment Form
-		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
 			$comment->name = $this->request->post('name');
@@ -149,6 +149,10 @@ class ArticlesView extends View
 		$children = [];
 
 		foreach ($this->comments->getComments() as $c) {
+			if (!isset($children[$c->id])) {
+				$children[$c->id] = [];
+			}
+			
 			$children[$c->parent_id][] = $c;
 		}
 
@@ -162,7 +166,7 @@ class ArticlesView extends View
 		$category = $this->articlesCategories->getArticlesCategory((int)$post->category_id);
 		$this->design->assign('articles_category', $category);
 
-		// Meta Tags
+		// Tags
 		$tags = explode(',', $post->meta_keywords);
 		$this->design->assign('tags', array_map("trim", $tags));
 
@@ -186,9 +190,11 @@ class ArticlesView extends View
 		// Design
 		$this->design->assign('all_tags', $allTags);
 
+		// Next Prev
 		$this->design->assign('next_post', $this->articles->getNextArticle($post->id));
 		$this->design->assign('prev_post', $this->articles->getPrevArticle($post->id));
 
+		// Meta Tags
 		$this->design->assign('meta_title', $post->meta_title);
 		$this->design->assign('meta_keywords', $post->meta_keywords);
 		$this->design->assign('meta_description', $post->meta_description);
@@ -314,19 +320,19 @@ class ArticlesView extends View
 
 		$allTags = [];
 
-		foreach ($allPosts as $p) {
+		foreach ($allPosts as $post) {
 			// Get Tags
-			$tags = explode(',', $p->meta_keywords);
+			$tags = explode(',', $post->meta_keywords);
 			$tags = array_map("trim", $tags);
 
 			// Merge Tags
 			$allTags = array_merge($allTags, $tags);
 		}
 
-		// Remove duplicates
+		// Remove Duplicates
 		$allTags = array_unique($allTags);
 
-		// Assign
+		// Design
 		$this->design->assign('all_tags', $allTags);
 
 		// Meta Tags

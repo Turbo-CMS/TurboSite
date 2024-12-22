@@ -4,14 +4,14 @@ require_once 'api/Turbo.php';
 
 class SettingsAdmin extends Turbo
 {
-	private $allowedImageExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
+	private $allowedImageExtensions = ['png'];
 
 	public function fetch()
 	{
 		$managers = $this->managers->getManagers();
 		$this->design->assign('managers', $managers);
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			if ($this->request->post('clear_cache')) {
 				$this->cache->clearAll();
 				$this->design->assign('message_success', 'cache_cleared');
@@ -70,7 +70,8 @@ class SettingsAdmin extends Turbo
 				$this->settings->captcha_feedback = $this->request->post('captcha_feedback', 'boolean');
 				$this->settings->captcha_callback = $this->request->post('captcha_callback', 'boolean');
 				$this->settings->captcha_review = $this->request->post('captcha_review', 'boolean');
-				
+				$this->settings->image_quality = $this->request->post('image_quality');
+
 				$clearImageCache = false;
 				$this->settings->watermark_enable = $this->request->post('watermark_enable', 'boolean');
 				$watermark = $this->request->files('watermark_file', 'tmp_name');

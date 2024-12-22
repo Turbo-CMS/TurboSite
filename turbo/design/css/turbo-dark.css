@@ -38,6 +38,10 @@ img {
 	background-color: transparent !important;
 }
 
+.tox .tox-notification {
+	width: auto !important;
+}
+
 .pagination .page-link svg {
 	margin-top: -0.2rem !important;
 }

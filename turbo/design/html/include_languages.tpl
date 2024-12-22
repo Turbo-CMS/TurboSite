@@ -1,36 +1,34 @@
-{if isset($project->id)}
+{if $project && $project->id}
 	{$id = $project->id}
-{elseif isset($category->id)}
+{elseif $category && $category->id}
 	{$id = $category->id}
-{elseif isset($user->id)}
+{elseif $user && $user->id}
 	{$id = $user->id}
-{elseif isset($page->id)}
+{elseif $page && $page->id}
 	{$id = $page->id}
-{elseif isset($post->id)}
+{elseif $post && $post->id}
 	{$id = $post->id}
-{elseif isset($faq->id)}
+{elseif $faq && $faq->id}
 	{$id = $faq->id}
-{elseif isset($banner->id)}
+{elseif $banner && $banner->id}
 	{$id = $banner->id}
-{elseif isset($banners_image->id)}
+{elseif $banners_image && $banners_image->id}
 	{$id = $banners_image->id}
-{elseif isset($m->id) && isset($smarty.get.module) && $m->id && $smarty.get.module == "ManagerAdmin"}
-	{$id = $m->id}
-{elseif isset($language->id)}
+{elseif $language && $language->id}
 	{$id = $language->id}
-{elseif isset($translation->id)}
+{elseif $translation && $translation->id}
 	{$id = $translation->id}
 {/if}
 
 {if $languages}
 	<li class="nav-item dropdown">
 		<a class="nav-flag dropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown">
-			<img src="design/flags/4x3/{$lang_label}.svg" alt="{if isset($lang_name)}{$lang_name}{/if}" title="{if isset($lang_name)}{$lang_name}{/if}">
+			<img src="design/flags/4x3/{$lang_label}.svg" alt="{if $lang_name}{$lang_name}{/if}" title="{if $lang_name}{$lang_name}{/if}">
 		</a>
 		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
 			{foreach $languages as $lang}
-				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{if isset($id)}{url lang_id=$lang->id id=$id}{else}{url lang_id=$lang->id}{/if}">
-					<img src="design/flags/4x3/{$lang->label}.svg" alt="{$lang->name|escape}" width="23" class="nav-flag-icon align-middle me-1" />
+				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{if $id}{url lang_id=$lang->id id=$id}{else}{url lang_id=$lang->id}{/if}">
+					<img src="design/flags/4x3/{$lang->label}.svg" alt="{$lang->name|escape}" width="20" class="nav-flag-icon align-middle me-1" />
 					<span class="align-middle">{$lang->name|escape}</span>
 				</a>
 			{/foreach}

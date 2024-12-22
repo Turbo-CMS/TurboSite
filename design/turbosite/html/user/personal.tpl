@@ -33,7 +33,7 @@
 	<div class="grid-list grid-list--fill-bg grid-list--personal">
 		<div class="personal__main-private__wrapper grid-list__item grid-list-border-outer">
 			<div class="personal__main-private bordered outer-rounded-x shadow-hovered shadow-hovered-f600 shadow-no-border-hovered color-theme-parent-all stroke-theme-parent-all">
-				<a class="item-link-absolute" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();" title="{$lang->personal_data}"></a>
+				<a class="item-link-absolute" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();" title="{$lang->personal_data|escape}"></a>
 				<div class="personal__main-private__inner">
 					<div class="personal__main-private__top">
 						<span class="main-block__link main-block__link--big stroke-theme-hover stroke-theme-target">
@@ -45,7 +45,7 @@
 								</i>
 							</span>
 						</span>
-						<div class="personal__main-private__title font_clamp--16-14 color-theme-target">{$lang->personal_data}</div>
+						<div class="personal__main-private__title font_clamp--16-14 color-theme-target">{$lang->personal_data|escape}</div>
 						<div class="personal__main-private__value">{$name|escape}</div>
 					</div>
 					<div class="personal__main-private__bottom font_clamp--16-14">
@@ -57,7 +57,7 @@
 								</div>
 							{/if}
 						</div>
-						<a class="personal__main-private__change-password" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();">{$lang->change_password}</a>
+						<a class="personal__main-private__change-password" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();">{$lang->change_password|escape}</a>
 					</div>
 				</div>
 			</div>
@@ -77,8 +77,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->subscriptions}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->newsletters_products}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->subscriptions|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->subscribe_newsletter|escape}</div>
 				</div>
 			</div>
 		</div>
@@ -93,8 +93,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->profile}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->personal_data}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->profile|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->personal_data|escape}</div>
 				</div>
 			</div>
 		</div>
@@ -109,8 +109,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->help}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->ask_a_question}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->help|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->ask_a_question|escape}</div>
 				</div>
 			</div>
 		</div>

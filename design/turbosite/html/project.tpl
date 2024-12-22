@@ -12,8 +12,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -25,12 +25,12 @@
 							</i>
 						</span>
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{$lang_link}projects" title="{$lang->global_projects}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_projects}</span>
+							<a class="breadcrumbs__link" href="{$lang_link}projects" title="{$lang->global_projects|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_projects|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
-						{if isset($category)}
+						{if $category}
 							{foreach $category->path as $cat}
 								<span class="breadcrumbs__separator">
 									<i class="svg inline muted-use fill-dark-light" aria-hidden="true">
@@ -117,14 +117,6 @@
 						</div>
 					</div>
 					<div class="blog-list__item-text-bottom-part">
-						{if $project->author}
-							<div class="blog-list__item-section font_14">
-								<a class="dark_link" href="{$lang_link}projects/?author={$project->author|escape}">
-									{$project->author|escape}
-								</a>
-							</div>
-							<span class="blog-list__item-text-bottom-part__separator">/</span>
-						{/if}
 						<div class="blog-list__item-period font_14">
 							<span class="blog-list__item-period-date">{$project->date|date}</span>
 						</div>
@@ -176,7 +168,7 @@
 													{if $category}
 														<div class="properties__item">
 															<div class="properties__title font_13 color_999">
-																{$lang->category}
+																{$lang->category|escape}
 															</div>
 															<div class="properties__value color_333 font_15 font_short">
 																{$category->name|escape}
@@ -186,7 +178,7 @@
 													{if $project->site}
 														<div class="properties__item">
 															<div class="properties__title font_13 color_999">
-																{$lang->site}
+																{$lang->site|escape}
 															</div>
 															<div class="properties__value color_333 font_15 font_short">
 																<!--noindex-->
@@ -200,7 +192,7 @@
 													{if $project->client}
 														<div class="properties__item">
 															<div class="properties__title font_13 color_999">
-																{$lang->customer}
+																{$lang->customer|escape}
 															</div>
 															<div class="properties__value color_333 font_15 font_short">
 																{$project->client|escape}
@@ -212,12 +204,12 @@
 											<div class="line-block__item flex-1 buttons-block">
 												<div>
 													<div class="btn btn-default btn-wide btn-lg animate-load" data-event="jqm" data-url="{$lang_link}contact/?tpl=feedback_modal" data-name="question">
-														<span>{$lang->ask_question}</span>
+														<span>{$lang->ask_question|escape}</span>
 													</div>
 												</div>
 												<div>
 													<div class="btn btn-default btn-wide btn-lg btn-transparent-border animate-load" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">
-														<span>{$lang->callback}</span>
+														<span>{$lang->callback|escape}</span>
 													</div>
 												</div>
 											</div>
@@ -242,7 +234,7 @@
 							{* Related Projects *}
 							{if $related_projects}
 								<div class="detail-block ordered-block related">
-									<h3 class="switcher-title">{$lang->related_projects}</h3>
+									<h3 class="switcher-title">{$lang->related_projects|escape}</h3>
 									<div class="blog-list blog-list--items-offset blog-list-template">
 										<div class="js_append grid-list grid-list--items-3-1200 grid-list--items-2-992 grid-list--items-2-768 grid-list--items-1-601 grid-list--gap-row-40 grid-list--normal">
 											{foreach $related_projects as $related_project}
@@ -250,7 +242,7 @@
 													<div class="blog-list__item height-100 flexbox color-theme-parent-all">
 														<div class="blog-list__item-image-wrapper">
 															<a class="blog-list__item-link" href="{$lang_link}project/{$related_project->url}">
-																{if isset($related_project->image) && $related_project->image}
+																{if $related_project->image}
 																	<span class="lazyload blog-list__item-image outer-rounded-x" style="background-image:url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==);" data-bg="{$related_project->image->filename|resize:700:464}"></span>
 																{else}
 																	<span style="display: flex; justify-content: center; align-items: center;" class="blog-list__item-image outer-rounded-x">
@@ -292,7 +284,7 @@
 																<path d="M2.20711 11.7929L2.91421 12.5L2.91421 12.5L2.20711 11.7929ZM4 10V9C3.73478 9 3.48043 9.10536 3.29289 9.29289L4 10ZM2 3C2 2.44772 2.44772 2 3 2V0C1.34315 0 0 1.34315 0 3H2ZM2 6.38743V3H0V6.38743H2ZM2 8V6.38743H0V8H2ZM2 11.2929V8H0V11.2929H2ZM1.70711 11C1.86887 11 2 11.1311 2 11.2929H0C0 12.2357 0.764299 13 1.70711 13V11ZM1.5 11.0858C1.55493 11.0309 1.62942 11 1.70711 11V13C2.15986 13 2.59407 12.8201 2.91421 12.5L1.5 11.0858ZM3.29289 9.29289L1.5 11.0858L2.91421 12.5L4.70711 10.7071L3.29289 9.29289ZM10 9H4V11H10V9ZM11 8C11 8.55228 10.5523 9 10 9V11C11.6569 11 13 9.65685 13 8H11ZM11 3V8H13V3H11ZM10 2C10.5523 2 11 2.44772 11 3H13C13 1.34315 11.6569 0 10 0V2ZM3 2H10V0H3V2Z" fill="#333333"></path>
 															</svg>
 														</i>
-														{$lang->global_comments}
+														{$lang->global_comments|escape}
 													</a>
 												</li>
 											</ul>
@@ -327,9 +319,9 @@
 																					<div class="row form">
 																						<div class="col-md-6 col-sm-6">
 																							<div class="form-group ">
-																								<label for="user_name">{$lang->name}<span class="required-star">*</span></label>
+																								<label for="user_name">{$lang->name|escape}<span class="required-star">*</span></label>
 																								<div class="input">
-																									<input maxlength="255" size="30" class="form-control required" required="" tabindex="3" type="text" name="name" id="user_name" value="{if isset($comment_text)}{$comment_name|escape}{/if}">
+																									<input maxlength="255" size="30" class="form-control required" required="" tabindex="3" type="text" name="name" id="user_name" value="{$comment_name|escape}">
 																								</div>
 																							</div>
 																						</div>
@@ -338,9 +330,9 @@
 																				<div class="row form comment">
 																					<div class="col-md-12">
 																						<div class="form-group">
-																							<label for="comment">{$lang->comment}</label>
+																							<label for="comment">{$lang->comment|escape}</label>
 																							<div class="input">
-																								<textarea rows="3" class="form-control" tabindex="3" name="text" id="comment" value="">{if isset($comment_text)}{$comment_text}{/if}</textarea>
+																								<textarea rows="3" class="form-control" tabindex="3" name="text" id="comment" value="">{$comment_text}</textarea>
 																							</div>
 																						</div>
 																					</div>
@@ -348,7 +340,7 @@
 																				{if $settings->captcha_project}
 																					<div class="clearfix fill-animate">
 																						<label class="font_14">
-																							<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+																							<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 																						</label>
 																					</div>
 																					<div class="row">
@@ -364,7 +356,7 @@
 																					</div>
 																				{/if}
 																				<div class="blog-comment-buttons-wrapper font_15">
-																					<input tabindex="10" class="btn btn-default" value="{$lang->send}" type="submit" name="comment" id="project-button">
+																					<input tabindex="10" class="btn btn-default" value="{$lang->send|escape}" type="submit" name="comment" id="project-button">
 																				</div>
 																			</div>
 																		</div>
@@ -373,17 +365,17 @@
 															</div>
 														</div>
 														<div class="blog-add-comment">
-															<a class="btn btn-default btn-lg btn-wide btn-transparent-border has-ripple clicked blog-comment-action__link" data-id="0" href="javascript:void(0)">{$lang->add_comments}</a>
+															<a class="btn btn-default btn-lg btn-wide btn-transparent-border has-ripple clicked blog-comment-action__link" data-id="0" href="javascript:void(0)">{$lang->add_comments|escape}</a>
 														</div>
 														{* Error *}
-														{if isset($error)}
+														{if $error}
 															<div class="alert alert-danger" role="alert">
 																{if $error=='captcha'}
-																	{$lang->captcha_incorrect}
+																	{$lang->captcha_incorrect|escape}
 																{elseif $error=='empty_name'}
-																	{$lang->enter_your_name}
+																	{$lang->enter_your_name|escape}
 																{elseif $error=='empty_comment'}
-																	{$lang->enter_a_comment}
+																	{$lang->enter_a_comment|escape}
 																{/if}
 															</div>
 														{/if}
@@ -396,10 +388,10 @@
 																			<div class="filter-panel__sort-form__item dropdown-select dropdown-select--with-dropdown">
 																				<div class="dropdown-select__title font_14 font_large fill-dark-light bordered rounded-x shadow-hovered shadow-no-border-hovered">
 																					<span>
-																						{if isset($sort) && $sort=='rate'}
-																							{$lang->popular}
-																						{elseif isset($sort) && $sort=='date'}
-																							{$lang->in_order}
+																						{if $sort=='rate'}
+																							{$lang->popular|escape}
+																						{elseif $sort=='date'}
+																							{$lang->in_order|escape}
 																						{/if}
 																					</span>
 																					<i class="svg inline dropdown-select__icon-down" aria-hidden="true">
@@ -413,22 +405,22 @@
 																						<div class="dropdown-select__list-item font_15">
 																							{if $sort=='rate'}
 																								<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																									<span>{$lang->popular}</span>
+																									<span>{$lang->popular|escape}</span>
 																								</span>
 																							{else}
 																								<a href="{url sort=rate page=null}" class="dropdown-menu-item dark_link">
-																									<span>{$lang->popular}</span>
+																									<span>{$lang->popular|escape}</span>
 																								</a>
 																							{/if}
 																						</div>
 																						<div class="dropdown-select__list-item font_15">
 																							{if $sort=='date'}
 																								<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																									<span>{$lang->in_order}</span>
+																									<span>{$lang->in_order|escape}</span>
 																								</span>
 																							{else}
 																								<a href="{url sort=date page=null}" class="dropdown-menu-item dark_link">
-																									<span>{$lang->in_order}</span>
+																									<span>{$lang->in_order|escape}</span>
 																								</a>
 																							{/if}
 																						</div>
@@ -464,9 +456,9 @@
 																								<div class="left_info">
 																									<div class="blog-comment__author color_222 font_16">{$comment->name|escape}</div>
 																									<div class="blog-comment__date color_999 font_14">
-																										{$comment->date|date} {$lang->at} {$comment->date|time}
+																										{$comment->date|date} {$lang->at|escape} {$comment->date|time}
 																										{if !$comment->approved}
-																											<span class="text-danger">{$lang->awaiting_moderation}</span>
+																											<span class="text-danger">{$lang->awaiting_moderation|escape}</span>
 																										{/if}
 																									</div>
 																								</div>
@@ -475,7 +467,7 @@
 																								<div class="blog-comment-post__item comment-text__text VIRTUES font_16">{$comment->text|escape|nl2br}</div>
 																								<div class="blog-comment-post__item blog-comment-meta">
 																									<span class="rating-vote">
-																										<a href="ajax/comment_rate.php?id={$comment->id}&rate=up" class="rating-vote__item rating-vote__item-like stroke-dark-light-block dark_link plus {if $comment->rate > 0}active{/if}" data-action="plus" title="{$lang->like}">
+																										<a href="ajax/comment_rate.php?id={$comment->id}&rate=up" class="rating-vote__item rating-vote__item-like stroke-dark-light-block dark_link plus {if $comment->rate > 0}active{/if}" data-action="plus" title="{$lang->like|escape}">
 																											<span class="rating-vote__icon">
 																												<i class="svg inline" aria-hidden="true">
 																													<svg width="20" height="22">
@@ -485,7 +477,7 @@
 																											</span>
 																										</a>
 																										<span class="rating-vote__result {if $comment->rate != 0}active{/if}">{$comment->rate}</span>
-																										<a href="ajax/comment_rate.php?id={$comment->id}&rate=down" class="rating-vote__item rating-vote__item-dislike stroke-dark-light-block dark_link minus {if $comment->rate < 0}active{/if}" data-action="minus" title="{$lang->dislike}">
+																										<a href="ajax/comment_rate.php?id={$comment->id}&rate=down" class="rating-vote__item rating-vote__item-dislike stroke-dark-light-block dark_link minus {if $comment->rate < 0}active{/if}" data-action="minus" title="{$lang->dislike|escape}">
 																											<span class="rating-vote__icon">
 																												<i class="svg inline" aria-hidden="true">
 																													<svg width="20" height="22">
@@ -497,7 +489,7 @@
 																									</span>
 																									{if $level == 0}
 																										<span class="blog-comment-answer blog-comment-action color_222">
-																											<a href="javascript:void(0)" class="blog-comment-action__link dotted dark_link font_14" data-id="{$comment->id}">{$lang->add_comment}</a>
+																											<a href="javascript:void(0)" class="blog-comment-action__link dotted dark_link font_14" data-id="{$comment->id}">{$lang->add_comment|escape}</a>
 																										</span>
 																									{/if}
 																								</div>
@@ -506,7 +498,7 @@
 																					</div>
 																				</div>
 																				<div id="form_comment_{$comment->id}" class="js-form-comment blog-comment__form-container" style="display: none"></div>
-																				{if isset($children[$comment->id])}
+																				{if $children[$comment->id]}
 																					{comments_tree comments=$children[$comment->id] level=$level+1}
 																				{/if}
 																			</div>
@@ -521,7 +513,7 @@
 																				{if $current_page_num < $total_pages_num}
 																					<div class="ajax_load_btn">
 																						<span class="more_text_ajax btn btn-transparent">
-																							{$lang->load_more}
+																							{$lang->load_more|escape}
 																						</span>
 																					</div>
 																				{/if}
@@ -533,7 +525,7 @@
 																{/if}
 															{else}
 																<div class="rounded-x bordered alert-empty">
-																	{$lang->no_comments}
+																	{$lang->no_comments|escape}
 																</div>
 															{/if}
 														</div>
@@ -578,43 +570,43 @@
 					<div class="left_block">
 						<div class="sticky-block sticky-block--show-Y">
 							<div class="sidearea">
-								{if isset($projects_categories)}
+								{if $projects_categories}
 									<ul class="nav nav-list side-menu">
-										<li class="{if !isset($projects_category->id) && !isset($keyword)}active{/if} opened child">
+										<li class="{if !isset($projects_category->id) && !$keyword}active{/if} opened child">
 											<span class="bg-opacity-theme-parent-hover link-wrapper">
-												<a href="{$lang_link}projects" class="dark_link top-level-link rounded-x font_short link-with-flag color-theme-parent-all {if !isset($projects_category->id) && !isset($keyword)}link--active{/if}">
-													<span class="side-menu__link-text">{$lang->global_projects}</span>
+												<a href="{$lang_link}projects" class="dark_link top-level-link rounded-x font_short link-with-flag color-theme-parent-all {if !isset($projects_category->id) && !$keyword}link--active{/if}">
+													<span class="side-menu__link-text">{$lang->global_projects|escape}</span>
 												</a>
 											</span>
 											<div class="submenu-wrapper">
 												<ul class="submenu">
 													{foreach $projects_categories as $c}
 														{if $c->visible}
-															<li class="{if isset($projects_category->id) && $projects_category->id == $c->id}active{/if} {if isset($c->subcategories)}opened child{/if}">
+															<li class="{if $projects_category && $projects_category->id == $c->id}active{/if} {if $c->subcategories}opened child{/if}">
 																<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-																	<a href="{$lang_link}projects/{$c->url}" class="dark_link top-level-link rounded-x link-with-flag {if isset($projects_category->id) && $projects_category->id == $c->id}link--active{/if}">
+																	<a href="{$lang_link}projects/{$c->url}" class="dark_link top-level-link rounded-x link-with-flag {if $projects_category && $projects_category->id == $c->id}link--active{/if}">
 																		<span data-projects-category="{$c->id}">{$c->name|escape}</span>
 																	</a>
 																</span>
-																{if isset($c->subcategories)}
+																{if $c->subcategories}
 																	<div class="submenu-wrapper">
 																		<ul class="submenu">
 																			{foreach $c->subcategories as $cat}
 																				{if $cat->visible}
-																					<li class="{if isset($projects_category->id) && $projects_category->id == $cat->id}active{/if} {if isset($cat->subcategories)}opened child{/if}">
+																					<li class="{if $projects_category && $projects_category->id == $cat->id}active{/if} {if $cat->subcategories}opened child{/if}">
 																						<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-																							<a href="{$lang_link}projects/{$cat->url}" class="dark_link sublink rounded-x sublink--child {if isset($projects_category->id) && $projects_category->id == $cat->id}link--active{/if}">
+																							<a href="{$lang_link}projects/{$cat->url}" class="dark_link sublink rounded-x sublink--child {if $projects_category && $projects_category->id == $cat->id}link--active{/if}">
 																								<span data-projects-category="{$cat->id}">{$cat->name|escape}</span>
 																							</a>
 																						</span>
-																						{if isset($cat->subcategories)}
+																						{if $cat->subcategories}
 																							<div class="submenu-wrapper">
 																								<ul class="submenu">
 																									{foreach $cat->subcategories as $cat3}
 																										{if $cat3->visible}
-																											<li class="{if isset($projects_category->id) && $projects_category->id == $cat3->id}active{/if}">
+																											<li class="{if $projects_category && $projects_category->id == $cat3->id}active{/if}">
 																												<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-																													<a href="{$lang_link}projects/{$cat3->url}" class="dark_link sublink rounded-x {if isset($projects_category->id) && $projects_category->id == $cat3->id}link--active{/if}">
+																													<a href="{$lang_link}projects/{$cat3->url}" class="dark_link sublink rounded-x {if $projects_category && $projects_category->id == $cat3->id}link--active{/if}">
 																														<span data-projects-category="{$cat3->id}">{$cat3->name|escape}</span>
 																													</a>
 																												</span>

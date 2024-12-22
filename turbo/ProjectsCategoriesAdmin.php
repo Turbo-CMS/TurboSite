@@ -6,9 +6,9 @@ class ProjectsCategoriesAdmin extends Turbo
 {
 	function fetch()
 	{
-		if ($this->request->isMethod('post')) {
-			// Actions
+		if ($this->request->method('post')) {
 			$ids = $this->request->post('check');
+
 			if (is_array($ids))
 				switch ($this->request->post('action')) {
 					case 'disable': {
@@ -34,7 +34,6 @@ class ProjectsCategoriesAdmin extends Turbo
 						}
 				}
 
-			// Sort
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);

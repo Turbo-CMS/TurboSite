@@ -4,16 +4,16 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if !isset($type)}
-					{$btr->global_comments} - {$comments_count}
-				{elseif isset($type) && $type=='project'}
-					{$btr->global_comments} {$btr->comments_to_project_small|escape} - {$comments_count}
-				{elseif isset($type) && $type=='blog'}
-					{$btr->global_comments} {$btr->comments_to_news_small|escape} - {$comments_count}
-				{elseif isset($type) && $type=='article'}
-					{$btr->global_comments} {$btr->comments_to_article_small|escape} - {$comments_count}
-				{elseif isset($type) && $type=='review'}
-					{$btr->global_review} - {$comments_count}
+				{if !$type}
+					{$btr->global_comments|escape} - {$comments_count}
+				{elseif $type=='project'}
+						{$btr->global_comments} {$btr->comments_to_project_small|escape} - {$comments_count}
+				{elseif $type=='blog'}
+					{$btr->global_comments|escape} {$btr->comments_to_news_small|escape} - {$comments_count}
+				{elseif $type=='article'}
+					{$btr->global_comments|escape} {$btr->comments_to_article_small|escape} - {$comments_count}
+				{elseif $type=='review'}
+					{$btr->global_review|escape} - {$comments_count}
 				{/if}
 			</h1>
 		</div>
@@ -22,7 +22,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="CommentsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->comments_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -47,11 +47,11 @@
 					<div class="row">
 						<div class="col-lg-3 col-md-3 col-sm-12 mb-3">
 							<select class="selectpicker" onchange="location = this.value;">
-								<option value="{url type=null item_id=null}" {if !isset($type)}selected{/if}>{$btr->comments_all|escape}</option>
-								<option value="{url keyword=null item_id=null page=null type=project}" {if isset($type) && $type == 'project'}selected{/if}>{$btr->comments_to_projects|escape}</option>
-								<option value="{url keyword=null item_id=null page=null type=blog}" {if isset($type) && $type == 'blog'}selected{/if}>{$btr->comments_to_news|escape}</option>
-								<option value="{url keyword=null item_id=null page=null type=article}" {if isset($type) && $type == 'article'}selected{/if}>{$btr->comments_to_articles|escape}</option>
-								<option value="{url keyword=null item_id=null page=null type=review}" {if isset($type) && $type == 'review'}selected{/if}>{$btr->global_review|escape}</option>
+								<option value="{url type=null item_id=null}" {if !$type}selected{/if}>{$btr->comments_all|escape}</option>
+								<option value="{url keyword=null item_id=null page=null type=project}" {if $type == 'project'}selected{/if}>{$btr->comments_to_projects|escape}</option>
+								<option value="{url keyword=null item_id=null page=null type=blog}" {if $type == 'blog'}selected{/if}>{$btr->comments_to_news|escape}</option>
+								<option value="{url keyword=null item_id=null page=null type=article}" {if $type == 'article'}selected{/if}>{$btr->comments_to_articles|escape}</option>
+								<option value="{url keyword=null item_id=null page=null type=review}" {if $type == 'review'}selected{/if}>{$btr->global_review|escape}</option>
 							</select>
 						</div>
 					</div>
@@ -88,14 +88,9 @@
 												<div class="turbo-list-boding turbo-list-comments-name {if $level > 0}admin-note{/if}">
 													<div class="me-1 {if !$comment->admin}admin{/if}">
 														<span class="fw-bold text-secondary">{$btr->global_name|escape}: </span>
-														<a href="{url module=CommentAdmin id=$comment->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$comment->name|escape} </a>
+														<a href="{url module=CommentAdmin id=$comment->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$comment->name|escape}</a>
 														{if $comment->admin}<span class="badge badge-danger-light align-top">Admin</span>{/if}
 													</div>
-													{if isset($comment->email)}
-														<div class="mb-0">
-															<span class="fw-bold text-secondary">Email: </span> {$comment->email|escape}
-														</div>
-													{/if}
 													<div class="mb-0">
 														<span class="fw-bold text-secondary">{$btr->global_message|escape}</span>
 														<span class="text-body">{$comment->text|escape|nl2br}</span>
@@ -106,7 +101,7 @@
 														{if $level == 0}
 															<span class="text-secondary">{$btr->comments_to_the|escape}</span>
 															{if $comment->type == 'project'}
-																{$btr->comments_project|escape}<a target="_blank" href="{$config->root_url}/projects/{$comment->project->url}#comment_{$comment->id}" class="fw-bold text-body text-decoration-none ms-1">{$comment->project->name}</a>
+																{$btr->comments_project|escape}<a target="_blank" href="{$config->root_url}/projects/{$comment->project->url}#comment_{$comment->id}" class="fw-bold text-body text-decoration-none ms-1">{$comment->project->name|escape}</a>
 															{elseif $comment->type == "blog"}
 																{$btr->comments_blog|escape}<a target="_blank" href="{$config->root_url}/blog/{$comment->post->url|escape}#comment_{$comment->id}" class="fw-bold text-body text-decoration-none ms-1">{$comment->post->name|escape}</a>
 															{elseif $comment->type == 'article'}
@@ -138,7 +133,7 @@
 														</button>
 													{/if}
 													{if $level == 0}
-														<div class="answer-wrap js-answer_btn" {if !$comment->approved}style="display: none;"{/if}>
+														<div class="answer-wrap js-answer_btn" {if !$comment->approved}style="display: none;" {/if}>
 															<button type="button" data-parent-id="{$comment->id}" data-user-name="{$comment->name|escape}" data-bs-toggle="modal" data-bs-target="#answer-popup" class="btn btn-outline-primary js-answer">
 																{$btr->global_answer|escape}
 															</button>
@@ -147,21 +142,21 @@
 												</div>
 
 												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->comments_delete|escape}">
-														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+														<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 															<i class="align-middle" data-feather="trash-2"></i>
-														</button>
-													</div>
+														</span>
+													</button>
 												</div>
 											</div>
 										</div>
-										{if isset($children[$comment->id])}
+										{if $children[$comment->id]}
 											{comments_tree comments=$children[$comment->id] level=$level+1}
 										{/if}
 									{/foreach}
 								{/function}
 								{comments_tree comments=$comments}
-								</div>
+							</div>
 							<div class="turbo-list-footer js-action-block">
 								<div class="turbo-list-foot-left">
 									<div class="turbo-list-heading turbo-list-check">

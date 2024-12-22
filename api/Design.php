@@ -65,6 +65,7 @@ class Design extends Turbo
 		$this->smarty->registerPlugin('modifier', 'array_slice', [$this, 'arraySliceModifier']);
 		$this->smarty->registerPlugin('modifier', 'resize_posts', [$this, 'resizePostsModifier']);
 		$this->smarty->registerPlugin('modifier', 'getimagesize', [$this, 'getimagesizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_brands', [$this, 'resizeBrandsModifier']);
 		$this->smarty->registerPlugin('modifier', 'resize_catalog', [$this, 'resizeCatalogModifier']);
 		$this->smarty->registerPlugin('modifier', 'resize_banners', [$this, 'resizeBannersModifier']);
 		$this->smarty->registerPlugin('modifier', 'resize_articles', [$this, 'resizeArticlesModifier']);
@@ -134,15 +135,15 @@ class Design extends Turbo
 		$resizedFilename = $this->image->addResizeParams($filename, $width, $height, $setWatermark);
 		$resizedFilenameEncoded = $resizedFilename;
 
-		$size = ($width ?: 0) . 'x' . ($height ?: 0) . ($setWatermark ? "w" : '');
+		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($setWatermark ? "w" : '');
 
-		static $imageSizes;
+		$imageSizes = [];
 
-		if (!$imageSizes) {
-			$imageSizes = explode('|', $this->settings->image_sizes ?? '');
+		if ($this->settings->image_sizes) {
+			$imageSizes = explode('|', $this->settings->image_sizes);
 		}
 
-		if (!in_array($size, $imageSizes, true)) {
+		if (!in_array($size, $imageSizes)) {
 			$imageSizes[] = $size;
 			$this->settings->image_sizes = implode('|', $imageSizes);
 		}
@@ -186,6 +187,14 @@ class Design extends Turbo
 	public function resizeArticlesModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
 		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_articles_images_dir);
+	}
+
+	/**
+	 * Resize Brands
+	 */
+	public function resizeBrandsModifier($filename, $width = 0, $height = 0, $setWatermark = false)
+	{
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_brands_images_dir);
 	}
 
 	/**

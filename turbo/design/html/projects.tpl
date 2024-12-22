@@ -8,10 +8,8 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $category->name}
-					{$btr->global_projects|escape} - {$projects_count}
-				{elseif $keyword}
-					{$btr->global_projects|escape} - {$projects_count}
+				{if $category && $category->name}
+					{$category->name|escape} - {$projects_count}
 				{else}
 					{$btr->global_projects|escape} - {$projects_count}
 				{/if}
@@ -62,7 +60,7 @@
 								<option value="{url keyword=null category_id=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $projects_categories as $c}
-										<option value='{url keyword=null category_id=$c->id}' {if $category->id == $c->id}selected{/if}>
+										<option value='{url keyword=null category_id=$c->id}' {if $category && $category->id == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
 										{category_select projects_categories=$c->subcategories level=$level+1}

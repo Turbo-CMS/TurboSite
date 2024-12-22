@@ -1,5 +1,5 @@
 {if $user->id}
-	{$meta_title = $user->name|escape scope=global}
+	{$meta_title = $user->name scope=global}
 {/if}
 
 <div class="d-md-flex mb-3">
@@ -8,7 +8,7 @@
 	</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -18,6 +18,12 @@
 					{else}
 						{$message_success|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -25,7 +31,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">

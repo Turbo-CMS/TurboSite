@@ -9,17 +9,19 @@ class BannerAdmin extends Turbo
 		$pages = $this->pages->getPages();
 		$articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
 		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
+
 		$banner = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$banner->id = $this->request->post('id', 'integer');
 			$banner->group_id = trim($this->request->post('group_id', 'string'));
 			$banner->name = $this->request->post('name');
 			$banner->visible = $this->request->post('visible', 'boolean');
 			$banner->show_all_pages = (int) $this->request->post('show_all_pages');
+			$banner->categories = implode(',', $this->request->post('categories'));
+			$banner->brands = implode(',', $this->request->post('brands'));
 			$banner->pages = implode(',', $this->request->post('pages'));
 			$banner->articles_categories = implode(',', $this->request->post('articles_categories'));
-			$banner->projects_categories = implode(',', $this->request->post('projects_categories'));
 			$banner->group_id = preg_replace('/[\s]+/ui', '', $banner->group_id);
 			$banner->group_id = strtolower(preg_replace('/[^0-9a-z_]+/ui', '', $banner->group_id));
 
@@ -41,18 +43,22 @@ class BannerAdmin extends Turbo
 
 			$banner->articles_category_selected = $this->request->post('articles_categories');
 			$banner->projects_category_selected = $this->request->post('projects_categories');
-			$banner->brand_selected = $this->request->post('brands');
 			$banner->page_selected = $this->request->post('pages');
 		} else {
-			$id = $this->request->get('id', 'integer');
+			$banner->id = $this->request->get('id', 'integer');
 
-			if (!empty($id)) {
-				$banner = $this->banners->getBanner((int) $id);
+			if (!empty($banner->id)) {
+				$banner = $this->banners->getBanner((int) $banner->id);
+
 				$banner->articles_category_selected = explode(',', $banner->articles_categories);
 				$banner->projects_category_selected = explode(",", $banner->projects_categories);
 				$banner->page_selected = explode(',', $banner->pages);
 			} else {
+				$banner->id = null;
+				$banner->name = '';
+				$banner->group_id = '';
 				$banner->visible = 1;
+				$banner->show_all_pages = null;
 			}
 		}
 

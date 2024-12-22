@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -45,7 +45,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -191,7 +191,7 @@
 							<select name="category_id" class="selectpicker mb-1">
 								{function name=projects_category_select level=0}
 									{foreach from=$projects_categories item=category}
-										<option value='{$category->id}' {if $category->id == $project->category_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}--{/section}{$category->name|escape}</option>
+										<option value="{$category->id}" {if $category->id == $project->category_id}selected{/if} category_name="{$category->name|escape}">{section name=sp loop=$level}--{/section}{$category->name|escape}</option>
 										{projects_category_select projects_categories=$category->subcategories  level=$level+1}
 									{/foreach}
 								{/function}

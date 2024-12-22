@@ -6,10 +6,7 @@ class ProjectsAdmin extends Turbo
 {
 	public function fetch()
 	{
-		// Action processing
-		if ($this->request->isMethod('post')) {
-
-			// Sorting
+		if ($this->request->method('post')) {
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);
@@ -19,7 +16,6 @@ class ProjectsAdmin extends Turbo
 				$this->projects->updateProject($ids[$i], ['position' => $position]);
 			}
 
-			// Actions with selected
 			$ids = $this->request->post('check');
 
 			if (is_array($ids))
@@ -44,20 +40,24 @@ class ProjectsAdmin extends Turbo
 		$filter['page'] = max(1, $this->request->get('page', 'integer'));
 		$filter['limit'] = $this->settings->projects_num_admin;
 
-		// Categories
 		$projectsCategories = $this->projectsCategories->getProjectsCategoriesTree();
 		$this->design->assign('projects_categories', $projectsCategories);
 
-		// Current category
 		$categoryId = $this->request->get('category_id', 'integer');
 		$category = $this->projectsCategories->getProjectsCategory($categoryId);
-		$this->design->assign('category', $category);
-
+		
 		if ($categoryId && $category) {
-			$filter['category_id'] = $category->children;
+			if (property_exists($category, 'children')) {
+				$filter['category_id'] = $category->children;
+			} else {
+				$filter['category_id'] = [];
+			}
+		} else {
+			$category = null;
 		}
 
-		// Current filter
+		$this->design->assign('category', $category);
+
 		if ($f = $this->request->get('filter', 'string')) {
 
 			if ($f == 'visible') {
@@ -69,7 +69,6 @@ class ProjectsAdmin extends Turbo
 			$this->design->assign('filter', $f);
 		}
 
-		// Search
 		$keyword = $this->request->get('keyword', 'string');
 
 		if (!empty($keyword)) {
@@ -79,7 +78,6 @@ class ProjectsAdmin extends Turbo
 
 		$projectsCount = $this->projects->countProjects($filter);
 
-		// Show all pages at once
 		if ($this->request->get('page') == 'all') {
 			$filter['limit'] = $projectsCount;
 		}
@@ -97,11 +95,10 @@ class ProjectsAdmin extends Turbo
 		}
 
 		if (!empty($projects)) {
-
-			// Projects 
 			$projectsIds = array_keys($projects);
+
 			foreach ($projects as &$project) {
-				$project->images = array();
+				$project->images = [];
 			}
 
 			$images = $this->projects->getImages(['project_id' => $projectsIds]);

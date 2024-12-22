@@ -9,26 +9,26 @@
 <div class="row text-center pad-top pad-bottom mt-5">
 	<div class="col-md-4">
 		<i class="fal fa-comments fa-3x icon-custom text-primary"></i>
-		<h4>{$lang->features_support}</h4>
-		<hr class="text-black-50">
+		<h4>{$lang->features_support|escape}</h4>
+		<hr>
 		<p>
-			{$lang->message_support}
+			{$lang->message_support|escape}
 		</p>
 	</div>
 	<div class="col-md-4">
 		<i class="fal fa-desktop fa-3x icon-custom text-primary"></i>
-		<h4>{$lang->quick_start}</h4>
-		<hr class="text-black-50">
+		<h4>{$lang->quick_start|escape}</h4>
+		<hr>
 		<p>
-			{$lang->message_support}
+			{$lang->message_support|escape}
 		</p>
 	</div>
 	<div class="col-md-4">
 		<i class="fal fa-recycle fa-3x icon-custom text-primary"></i>
-		<h4>{$lang->simple_solution}</h4>
-		<hr class="text-black-50">
+		<h4>{$lang->simple_solution|escape}</h4>
+		<hr>
 		<p>
-			{$lang->message_support}
+			{$lang->message_support|escape}
 		</p>
 	</div>
 </div>
@@ -37,10 +37,10 @@
 {get_projects var=projects limit=3}
 {if $projects}
 	<header class="section-heading mt-5">
-		<a href="{$lang_link}projects" class="btn btn-outline-primary float-end">{$lang->see_all}<i class="fal fa-chevron-right ms-2"></i></a>
-		<h2 class="section-title my-2">{$lang->global_projects}</h2>
+		<a href="{$lang_link}projects" class="btn btn-outline-primary float-end">{$lang->see_all|escape}<i class="fal fa-chevron-right ms-2"></i></a>
+		<h2 class="section-title my-2">{$lang->global_projects|escape}</h2>
 	</header>
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		{foreach $projects as $project}
 			<div class="col-md-6 col-lg-4 mb-5"> 
@@ -58,7 +58,7 @@
 						<p class="card-text">{$project->annotation|strip_tags|truncate:165}</p>
 					</div>
 					<div class="card-footer">
-						<a href="{$lang_link}project/{$project->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
+						<a href="{$lang_link}project/{$project->url}" class="btn btn-primary btn-sm">{$lang->more_details|escape}<i class="fal fa-arrow-right ms-2"></i></a>
 					</div>
 				</div>
 			</div>
@@ -69,15 +69,15 @@
 <!-- Heading Row -->
 <div class="row align-items-center">
 	<div class="col-lg-7">
-		<img class="img-fluid rounded mb-4 mb-lg-0" src="design/{$settings->theme|escape}/images/about-extra-1.svg" alt="{$lang->about_company}">
+		<img class="img-fluid rounded mb-4 mb-lg-0" src="design/{$settings->theme|escape}/images/about-extra-1.svg" alt="{$lang->about_company|escape}">
 	</div>
 	<div class="col-lg-5">
 		{* Page Title *}
-		{if isset($page->header)}
+		{if $page && $page->header}
 			<h1 class="font-weight-light" data-page="{$page->id}">{$page->name|escape}</h1>
 		{/if}
 		{* Page Body *}
-		{if isset($page->body)}
+		{if $page && $page->body}
 			{$page->body}
 		{/if}
 	</div>

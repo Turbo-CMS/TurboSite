@@ -10,7 +10,7 @@ class ProjectAdmin extends Turbo
 		$relatedProjects = [];
 		$project = new stdClass;
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$project->id = $this->request->post('id', 'integer');
 			$project->name = $this->request->post('name');
 			$project->date = date('Y-m-d', strtotime($this->request->post('date')));
@@ -132,6 +132,23 @@ class ProjectAdmin extends Turbo
 			if ($project && $project->id) {
 				$images = $this->projects->getImages(['project_id' => $project->id]);
 				$relatedProjects = $this->projects->getRelatedProjects(['project_id' => $project->id]);
+			} else {
+				$project = new stdClass();
+				$project->id = null;
+				$project->name = '';
+				$project->url = '';
+				$project->visible = 1;
+				$project->image = null;
+				$project->category_id = null;
+				$project->date = null;
+				$project->client = '';
+				$project->site = '';
+				$project->type = '';
+				$project->meta_title = '';
+				$project->meta_keywords = '';
+				$project->meta_description = '';
+				$project->annotation = '';
+				$project->text = '';
 			}
 		}
 

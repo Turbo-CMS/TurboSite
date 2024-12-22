@@ -519,7 +519,7 @@
 						}
 					});
 				});
-			}	
+			}
 
 			if ($('form.js-fast-button').length > 0) {
 				$('input,textarea,select, .dropdown-toggle').bind('keyup change dragover click', function() {
@@ -810,6 +810,7 @@
 							set_meta();
 						})
 					}
+					
 					if ($(".js-meta-categories").length > 0) {
 						$(".js-meta-categories").on("change", function() {
 							set_meta();
@@ -846,15 +847,21 @@
 					result = name;
 					if ($('input[name="author"]').length > 0) {
 						author = $('input[name="author"]').val();
-						result += ', ' + author;
+						if (typeof(author) == 'string' && author != '')
+							result += ', ' + author;
 					}
 					if ($(".js-meta-brand").length > 0) {
-						brand = $('select[name="brand_id"] option:selected').data('brand_name');
+						brand = $('select[name="brand_id"] option:selected').data('brand-name');
 						if (typeof(brand) == 'string' && brand != '')
 							result += ', ' + brand;
 					}
 					$('select[name="categories[]"]').each(function(index) {
-						c = $(this).find('option:selected').attr('category_name');
+						c = $(this).find('option:selected').attr('category-name');
+						if (typeof(c) == 'string' && c != '')
+							result += ', ' + c;
+					});
+					$('select[name="category_id"]').each(function(index) {
+						c = $(this).find('option:selected').attr('category-name');
 						if (typeof(c) == 'string' && c != '')
 							result += ', ' + c;
 					});

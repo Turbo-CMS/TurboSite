@@ -1,6 +1,6 @@
 <div class="border-bottom">
 	<div class="bg-body-tertiary py-1">
-		<div class="container">
+		<div class="container-xxl">
 			<div class="row">
 				<div class="col-6 text-start">
 					{* Theme Mode *}
@@ -21,7 +21,7 @@
 						{* Callback *}
 						<a class="nav-link me-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#callbackModal" role="button">
 							<i class="fal fa-headset text-primary me-1"></i>
-							<span class="d-none d-lg-inline-block">{$lang->callback}</span>
+							<span class="d-none d-lg-inline-block">{$lang->callback|escape}</span>
 						</a>
 						{* User *}
 						{if $user}
@@ -31,12 +31,12 @@
 							</a>
 							<a class="nav-link text-decoration-none me-3" href="{$lang_link}user/logout">
 								<i class="fal fa-sign-out me-1"></i>
-								<span class="d-none d-lg-inline-block">{$lang->logout}</span>
+								<span class="d-none d-lg-inline-block">{$lang->logout|escape}</span>
 							</a>
 						{else}
 							<a class="nav-link text-decoration-none me-3" href="#" data-bs-toggle="modal" data-bs-target="#userModal">
 								<i class="fal fa-user me-1"></i>
-								<span class="d-none d-lg-inline-block">{$lang->login}</span>
+								<span class="d-none d-lg-inline-block">{$lang->login|escape}</span>
 							</a>
 						{/if}
 						{* Languages *}
@@ -64,7 +64,7 @@
 		</div>
 	</div>
 	<div class="py-3">
-		<div class="container">
+		<div class="container-xxl">
 			<div class="row w-100 align-items-center gx-lg-2 gx-0">
 				<div class="col-xxl-3 col-lg-3">
 					{* Logo *}
@@ -110,15 +110,15 @@
 				{* Search *}
 				<div class="col-xxl-7 col-lg-7 d-none d-lg-block">
 					<form class="input-group search-panel my-4" id="search-param" action="{$lang_link}projects">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span id="search-concept">{$lang->global_projects}</span></button>
+						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span id="search-concept">{$lang->global_projects|escape}</span></button>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item active" data-input="projects-search" href="#{$lang_link}projects">{$lang->global_projects}</a></li>
-							<li><a class="dropdown-item" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages}</a></li>
-							<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog}</a></li>
-							<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles}</a></li>
+							<li><a class="dropdown-item active" data-input="projects-search" href="#{$lang_link}projects">{$lang->global_projects|escape}</a></li>
+							<li><a class="dropdown-item" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages|escape}</a></li>
+							<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog|escape}</a></li>
+							<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles|escape}</a></li>
 						</ul>
-						<input id="projects-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if isset($keyword)}{$keyword|escape}{/if}" placeholder="{$lang->search}...">
-						<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i> {$lang->search}</button>
+						<input id="projects-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search|escape}...">
+						<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i> {$lang->search|escape}</button>
 					</form>
 				</div>
 			</div>
@@ -126,7 +126,7 @@
 	</div>
 	{* Navbar *}
 	<nav class="navbar navbar-expand-lg navbar-light navbar-default py-0 pb-lg-4 " aria-label="Offcanvas navbar large">
-		<div class="container">
+		<div class="container-xxl">
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
 				<div class="offcanvas-header pb-1">
 					{* Logo Offcanvas *}
@@ -151,12 +151,12 @@
 						<form class="input-group search-panel my-4" id="search-param" action="{$lang_link}search">
 							<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item active" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages}</a></li>
-								<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog}</a></li>
-								<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles}</a></li>
-								<li><a class="dropdown-item" data-input="projects-search" href="#{$lang_link}projects">{$lang->global_projects}</a></li>
+								<li><a class="dropdown-item active" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages|escape}</a></li>
+								<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog|escape}</a></li>
+								<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles|escape}</a></li>
+								<li><a class="dropdown-item" data-input="projects-search" href="#{$lang_link}projects">{$lang->global_projects|escape}</a></li>
 							</ul>
-							<input id="pages-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if isset($keyword)}{$keyword|escape}{/if}" placeholder="{$lang->search}...">
+							<input id="pages-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search|escape}...">
 							<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i></button>
 						</form>
 					</div>
@@ -167,8 +167,8 @@
 								{if $p->menu_id == $theme_settings->menu_header_id}
 									{if $p->visible}
 										<li class="nav-item dropdown w-100 w-lg-auto {if $page && $page->id == $p->id}active{/if}">
-											<a class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown-{$p->id}" data-page="{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true">{$p->header}</a>
-											{if isset($p->subpages)}
+											<a class="nav-link {if $p->subpages}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown-{$p->id}" data-page="{$p->id}" {if $p->subpages}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true">{$p->header}</a>
+											{if $p->subpages}
 												<ul class="dropdown-menu" aria-labelledby="dropdown-{$p->id}">
 													{foreach $p->subpages as $p2}
 														<li><a data-page="{$p2->id}" class="dropdown-item" href="{$lang_link}{$p2->url}">{$p2->header}</a></li>

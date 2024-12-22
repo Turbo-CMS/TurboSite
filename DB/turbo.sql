@@ -119,6 +119,7 @@ CREATE TABLE `t_banners_images` (
   `color` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `style` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `side` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `button` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `background` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -130,22 +131,22 @@ CREATE TABLE `t_banners_images` (
 -- Dumping data for table `t_banners_images`
 --
 
-INSERT INTO `t_banners_images` (`id`, `banner_id`, `name`, `alt`, `title`, `description`, `url`, `color`, `style`, `code`, `button`, `image`, `background`, `position`, `visible`) VALUES
-(1, 1, 'TurboSite Solutions', 'TurboSite Solutions For Your Business', 'TurboSite Solutions For Your Business', 'For Your Business', '/', '', '', '', 'Get Started', 'hero-slide01.png', '', 1, 1),
-(2, 1, 'Easy Marketing Solutions', 'Easy Marketing Solutions For Your Business', 'Easy Marketing Solutions For Your Business', 'For Your Business', '/', '', '', '', 'Get Started', 'hero-slide02.png', '', 2, 1),
-(3, 1, 'We Provide Solutions', 'We provide solutions for your business', 'We provide solutions for your business', 'For Your Business', '/', '', '', '', 'Get Started', 'hero-slide03.png', '', 3, 1),
-(4, 2, 'We help develop<br>online business', 'We help develop online business', 'We help develop online business', 'We tell you how complex automation affects sales, department reporting and enterprise efficiency. We analyze typical questions and give recommendations. Subscribe to the newsletter to stay informed!												', '/', '', 'light', '', 'Read more', 'img_1.png', 'bg_1.jpg', 4, 1),
-(5, 2, 'Financial audit of a large company', 'Financial audit of a large company', 'Financial audit of a large company', 'We will conduct an audit of your enterprise in express mode. <br>\r\nWe will build a management accounting system for making key decisions. <br>\r\nWe will put your finances in order!', '/', '', 'light', '', 'Read more', 'img_2.png', 'bg_2.jpg', 5, 1),
-(6, 2, 'We design<br>interiors of premises', 'We design interiors of premises', 'We design interiors of premises', '500+ completed projects for home, office and restaurant', '/', '', 'light', '', 'Read more', 'img_3.png', 'bg_3.jpg', 6, 1),
-(7, 3, '500+ suppliers', '500+ suppliers', '500+ suppliers', 'We cooperate with Fasa, Terros and other brands', '/', '', 'light', '', '', 'teaser_1.svg', '', 10, 1),
-(8, 3, 'Help Center 24/7', 'Help Center 24/7', 'Help Center 24/7', 'We are ready to answer questions whenever it is convenient for you.', '/', '', 'light', '', '', 'teaser_2.svg', '', 9, 1),
-(9, 3, '100% reliability', '100% reliability', '100% reliability', 'We provide documents, licenses and certificates', '/', '', 'light', '', '', 'teaser_3.svg', '', 8, 1),
-(10, 3, 'Training', 'Training', 'Training', 'We care about your time, development and resources', '/', '', 'light', '', '', 'teaser_4.svg', '', 7, 1),
-(11, 4, 'Automation of sales department', 'Automation of sales department', 'Automation of sales department', 'Automation', '', '', 'light', '', '', 'bt_5.jpg', '', 11, 1),
-(12, 4, 'Interior design', 'Interior design', 'Interior design', 'Design', '/', '', 'light', '', '', 'bt_7.jpg', '', 12, 1),
-(14, 4, 'Integrated automation', 'Integrated automation', 'Integrated automation', 'Automation', '/', '', 'light', '', '', 'bt_1.jpg', '', 14, 1),
-(13, 4, 'Security systems', 'Security systems', 'Security systems', 'Engineering systems', '/', '', 'light', '', '', 'bt_6.jpg', '', 13, 1),
-(15, 5, 'Security systems', 'Security systems', 'Security systems', 'Engineering systems', '/', '', 'light', '', '', 'bottom_banners.jpg', '', 15, 1);
+INSERT INTO `t_banners_images` (`id`, `banner_id`, `name`, `alt`, `title`, `description`, `url`, `color`, `style`, `code`, `side`, `button`, `image`, `background`, `position`, `visible`) VALUES
+(1, 1, 'TurboSite Solutions', 'TurboSite Solutions For Your Business', 'TurboSite Solutions For Your Business', 'For Your Business', '/', '', '', '', '', 'Get Started', 'hero-slide01.png', '', 1, 1),
+(2, 1, 'Easy Marketing Solutions', 'Easy Marketing Solutions For Your Business', 'Easy Marketing Solutions For Your Business', 'For Your Business', '/', '', '', '', '', 'Get Started', 'hero-slide02.png', '', 2, 1),
+(3, 1, 'We Provide Solutions', 'We provide solutions for your business', 'We provide solutions for your business', 'For Your Business', '/', '', '', '', '', 'Get Started', 'hero-slide03.png', '', 3, 1),
+(4, 2, 'We help develop<br>online business', 'We help develop online business', 'We help develop online business', 'We tell you how complex automation affects sales, department reporting and enterprise efficiency. We analyze typical questions and give recommendations. Subscribe to the newsletter to stay informed!												', '/', '', 'light', '', '', 'Read more', 'img_1.png', 'bg_1.jpg', 4, 1),
+(5, 2, 'Financial audit of a large company', 'Financial audit of a large company', 'Financial audit of a large company', 'We will conduct an audit of your enterprise in express mode. <br>\r\nWe will build a management accounting system for making key decisions. <br>\r\nWe will put your finances in order!', '/', '', 'light', '', '', 'Read more', 'img_2.png', 'bg_2.jpg', 5, 1),
+(6, 2, 'We design<br>interiors of premises', 'We design interiors of premises', 'We design interiors of premises', '500+ completed projects for home, office and restaurant', '/', '', 'light', '', '', 'Read more', 'img_3.png', 'bg_3.jpg', 6, 1),
+(7, 3, '500+ suppliers', '500+ suppliers', '500+ suppliers', 'We cooperate with Fasa, Terros and other brands', '/', '', 'light', '', '', '', 'teaser_1.svg', '', 10, 1),
+(8, 3, 'Help Center 24/7', 'Help Center 24/7', 'Help Center 24/7', 'We are ready to answer questions whenever it is convenient for you.', '/', '', 'light', '', '', '', 'teaser_2.svg', '', 9, 1),
+(9, 3, '100% reliability', '100% reliability', '100% reliability', 'We provide documents, licenses and certificates', '/', '', 'light', '', '', '', 'teaser_3.svg', '', 8, 1),
+(10, 3, 'Training', 'Training', 'Training', 'We care about your time, development and resources', '/', '', 'light', '', '', '', 'teaser_4.svg', '', 7, 1),
+(11, 4, 'Automation of sales department', 'Automation of sales department', 'Automation of sales department', 'Automation', '', '', 'light', '', '', '', 'bt_5.jpg', '', 11, 1),
+(12, 4, 'Interior design', 'Interior design', 'Interior design', 'Design', '/', '', 'light', '', '', '', 'bt_7.jpg', '', 12, 1),
+(14, 4, 'Integrated automation', 'Integrated automation', 'Integrated automation', 'Automation', '/', '', 'light', '', '', '', 'bt_1.jpg', '', 14, 1),
+(13, 4, 'Security systems', 'Security systems', 'Security systems', 'Engineering systems', '/', '', 'light', '', '', '', 'bt_6.jpg', '', 13, 1),
+(15, 5, 'Security systems', 'Security systems', 'Security systems', 'Engineering systems', '/', '', 'light', '', '', '', 'bottom_banners.jpg', '', 15, 1);
 
 -- --------------------------------------------------------
 
@@ -644,9 +645,9 @@ INSERT INTO `t_lang_pages` (`lang_id`, `lang_label`, `page_id`, `name`, `meta_ti
 (2, '', 27, 'Projects', 'Projects', '', 'Projects', '', 'Projects'),
 (3, '', 27, 'Проекти', 'Проекти', '', 'Проекти', '', 'Проекти'),
 (1, '', 27, 'Проекты', 'Проекты', '', 'Проекты', '', 'Проекты'),
-(1, '', 25, 'FAQ', 'FAQ', 'FAQ', 'FAQ', '', 'FAQ'),
+(1, '', 25, 'Часто задаваемые вопросы', 'Часто задаваемые вопросы', 'Часто задаваемые вопросы', 'Часто задаваемые вопросы', '', 'Часто задаваемые вопросы'),
 (2, '', 25, 'FAQ', 'FAQ', 'FAQ', 'FAQ', '', 'FAQ'),
-(3, '', 25, 'FAQ', 'FAQ', 'FAQ', 'FAQ', '', 'FAQ'),
+(3, '', 25, 'Часті питання', 'Часті питання', 'Часті питання', 'Часті питання', '', 'Часті питання'),
 (1, '', 26, 'Отзывы', 'Отзывы', 'Отзывы', 'Отзывы', '<p>Мы благодарны нашим клиентам за оказанное доверие и положительные отзывы о сотрудничестве с нашей компанией. Если хотите, можем помочь и вам: предложим подходящие решения и необходимые услуги. Просто свяжитесь с нами!</p>', 'Отзывы'),
 (2, '', 26, 'Reviews', 'Reviews', 'Reviews', 'Reviews', '<p>We are grateful to our clients for their trust and positive feedback on cooperation with our company. If you want, we can help you too: we will offer suitable solutions and the necessary services. Just contact us!</p>', 'Reviews'),
 (3, '', 26, 'Відгуки', 'Відгуки', 'Відгуки', 'Відгуки', '<p>Ми вдячні нашим клієнтам за надану довіру та позитивні відгуки про співпрацю з нашою компанією. Якщо хочете, можемо допомогти і вам: запропонуємо відповідні рішення та необхідні послуги. Просто зв\'яжіться з нами!</p>', 'Відгуки'),
@@ -1053,7 +1054,8 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (60, 'lastModifyPosts', '2024-08-22 00:05:35'),
 (61, 'lastModifyReviews', '2024-08-18 23:38:27'),
 (62, 'lastModifyFAQ', '2024-08-18 23:39:33'),
-(63, 'counters', '');
+(63, 'counters', ''),
+(64, 'image_quality', '90');
 
 -- --------------------------------------------------------
 
@@ -1508,7 +1510,9 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (479, 'about_company', 'О компании', 'About company', 'Про компанію'),
 (480, 'details', 'Реквизиты', 'Details', 'Реквізити'),
 (481, 'licenses', 'Лицензии', 'Licenses', 'Ліцензії'),
-(482, 'documents', 'Документы', 'Documents', 'Документи');
+(482, 'documents', 'Документы', 'Documents', 'Документи'),
+(483, 'faq_name', 'Часто задаваемые вопросы', 'FAQ', 'Часті питання'),
+(484, 'no_faqs_found', 'Вопросы не найдены', 'No questions found', 'Запитання не знайдено');
 
 -- --------------------------------------------------------
 
@@ -1891,7 +1895,7 @@ ALTER TABLE `t_seo`
 -- AUTO_INCREMENT for table `t_settings`
 --
 ALTER TABLE `t_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `t_subscribes`
@@ -1909,7 +1913,7 @@ ALTER TABLE `t_theme_settings`
 -- AUTO_INCREMENT for table `t_translations`
 --
 ALTER TABLE `t_translations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=483;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=485;
 
 --
 -- AUTO_INCREMENT for table `t_users`

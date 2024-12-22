@@ -57,7 +57,7 @@
 														{/foreach}
 													</div>
 												{/if}
-												{if !$banner->show_all_pages && $banner->projects_category_show}
+												{if !$banner->show_all_pages && isset($banner->projects_category_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->project_categories|escape}:</span>
 														{foreach $banner->projects_category_show as $cat_show}

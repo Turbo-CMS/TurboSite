@@ -485,7 +485,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Print packed CSS File
+	 * Print Packed CSS File
 	 */
 	public function printStylesheet($params)
 	{

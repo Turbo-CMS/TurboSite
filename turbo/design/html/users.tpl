@@ -4,13 +4,7 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $keyword && $users_count > 0}
-					{$btr->global_users|escape} - {$users_count}
-				{elseif $users_count > 0}
-					{$btr->global_users|escape} - {$users_count}
-				{else}
-					{$btr->users_no|escape}
-				{/if}
+				{$btr->global_users|escape} - {$users_count}
 			</h1>
 			{if $users_count > 0}
 				<div class="d-inline-block heading-block text-dark me-3 mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_export|escape}">
@@ -23,7 +17,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="UsersAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->users_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -87,7 +81,7 @@
 												</label>
 											</div>
 											<div class="turbo-list-boding turbo-list-users-name">
-												<a href="{url module=UserAdmin id=$user->id}" class="fw-bold text-body text-decoration-none">
+												<a href="{url module=UserAdmin id=$user->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">
 													{$user->name|escape}
 												</a>
 											</div>
@@ -106,11 +100,11 @@
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_delete|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button>
 											</div>
 										</div>
 									</div>
@@ -162,7 +156,6 @@
 {literal}
 	<script>
 		$(function() {
-			// On document load
 			$(document).on('click', '.feather-file-text', function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
