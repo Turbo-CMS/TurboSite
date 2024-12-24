@@ -237,6 +237,10 @@ body[data-sidebar-layout=compact] .sidebar-brand-text {
 	line-height: 1;
 }
 
+.card-header:first-child {
+	border-radius: var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+}
+
 /************************************************************************* Alert */
 
 .alert {
