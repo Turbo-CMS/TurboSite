@@ -1381,7 +1381,7 @@ $get_params = http_build_query($get_params);
 									</a>
                                 <?php
                                 } elseif (($is_video || $is_audio) && in_array($file_array['extension'], $config['jplayer_exts'])) { ?>
-                                    <a class="text-decoration-none modalAV <?php if ($is_audio) {echo "audio";} else {echo "video";} ?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $rfm_subfolder . $subdir . $file; ?>" href="javascript:void('');">
+                                    <a class="text-decoration-none modalAV <?php if ($is_audio) {echo "audio";} else {echo "video";} ?>" href="#previewAV" data-bs-toggle="modal" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $rfm_subfolder . $subdir . $file; ?>" href="javascript:void('');">
 									   <svg class="svg-icon" data-bs-toggle="tooltip" data-bs-title="<?= trans('Preview') ?>" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 									</a>
                                 <?php
@@ -1435,26 +1435,27 @@ $get_params = http_build_query($get_params);
 
 	<!-- loading div start -->
 	<div id="loading_container" style="display:none;">
-		<div id="loading"
-			style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:100000"></div>
-		<img id="loading_animation" src="img/storing_animation.gif" alt="loading"
-			style="z-index:10001; margin-left:-32px; margin-top:-32px; position:fixed; left:50%; top:50%">
+		<div id="loading" style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:100000"></div>
+		<img id="loading_animation" src="img/storing_animation.gif" alt="loading" style="z-index:10001; margin-left:-32px; margin-top:-32px; position:fixed; left:50%; top:50%">
 	</div>
 	<!-- loading div end -->
 
 	<!-- player div start -->
-	<div class="modal hide" id="previewAV">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3><?php
-				echo trans('Preview'); ?></h3>
-		</div>
-		<div class="modal-body">
-			<div class="row-fluid body-preview">
+	<div id="previewAV" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body p-0 text-center">
+					<div class="body-preview mx-auto img-fluid"></div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" data-bs-dismiss="modal" aria-hidden="true"><?= trans('Cancel'); ?></button>
+				</div>
 			</div>
 		</div>
-	</div>
-
+	</div>		
 	<!-- player div end -->
 
 	<div id="galleryModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1463,7 +1464,7 @@ $get_params = http_build_query($get_params);
 				<div class="modal-header">
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body p-0 text-center bg-alt">
+				<div class="modal-body p-0 text-center">
 					<img src="//placehold.it/1200x700/222?text=..." id="galleryImage" class="loaded-image mx-auto img-fluid">
 				</div>
 				<div class="modal-footer">
